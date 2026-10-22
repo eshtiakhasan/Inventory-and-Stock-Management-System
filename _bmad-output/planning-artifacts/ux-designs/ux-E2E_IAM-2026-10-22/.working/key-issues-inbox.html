@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojud Key Screen: Issues</title>
+<style>
+/* =====================================================================
+   KEY SCREEN · Issues inbox (S12) + Issue detail (S13), Supervisor phone
+   Governing spine sections (check these before changing this mock):
+   DESIGN.md   Colors (Jamdani Teal light, control-border, danger for value
+               at risk, Stock states), Typography (title, qty-display, meta,
+               Bangla >= 16px), Layout & Spacing, Shapes,
+               Components: Issue card, Issue decision buttons (issue-decision-
+               button), Issue detail, Stock-state pill, Input field,
+               Bottom tab bar, Focus ring.
+   EXPERIENCE.md  Component Patterns: Issue card (one-tap decisions, FR-33a
+               top two decisions on the card), Issue detail (evidence: both
+               counts, both Users, both times; picker for "Found"),
+               Stock-state pill, Bottom tab bar / Side nav (Issues count badge).
+               IA: Home per Role (Supervisor -> Issues inbox; Issues · Tasks ·
+               Scan · More). State Patterns: Sync conflict, Offline (decisions
+               need internet). Interaction Primitives: no confirmation dialog on
+               one-tap decisions, button label states its effect, no Undo.
+               Voice and Tone. Key Flows: UJ-3, UJ-5 (climax).
+               Issue decisions per Issue type table (recommended = filled,
+               alternative = outlined, "Open to decide" where a choice or
+               evidence is needed). Voice and Tone: Language display rule
+               (Bangla only on this surface; no bilingual parts).
+               Accessibility Floor: icons are inline SVG, never emoji.
+   PRD: FR-28, FR-30, FR-31, FR-32, FR-33, FR-33a, FR-44, FR-5.
+   ===================================================================== */
+.light{--primary:#0B5A54;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EDF4F2;--text:#0D1F1C;--text-muted:#3E524F;--border:#8FAAA5;--control-border:#6B8580;--success:#1B6E31;--on-success:#FFFFFF;--warning:#8A4F00;--on-warning:#FFFFFF;--danger:#A8231B;--on-danger:#FFFFFF;--info:#1D5799;--st-available:#1B6E31;--on-st-available:#FFFFFF;--st-reserved:#1D5799;--on-st-reserved:#FFFFFF;--st-damaged:#A8231B;--on-st-damaged:#FFFFFF;--st-transit:#5B3E96;--on-st-transit:#FFFFFF;--st-unexplained:#FFC94D;--on-st-unexplained:#2B1D00}
+*{box-sizing:border-box}
+body{margin:0;background:#D5DEDC;color:#0D1F1C;font-family:system-ui,"Segoe UI",Roboto,"Noto Sans Bengali","Nirmala UI",sans-serif;line-height:1.5}
+button,input{font-family:inherit}
+.page{padding:24px 16px 48px}
+.page>header h1{margin:0 0 4px;font-size:22px}
+.page>header p{margin:0;max-width:980px;font-size:15px;color:#3E524F}
+.row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-top:20px}
+.cap{margin:0 0 8px;font-size:14px;font-weight:600;color:#3E524F;max-width:376px}
+.num{font-variant-numeric:tabular-nums}
+
+.phone{width:376px;border-radius:30px;background:#111;padding:8px;box-shadow:0 8px 24px rgba(13,31,28,.2)}
+.screen{width:360px;height:760px;border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--surface-alt);color:var(--text)}
+.sb{height:24px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 14px;font-size:12px;background:var(--surface);color:var(--text-muted)}
+.en{color:var(--text-muted);font-weight:500}
+
+.appbar{flex:none;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px 8px}
+.ab-top{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px}
+.crumb{display:inline-flex;align-items:center;gap:2px;min-height:48px;color:var(--primary);font-size:16px;font-weight:600;text-decoration:none}
+.who{display:flex;flex-direction:column;align-items:flex-end;line-height:1.3}
+.user{font-size:16px;font-weight:700}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:600}
+.ic{width:24px;height:24px;flex:none}
+.net{color:var(--text)}
+.net .ic{width:20px;height:20px}
+.net.on .ic{color:var(--success)}
+.title{margin:0;font-size:20px;font-weight:700;line-height:1.4}
+.title .en{font-size:16px}
+.meta-line{font-size:16px;color:var(--text-muted)}
+
+.body{flex:1;overflow:hidden;padding:10px 16px}
+.body.inbox{padding:6px 12px}
+.body.inbox .icard{margin-bottom:6px}
+.body.inbox .dec{margin-top:8px}
+.sm{font-size:14px;color:var(--text-muted);font-weight:500}
+.icard .ih{margin-top:2px}
+
+/* issue card */
+.icard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 2px rgba(13,31,28,.06)}
+.ih{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.itype{font-size:17px;font-weight:700;line-height:1.45}
+.itype .en{font-size:14px}
+.risk{font-size:17px;font-weight:700;line-height:1.45;color:var(--danger);white-space:nowrap;font-variant-numeric:tabular-nums}
+.iprod{font-size:16px;font-weight:600;line-height:1.45}
+.iprod .en{font-size:14px}
+.imeta{font-size:16px;color:var(--text-muted);line-height:1.45;font-variant-numeric:tabular-nums}
+.imeta b{color:var(--text);font-weight:600}
+.dec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.dbtn{min-height:64px;border-radius:12px;font-size:18px;font-weight:700;line-height:1.3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 6px;text-align:center}
+.dbtn .e{font-size:16px;font-weight:400;line-height:1.4}
+.dbtn.approve{background:var(--primary);color:var(--on-primary);border:0}
+.dbtn.reject{background:var(--surface);color:var(--text);border:2px solid var(--control-border)}
+.dbtn.reject .e{color:var(--text)}
+.dec.one{grid-template-columns:1fr}
+.dbtn.open{flex-direction:row;gap:8px}
+.pill .ic{width:18px;height:18px}
+
+/* stock-state pill */
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;border-radius:9999px;font-size:16px;font-weight:600;line-height:1.4;background:var(--f);color:var(--o);font-variant-numeric:tabular-nums}
+.pill .e{font-size:14px;font-weight:500}
+.st-transit{--f:var(--st-transit);--o:var(--on-st-transit)}
+.st-damaged{--f:var(--st-damaged);--o:var(--on-st-damaged);background:repeating-linear-gradient(135deg,var(--f) 0 7px,color-mix(in srgb,var(--f) 78%,var(--o)) 7px 10px)}
+
+/* issue detail */
+.dhead{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px}
+.evid{margin:12px 16px 0;background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.evid .col{background:var(--surface);border-radius:12px;padding:10px 12px}
+.evid .h{font-size:16px;font-weight:700}
+.evid .h .en{font-size:14px}
+.evid .qty{font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;margin:4px 0 2px}
+.evid .qty small{font-size:16px;font-weight:600}
+.evid .m{font-size:14px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.diff{grid-column:1 / -1;font-size:16px;font-weight:600}
+.hist{margin:12px 16px 0}
+.hist h3{margin:0 0 4px;font-size:16px;font-weight:700}
+.hist h3 .en{font-size:14px}
+.hist li{list-style:none;display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--border);font-size:16px}
+.hist ul{margin:0;padding:0}
+.hist .t{font-size:14px;color:var(--text-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.input{margin:12px 16px 0;height:48px;border:1px solid var(--control-border);border-radius:6px;padding:0 12px;font-size:16px;color:var(--text-muted);display:flex;align-items:center;background:var(--surface)}
+.ddock{flex:none;background:var(--surface);border-top:1px solid var(--border);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.ddock .dbtn{width:100%}
+
+/* bottom tab bar */
+.tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);height:64px;background:var(--surface);border-top:1px solid var(--border)}
+.tabs a{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--text-muted);font-size:16px;font-weight:600;line-height:1.3;text-decoration:none;border-top:3px solid transparent}
+.tabs a .e{font-size:14px;font-weight:500;white-space:nowrap}
+.tabs a.on{color:var(--primary);border-top-color:var(--primary)}
+.badge{display:inline-flex;vertical-align:1px;min-width:22px;height:22px;border-radius:9999px;background:var(--primary);color:var(--on-primary);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 6px;font-variant-numeric:tabular-nums}
+.focus{outline:3px solid var(--primary);outline-offset:2px}
+.note{max-width:1180px;margin-top:24px;font-size:14px;color:#3E524F}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-cloud-check" viewBox="0 0 24 24"><path d="M7 19h10.5a4.5 4.5 0 0 0 .4-8.98A6.5 6.5 0 0 0 5.6 9.2 4.9 4.9 0 0 0 7 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 13.5 2.2 2.2L15.5 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-issues" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2.5 4.5L17 13H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tasks" viewBox="0 0 24 24"><path d="m3.5 6 1.7 1.7L8.5 4.5M3.5 12l1.7 1.7 3.3-3.2M3.5 18.5h4M11 6.5h9.5M11 12.5h9.5M11 18.5h9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 8v8M10 8v8M13.5 8v8M17 8v8" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+<div class="page">
+<header>
+  <h1>Mojud · Key screen · Issues inbox (S12) + Issue detail (S13)</h1>
+  <p>Nasima, Supervisor, Narayanganj, clearing the inbox at shift end (UJ-3). Ranked per FR-31: Issues that affect Reserved stock first, then value at risk, then age. Card buttons follow EXPERIENCE.md → Issue decisions per Issue type: recommended decision filled, alternative outlined, and a single "Open to decide" where a choice or the evidence is needed (Transfer shortage). UI language: Bangla only (no bilingual parts on this surface). Second column: the Transfer shortage opened, showing both counts, both Users and both times (FR-28, UJ-5).</p>
+</header>
+
+<div class="row">
+
+  <!-- ============ 1. ISSUES INBOX ============ -->
+  <div>
+    <p class="cap">1 · Ranked inbox · Damage flag: Approve (filled) / Reject · Transfer shortage: "Open to decide" only · Sync conflict: Recount (filled) / Discard</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">17:40</span><span>48%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <h1 class="title">সমস্যার তালিকা</h1>
+          <div class="who"><span class="user">Nasima</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+        <div class="meta-line num">3টি খোলা · Narayanganj</div>
+      </div>
+      <div class="body inbox">
+
+        <div class="icard">
+          <div class="itype">ক্ষতি জানানো</div>
+          <div class="ih"><span class="iprod">Rice 25 kg</span><span class="risk">৳1,850</span></div>
+          <div class="imeta"><b>1 কার্টন</b> · Narayanganj · Karim · 14:05</div>
+          <div class="dec">
+            <button class="dbtn approve focus">অনুমোদন<span class="e">1 কার্টন বাদ</span></button>
+            <button class="dbtn reject">প্রত্যাখ্যান<span class="e">উপলব্ধে ফেরত</span></button>
+          </div>
+        </div>
+
+        <div class="icard">
+          <div class="itype">স্থানান্তরে ঘাটতি</div>
+          <div class="ih"><span class="iprod">Sugar 1 kg</span><span class="risk">৳22,000</span></div>
+          <div class="imeta"><b>পাঠানো 50 · গ্রহণ 40 কার্টন</b> · Gazipur · 13:40</div>
+          <div class="dec one">
+            <button class="dbtn reject open">খুলে সিদ্ধান্ত নিন<svg class="ic" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+
+        <div class="icard">
+          <div class="itype">সিঙ্ক দ্বন্দ্ব</div>
+          <div class="ih"><span class="iprod">Lentils 1 kg</span><span class="risk">৳2,640</span></div>
+          <div class="imeta"><b>2 কার্টন</b> · Narayanganj · Karim · 11:20 অফলাইন</div>
+          <div class="dec">
+            <button class="dbtn approve">আবার গণনা<span class="e">গণনা খুলবে</span></button>
+            <button class="dbtn reject">বাতিল<span class="e">প্রয়োগ হবে না</span></button>
+          </div>
+        </div>
+
+      </div>
+      <nav class="tabs">
+        <a class="on" href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-issues"/></svg><span style="display:inline-flex;align-items:center;gap:4px">সমস্যা <span class="badge">3</span></span></a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-tasks"/></svg>কাজ</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg>স্ক্যান</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg>আরও</a>
+      </nav>
+    </div></div>
+  </div>
+
+  <!-- ============ 2. ISSUE DETAIL ============ -->
+  <div>
+    <p class="cap">2 · Issue detail · Transfer shortage · evidence side by side, history, comment, decisions stacked at the bottom</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">17:42</span><span>48%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <a class="crumb" href="#"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg>সমস্যার তালিকা</a>
+          <div class="who"><span class="user">Nasima</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+      </div>
+      <div class="body" style="padding:0">
+        <div class="dhead">
+          <div class="ih"><span class="itype">স্থানান্তরে ঘাটতি</span><span class="risk">৳22,000</span></div>
+          <div class="iprod num">Sugar 1 kg · TR-0082</div>
+          <div style="margin-top:6px"><span class="pill st-transit"><svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg> পথে আছে 10 কার্টন</span></div>
+        </div>
+        <div class="evid">
+          <div class="col">
+            <div class="h">পাঠানো</div>
+            <div class="qty">50 <small>কার্টন</small></div>
+            <div class="m">Gazipur · Jamal<br>21/10 09:10</div>
+          </div>
+          <div class="col">
+            <div class="h">গ্রহণ</div>
+            <div class="qty">40 <small>কার্টন</small></div>
+            <div class="m">Narayanganj · Rahim<br>22/10 13:40</div>
+          </div>
+          <div class="diff num">পার্থক্য 10 কার্টন, এখনও পথে আছে</div>
+        </div>
+        <div class="hist">
+          <h3>ইতিহাস</h3>
+          <ul>
+            <li><span>পাঠানো 50 কার্টন — Jamal</span><span class="t">21/10 09:10</span></li>
+            <li><span>গ্রহণ 40 কার্টন — Rahim</span><span class="t">22/10 13:40</span></li>
+            <li><span>সমস্যা তৈরি</span><span class="t">22/10 13:40</span></li>
+          </ul>
+        </div>
+        <div class="input">মন্তব্য (ঐচ্ছিক)</div>
+      </div>
+      <div class="ddock">
+        <button class="dbtn approve">পাওয়া গেছে<span class="e">উপলব্ধে যাবে · গুদাম বাছুন</span></button>
+        <button class="dbtn reject">স্থানান্তরে ক্ষতি<span class="e">পথে থাকা 10 কার্টন বাদ</span></button>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+<p class="note">No "Assign to…" on the detail: Nasima is a Supervisor and FR-33 gives assignment to Owner and Manager only. No confirmation dialog on any decision (Interaction Primitives); "Found" opens one small Warehouse picker (Component Patterns → Issue detail). Card buttons per EXPERIENCE.md → Issue decisions per Issue type: Damage flag = Approve (filled) / Reject; Transfer shortage = "Open to decide" only, because Found needs a Warehouse; Sync conflict = Recount (filled) / Discard. Bangla only: Issue types, decisions and their effect lines (16px; the button grows taller instead of shrinking text). Product, Warehouse and User names as entered. Icons are inline SVG. Strings not in the UI glossary yet: the effect lines (1 কার্টন বাদ, উপলব্ধে ফেরত, গণনা খুলবে, প্রয়োগ হবে না, উপলব্ধে যাবে · গুদাম বাছুন, পথে থাকা 10 কার্টন বাদ), "3টি খোলা", সমস্যা তৈরি (Issue raised).</p>
+</div>
+</body>
+</html>

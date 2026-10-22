@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojud Key Screen: Receiving</title>
+<style>
+/* =====================================================================
+   KEY SCREEN · Receive PO, blind (S7) -> blind confirm dialog -> My tasks (S3)
+   UI language shown: Bangla (chosen language). Western digits throughout.
+   Governing spine sections (check these before changing this mock):
+   DESIGN.md   Colors (Jamdani Teal light, control-border, scrim);
+               Typography (qty-display, label-scan, label-button, Language
+               display rule, Bangla >= 16px, Western digits); Layout & Spacing
+               (phone 360px, fixed bottom zone: Scan bar; home: Scan bar + tab
+               bar; Quantity entry stacks below 600px; 48px / 56px / 64px
+               targets); Elevation & Depth (toast + dialog shadow, scrim);
+               Shapes; Components: App bar, Scan bar, Floor primary button,
+               Button (secondary), Task card, Task status tag, Quantity entry,
+               Confirmation dialog, Confirmation toast, Bottom tab bar, Focus ring.
+   EXPERIENCE.md  Voice and Tone (Language display; UI glossary);
+               IA (Send Transfer button in the My tasks header; Warehouse worker
+               home = My tasks; tabs Tasks · Scan · More);
+               Component Patterns: App bar, Scan bar, Quantity entry (blind:
+               empty, scanned unit's row focused, never shows expected qty),
+               Task card ("counted" only on blind screens), Task status tag,
+               Line completion (Mark delivery complete any time; dialog counts
+               lines, never quantities), Confirmation dialog (Go back first,
+               initial focus on Go back), Confirmation toast.
+               State Patterns: Blind, Empty/next task, Focus.
+               Interaction Primitives: When does a scan record (blind = select
+               + empty field), Budget (blind exception), Confirm vs undo.
+               Accessibility Floor: Language of parts.
+               Key Flows: UJ-1 steps 2-6.
+   PRD: FR-9, FR-21, FR-22, FR-26, FR-52, FR-53, NFR-2.
+   ===================================================================== */
+.light{--primary:#0B5A54;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EDF4F2;--text:#0D1F1C;--text-muted:#3E524F;--border:#8FAAA5;--control-border:#6B8580;--success:#1B6E31;--on-success:#FFFFFF;--warning:#8A4F00;--on-warning:#FFFFFF;--danger:#A8231B;--scrim:rgba(13,31,28,.5)}
+*{box-sizing:border-box}
+body{margin:0;background:#D5DEDC;color:#0D1F1C;font-family:system-ui,"Segoe UI",Roboto,"Noto Sans Bengali","Nirmala UI",sans-serif;line-height:1.5}
+button{font-family:inherit;cursor:pointer}
+.page{padding:24px 16px 48px}
+.page>header h1{margin:0 0 4px;font-size:22px}
+.page>header p{margin:0;max-width:1180px;font-size:15px;color:#3E524F}
+.row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-top:20px}
+.cap{margin:0 0 8px;font-size:14px;font-weight:600;color:#3E524F;max-width:376px}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{width:24px;height:24px;flex:none}
+
+.phone{width:376px;border-radius:30px;background:#111;padding:8px;box-shadow:0 8px 24px rgba(13,31,28,.2)}
+.screen{width:360px;height:760px;border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--surface-alt);color:var(--text)}
+.sb{height:24px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 14px;font-size:12px;background:var(--surface);color:var(--text-muted)}
+
+/* app bar */
+.appbar{flex:none;position:relative;z-index:1;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px 8px 4px}
+.ab-top{display:flex;align-items:center;gap:4px;min-height:56px}
+.back{flex:none;width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;color:var(--primary);border-radius:12px}
+.title{margin:0;flex:1;font-size:20px;font-weight:700;line-height:1.4}
+.title.home{padding-left:12px}
+.who{display:flex;flex-direction:column;align-items:flex-end;line-height:1.4}
+.user{font-size:16px;font-weight:400}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--text)}
+.net .ic{width:20px;height:20px}
+.net.on .ic{color:var(--success)}
+.sub{padding-left:12px;font-size:16px;color:var(--text-muted)}
+.ab-row2{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-left:12px}
+.btn-sec{min-height:48px;padding:4px 14px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);font-size:16px;font-weight:700;line-height:1.4;display:inline-flex;align-items:center;gap:8px}
+.btn-sec .ic{width:20px;height:20px}
+
+/* body + task cards */
+.body{flex:1;overflow:hidden;padding:12px 16px}
+.scrolled{margin-top:-46px}
+.card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;min-height:64px;box-shadow:0 1px 2px rgba(13,31,28,.06);color:var(--text);text-decoration:none}
+.card.cur{border-left:5px solid var(--primary);padding-left:10px}
+.nm{font-size:17px;font-weight:700;line-height:1.45}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+.counted{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.counted .ic{width:20px;height:20px;color:var(--success)}
+.notyet{font-size:16px;color:var(--text-muted)}
+.cm{font-size:16px;color:var(--text-muted)}
+.prog{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 10px;border:2px solid var(--control-border);border-radius:6px;font-size:16px;font-weight:600;line-height:1.4;color:var(--text);white-space:nowrap}
+
+/* quantity entry: stacked rows [-][field][+] below 600px */
+.qe{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.ql{font-size:16px;font-weight:600;line-height:1.5}
+.qline{display:grid;grid-template-columns:64px minmax(6rem,1fr) 64px;gap:8px;margin-top:2px}
+.step{min-height:64px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);display:flex;align-items:center;justify-content:center;padding:0}
+.step .ic{width:28px;height:28px}
+.field{min-height:64px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.field.focused{border-color:var(--primary)}
+.caret{display:inline-block;width:2px;height:30px;margin-left:2px;background:var(--text)}
+
+/* floor primary button: bilingual, each part lang-marked */
+.fp{width:100%;min-height:64px;border:0;border-radius:12px;background:var(--primary);color:var(--on-primary);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:8px;padding:6px 12px;line-height:1.4;text-align:center}
+.fp [lang="bn"]{font-size:18px;font-weight:700}
+.fp [lang="en"]{font-size:16px;font-weight:600}
+.sep{font-size:16px;opacity:.85}
+.card .fp{margin-top:12px}
+
+/* fixed bottom zone */
+.dock{flex:none;background:var(--surface);border-top:1px solid var(--border);padding:12px 16px}
+.scan{width:100%;min-height:72px;border:0;border-radius:16px;background:var(--primary);color:var(--on-primary);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:10px;padding:6px 12px;line-height:1.4}
+.scan .ic{width:30px;height:30px}
+.scan [lang="bn"]{font-size:24px;font-weight:800}
+.scan [lang="en"]{font-size:18px;font-weight:600}
+
+/* focus ring: two-tone, never primary */
+.focus{outline:3px solid var(--text);outline-offset:2px;box-shadow:0 0 0 2px var(--surface)}
+
+/* confirmation dialog: bottom-anchored on phones */
+.scrim{position:absolute;inset:0;background:var(--scrim);z-index:5}
+.dlg{position:absolute;left:8px;right:8px;bottom:8px;z-index:6;background:var(--surface);border-radius:16px;padding:20px 16px 16px;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.dlg h2{margin:0 0 8px;font-size:20px;font-weight:700;line-height:1.4}
+.dlg p{margin:0 0 16px;font-size:16px;line-height:1.5}
+.dlg .btns{display:flex;flex-direction:column;gap:12px}
+.btn-goback{width:100%;min-height:56px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);font-size:18px;font-weight:700;line-height:1.4}
+
+/* confirmation toast */
+.toast{position:absolute;left:16px;right:16px;border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;min-height:48px;font-size:16px;font-weight:600;line-height:1.4;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.toast.ok{background:var(--success);color:var(--on-success)}
+
+/* bottom tab bar */
+.tabs{flex:none;display:grid;grid-template-columns:repeat(3,1fr);min-height:64px;background:var(--surface);border-top:1px solid var(--border)}
+.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--text-muted);font-size:16px;font-weight:600;line-height:1.4;text-decoration:none;border-top:3px solid transparent}
+.tabs a.on{color:var(--primary);border-top-color:var(--primary)}
+.note{max-width:1180px;margin-top:24px;font-size:14px;color:#3E524F}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 8v8M10 8v8M13.5 8v8M17 8v8" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-cloud-check" viewBox="0 0 24 24"><path d="M7 19h10.5a4.5 4.5 0 0 0 .4-8.98A6.5 6.5 0 0 0 5.6 9.2 4.9 4.9 0 0 0 7 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 13.5 2.2 2.2L15.5 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M3 11.5 21 3l-6.5 18-3.2-7.3L3 11.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m11.3 13.7 4.2-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-tasks" viewBox="0 0 24 24"><path d="m3.5 6 1.7 1.7L8.5 4.5M3.5 12l1.7 1.7 3.3-3.2M3.5 18.5h4M11 6.5h9.5M11 12.5h9.5M11 18.5h9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+<div class="page">
+<header>
+  <h1>Mojud · Key screen · Receive PO, blind (S7) → confirm → My tasks (S3)</h1>
+  <p>Rahim, Warehouse worker, Narayanganj loading bay, receiving PO-0311 (UJ-1, FR-21, FR-22). UI language: Bangla — only the Scan bar and floor primary buttons are bilingual, each part lang-marked. No ordered, expected or outstanding quantity appears anywhere, before or after save, or in the dialog. Columns: (1) counting a line with stacked carton / piece rows; "Mark delivery complete" already available with one line uncounted · (2) the blind confirm dialog · (3) My tasks: toast, next task, and the "Send Transfer" header button.</p>
+</header>
+
+<div class="row">
+
+  <!-- ============ 1. COUNTING A LINE ============ -->
+  <div>
+    <p class="cap">1 · Scanned Soybean oil → line selected, carton row focused and empty; Rahim typed 40 · stacked [−][field][+] rows for cartons and pieces · "Mark delivery complete" sits at the end of the list before every line is counted (list scrolled slightly)</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">10:18</span><span class="num">74%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <a class="back" href="#" aria-label="আমার কাজ"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></a>
+          <h1 class="title num">PO-0311 গ্রহণ</h1>
+          <div class="who"><span class="user">Rahim</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+        <div class="sub">Padma Food Supply · Narayanganj</div>
+      </div>
+      <div class="body"><div class="scrolled">
+        <div class="card">
+          <div class="nm">Rice 25 kg</div>
+          <div class="prow"><span class="counted"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>গোনা হয়েছে 92 কার্টন</span></div>
+        </div>
+        <div class="card cur">
+          <span class="sr">বর্তমান</span>
+          <div class="nm">Soybean oil 5 L</div>
+          <div class="qe">
+            <div>
+              <div class="ql">কার্টন</div>
+              <div class="qline">
+                <button class="step" aria-label="কার্টন কমান"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                <div class="field focused">40<span class="caret"></span></div>
+                <button class="step" aria-label="কার্টন বাড়ান"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+              </div>
+            </div>
+            <div>
+              <div class="ql">পিস</div>
+              <div class="qline">
+                <button class="step" aria-label="পিস কমান"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                <div class="field"></div>
+                <button class="step" aria-label="পিস বাড়ান"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <button class="fp"><span lang="bn">লাইন সেভ করুন</span><span class="sep" aria-hidden="true">·</span><span lang="en">Save line</span></button>
+        </div>
+        <div class="card">
+          <div class="nm">Lentils 1 kg</div>
+          <div class="prow"><span class="notyet">এখনও গোনা হয়নি</span></div>
+        </div>
+        <button class="fp"><span lang="bn">ডেলিভারি সম্পূর্ণ</span><span class="sep" aria-hidden="true">·</span><span lang="en">Mark delivery complete</span></button>
+      </div></div>
+      <div class="dock">
+        <button class="scan"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 2. BLIND CONFIRM DIALOG ============ -->
+  <div>
+    <p class="cap">2 · Tapped "Mark delivery complete" with Lentils uncounted → blind confirm dialog: counts lines, never quantities · "Go back" first, holding initial focus · confirm is the bilingual floor primary</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">10:24</span><span class="num">73%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <a class="back" href="#" aria-label="আমার কাজ" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></a>
+          <h1 class="title num">PO-0311 গ্রহণ</h1>
+          <div class="who"><span class="user">Rahim</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+        <div class="sub">Padma Food Supply · Narayanganj</div>
+      </div>
+      <div class="body" aria-hidden="true">
+        <div class="card">
+          <div class="nm">Rice 25 kg</div>
+          <div class="prow"><span class="counted"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>গোনা হয়েছে 92 কার্টন</span></div>
+        </div>
+        <div class="card">
+          <div class="nm">Soybean oil 5 L</div>
+          <div class="prow"><span class="counted"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>গোনা হয়েছে 40 কার্টন</span></div>
+        </div>
+        <div class="card">
+          <div class="nm">Lentils 1 kg</div>
+          <div class="prow"><span class="notyet">এখনও গোনা হয়নি</span></div>
+        </div>
+        <button class="fp" tabindex="-1"><span lang="bn">ডেলিভারি সম্পূর্ণ</span><span class="sep">·</span><span lang="en">Mark delivery complete</span></button>
+      </div>
+      <div class="dock" aria-hidden="true">
+        <button class="scan" tabindex="-1"><svg class="ic"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+      </div>
+      <div class="scrim"></div>
+      <div class="dlg" role="alertdialog" aria-labelledby="d-h" aria-describedby="d-p">
+        <h2 id="d-h">এই ডেলিভারি শেষ করবেন?</h2>
+        <p id="d-p" class="num">3টির মধ্যে 2টি লাইন গোনা হয়েছে। যে লাইন গোনা হয়নি, তা এই ডেলিভারিতে পাওয়া যায়নি হিসেবে সেভ হবে।</p>
+        <div class="btns">
+          <button class="btn-goback focus">ফিরে যান</button>
+          <button class="fp"><span lang="bn">ডেলিভারি সম্পূর্ণ</span><span class="sep" aria-hidden="true">·</span><span lang="en">Mark delivery complete</span></button>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 3. MY TASKS + TOAST + NEXT TASK ============ -->
+  <div>
+    <p class="cap">3 · After confirming → My tasks: toast "Receipt saved", the next task already on screen, no Shortfall shown to the worker · "Send Transfer" button in the header · focus on the Scan bar</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">10:25</span><span class="num">73%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <h1 class="title home">আমার কাজ</h1>
+          <div class="who"><span class="user">Rahim</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+        <div class="ab-row2">
+          <span class="cm">Narayanganj</span>
+          <button class="btn-sec"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>স্থানান্তর পাঠান</button>
+        </div>
+      </div>
+      <div class="body">
+        <a class="card cur" href="#">
+          <span class="sr">বর্তমান</span>
+          <div class="nm num">ডিসপ্যাচ অর্ডার DO-1042</div>
+          <div class="cm">Rahman Traders</div>
+          <div class="prow"><span class="prog">0 / 33 কার্টন</span><span class="tag">নতুন</span></div>
+        </a>
+        <a class="card" href="#">
+          <div class="nm num">স্থানান্তর গ্রহণ TR-0087</div>
+          <div class="cm">Gazipur → Narayanganj</div>
+          <div class="prow"><span class="cm num">4টি পণ্য</span><span class="tag">নতুন</span></div>
+        </a>
+        <a class="card" href="#">
+          <div class="nm num">মজুদ গণনা SC-015</div>
+          <div class="prow"><span class="cm num">5টি লাইন</span><span class="tag">নতুন</span></div>
+        </a>
+      </div>
+      <div class="toast ok" role="status" style="bottom:170px"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span class="num">গ্রহণ সেভ হয়েছে · PO-0311</span></div>
+      <div class="dock">
+        <button class="scan focus"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+      </div>
+      <nav class="tabs" aria-label="প্রধান">
+        <a class="on" href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-tasks"/></svg>কাজ</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg>স্ক্যান</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg>আরও</a>
+      </nav>
+    </div></div>
+  </div>
+
+</div>
+<p class="note">Blind rule (State Patterns → Blind): the ordered 100 ctn of Rice is never shown — not on the lines, not after save, not in the dialog, which counts lines only. The Shortfall Issue goes to the Supervisor's inbox, not to this screen (FR-22). The incoming Transfer card shows no sent quantity (FR-27). "Send Transfer" in the My tasks header is Bangla-only: it opens S10 and is not a floor primary button (the finishing "Send Transfer" button inside S10 is bilingual). Tab labels, toast, dialog title/body and "Go back" are Bangla-only. Strings not in the UI glossary yet: গোনা হয়েছে / এখনও গোনা হয়নি (counted / not counted yet), the dialog sentence, গ্রহণ সেভ হয়েছে (Receipt saved), স্থানান্তর গ্রহণ (Incoming Transfer), "4টি পণ্য" / "5টি লাইন", "স্ক্যান" as a tab label.</p>
+</div>
+</body>
+</html>

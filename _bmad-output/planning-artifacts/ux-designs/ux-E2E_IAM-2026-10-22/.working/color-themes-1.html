@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mojud Color Themes</title>
+<style>
+/* ===== Concrete hex values per theme (lift these if you pick one). Spine stays semantic. ===== */
+/* Jamdani Teal - LIGHT */
+/*   primary                      #0B5A54 */
+/*   on-primary                   #FFFFFF */
+/*   surface                      #FFFFFF */
+/*   surface-alt                  #EDF4F2 */
+/*   text                         #0D1F1C */
+/*   text-muted                   #3E524F */
+/*   border                       #8FAAA5 */
+/*   success · saved/verified     #1B6E31 */
+/*   warning · low stock/offline  #8A4F00 */
+/*   danger · damage/loss         #A8231B */
+/*   info                         #1D5799 */
+/*   state Available              fill #1B6E31  on #FFFFFF */
+/*   state Reserved               fill #1D5799  on #FFFFFF */
+/*   state Damaged                fill #A8231B  on #FFFFFF */
+/*   state In transit             fill #5B3E96  on #FFFFFF */
+/*   state Unexplained            fill #FFC94D  on #2B1D00 */
+.t1-light{--primary:#0B5A54;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EDF4F2;--text:#0D1F1C;--text-muted:#3E524F;--border:#8FAAA5;--success:#1B6E31;--warning:#8A4F00;--danger:#A8231B;--info:#1D5799;--st-available:#1B6E31;--on-st-available:#FFFFFF;--st-reserved:#1D5799;--on-st-reserved:#FFFFFF;--st-damaged:#A8231B;--on-st-damaged:#FFFFFF;--st-transit:#5B3E96;--on-st-transit:#FFFFFF;--st-unexplained:#FFC94D;--on-st-unexplained:#2B1D00}
+/* Jamdani Teal - DARK */
+/*   primary                      #63D5C6 */
+/*   on-primary                   #00211E */
+/*   surface                      #0E1716 */
+/*   surface-alt                  #18241F */
+/*   text                         #EAF4F1 */
+/*   text-muted                   #AABFBA */
+/*   border                       #3D524D */
+/*   success · saved/verified     #74D68C */
+/*   warning · low stock/offline  #F4B65C */
+/*   danger · damage/loss         #FF8F85 */
+/*   info                         #8DBBF2 */
+/*   state Available              fill #74D68C  on #06210E */
+/*   state Reserved               fill #8DBBF2  on #071A33 */
+/*   state Damaged                fill #FF8F85  on #300704 */
+/*   state In transit             fill #C4A8FF  on #1F0F45 */
+/*   state Unexplained            fill #F4B65C  on #2B1D00 */
+.t1-dark{--primary:#63D5C6;--on-primary:#00211E;--surface:#0E1716;--surface-alt:#18241F;--text:#EAF4F1;--text-muted:#AABFBA;--border:#3D524D;--success:#74D68C;--warning:#F4B65C;--danger:#FF8F85;--info:#8DBBF2;--st-available:#74D68C;--on-st-available:#06210E;--st-reserved:#8DBBF2;--on-st-reserved:#071A33;--st-damaged:#FF8F85;--on-st-damaged:#300704;--st-transit:#C4A8FF;--on-st-transit:#1F0F45;--st-unexplained:#F4B65C;--on-st-unexplained:#2B1D00}
+/* Meghna Navy - LIGHT */
+/*   primary                      #1F2A7A */
+/*   on-primary                   #FFFFFF */
+/*   surface                      #FFFFFF */
+/*   surface-alt                  #EEF0F8 */
+/*   text                         #0D1330 */
+/*   text-muted                   #444B6A */
+/*   border                       #9DA4C4 */
+/*   success · saved/verified     #17693A */
+/*   warning · low stock/offline  #8C4A00 */
+/*   danger · damage/loss         #AD1F2D */
+/*   info                         #005C8A */
+/*   state Available              fill #17693A  on #FFFFFF */
+/*   state Reserved               fill #3B47B8  on #FFFFFF */
+/*   state Damaged                fill #AD1F2D  on #FFFFFF */
+/*   state In transit             fill #006B73  on #FFFFFF */
+/*   state Unexplained            fill #F7B731  on #241800 */
+.t2-light{--primary:#1F2A7A;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EEF0F8;--text:#0D1330;--text-muted:#444B6A;--border:#9DA4C4;--success:#17693A;--warning:#8C4A00;--danger:#AD1F2D;--info:#005C8A;--st-available:#17693A;--on-st-available:#FFFFFF;--st-reserved:#3B47B8;--on-st-reserved:#FFFFFF;--st-damaged:#AD1F2D;--on-st-damaged:#FFFFFF;--st-transit:#006B73;--on-st-transit:#FFFFFF;--st-unexplained:#F7B731;--on-st-unexplained:#241800}
+/* Meghna Navy - DARK */
+/*   primary                      #AEB8FF */
+/*   on-primary                   #0A1040 */
+/*   surface                      #0B0F21 */
+/*   surface-alt                  #151A33 */
+/*   text                         #ECEEFA */
+/*   text-muted                   #A8AECB */
+/*   border                       #363D63 */
+/*   success · saved/verified     #6FD69A */
+/*   warning · low stock/offline  #FFB869 */
+/*   danger · damage/loss         #FF8A94 */
+/*   info                         #7CCBF2 */
+/*   state Available              fill #6FD69A  on #05220F */
+/*   state Reserved               fill #AEB8FF  on #0A1040 */
+/*   state Damaged                fill #FF8A94  on #33060C */
+/*   state In transit             fill #5ED8DF  on #002326 */
+/*   state Unexplained            fill #FFB869  on #2A1700 */
+.t2-dark{--primary:#AEB8FF;--on-primary:#0A1040;--surface:#0B0F21;--surface-alt:#151A33;--text:#ECEEFA;--text-muted:#A8AECB;--border:#363D63;--success:#6FD69A;--warning:#FFB869;--danger:#FF8A94;--info:#7CCBF2;--st-available:#6FD69A;--on-st-available:#05220F;--st-reserved:#AEB8FF;--on-st-reserved:#0A1040;--st-damaged:#FF8A94;--on-st-damaged:#33060C;--st-transit:#5ED8DF;--on-st-transit:#002326;--st-unexplained:#FFB869;--on-st-unexplained:#2A1700}
+/* Terracotta Ink - LIGHT */
+/*   primary                      #8A3410 */
+/*   on-primary                   #FFFFFF */
+/*   surface                      #FFFCF6 */
+/*   surface-alt                  #F4ECE0 */
+/*   text                         #22160E */
+/*   text-muted                   #5A483B */
+/*   border                       #C2AE99 */
+/*   success · saved/verified     #2E6B1F */
+/*   warning · low stock/offline  #7F5200 */
+/*   danger · damage/loss         #9E1B1B */
+/*   info                         #1E5A8C */
+/*   state Available              fill #2E6B1F  on #FFFFFF */
+/*   state Reserved               fill #1E5A8C  on #FFFFFF */
+/*   state Damaged                fill #9E1B1B  on #FFFFFF */
+/*   state In transit             fill #6A3F8C  on #FFFFFF */
+/*   state Unexplained            fill #F2B53A  on #2A1A00 */
+.t3-light{--primary:#8A3410;--on-primary:#FFFFFF;--surface:#FFFCF6;--surface-alt:#F4ECE0;--text:#22160E;--text-muted:#5A483B;--border:#C2AE99;--success:#2E6B1F;--warning:#7F5200;--danger:#9E1B1B;--info:#1E5A8C;--st-available:#2E6B1F;--on-st-available:#FFFFFF;--st-reserved:#1E5A8C;--on-st-reserved:#FFFFFF;--st-damaged:#9E1B1B;--on-st-damaged:#FFFFFF;--st-transit:#6A3F8C;--on-st-transit:#FFFFFF;--st-unexplained:#F2B53A;--on-st-unexplained:#2A1A00}
+/* Terracotta Ink - DARK */
+/*   primary                      #F2A477 */
+/*   on-primary                   #2A1004 */
+/*   surface                      #18130F */
+/*   surface-alt                  #241C16 */
+/*   text                         #F6EDE3 */
+/*   text-muted                   #C2B2A3 */
+/*   border                       #4A3D33 */
+/*   success · saved/verified     #9BD47F */
+/*   warning · low stock/offline  #F2C063 */
+/*   danger · damage/loss         #FF8B7A */
+/*   info                         #8EC0EE */
+/*   state Available              fill #9BD47F  on #122404 */
+/*   state Reserved               fill #8EC0EE  on #06213A */
+/*   state Damaged                fill #FF8B7A  on #330A04 */
+/*   state In transit             fill #CFA8F0  on #24103A */
+/*   state Unexplained            fill #F2C063  on #2A1A00 */
+.t3-dark{--primary:#F2A477;--on-primary:#2A1004;--surface:#18130F;--surface-alt:#241C16;--text:#F6EDE3;--text-muted:#C2B2A3;--border:#4A3D33;--success:#9BD47F;--warning:#F2C063;--danger:#FF8B7A;--info:#8EC0EE;--st-available:#9BD47F;--on-st-available:#122404;--st-reserved:#8EC0EE;--on-st-reserved:#06213A;--st-damaged:#FF8B7A;--on-st-damaged:#330A04;--st-transit:#CFA8F0;--on-st-transit:#24103A;--st-unexplained:#F2C063;--on-st-unexplained:#2A1A00}
+/* Signal Black - LIGHT */
+/*   primary                      #111111 */
+/*   on-primary                   #FFD60A */
+/*   surface                      #FFFFFF */
+/*   surface-alt                  #F1F1EE */
+/*   text                         #000000 */
+/*   text-muted                   #3A3A3A */
+/*   border                       #1A1A1A */
+/*   success · saved/verified     #0F6B2A */
+/*   warning · low stock/offline  #7A4A00 */
+/*   danger · damage/loss         #B00010 */
+/*   info                         #0047AB */
+/*   state Available              fill #0F6B2A  on #FFFFFF */
+/*   state Reserved               fill #0047AB  on #FFFFFF */
+/*   state Damaged                fill #B00010  on #FFFFFF */
+/*   state In transit             fill #5A2D91  on #FFFFFF */
+/*   state Unexplained            fill #FFD60A  on #111111 */
+.t4-light{--primary:#111111;--on-primary:#FFD60A;--surface:#FFFFFF;--surface-alt:#F1F1EE;--text:#000000;--text-muted:#3A3A3A;--border:#1A1A1A;--success:#0F6B2A;--warning:#7A4A00;--danger:#B00010;--info:#0047AB;--st-available:#0F6B2A;--on-st-available:#FFFFFF;--st-reserved:#0047AB;--on-st-reserved:#FFFFFF;--st-damaged:#B00010;--on-st-damaged:#FFFFFF;--st-transit:#5A2D91;--on-st-transit:#FFFFFF;--st-unexplained:#FFD60A;--on-st-unexplained:#111111}
+/* Signal Black - DARK */
+/*   primary                      #FFD60A */
+/*   on-primary                   #111111 */
+/*   surface                      #000000 */
+/*   surface-alt                  #151515 */
+/*   text                         #FFFFFF */
+/*   text-muted                   #C8C8C8 */
+/*   border                       #E6E6E6 */
+/*   success · saved/verified     #5FE07F */
+/*   warning · low stock/offline  #FFB547 */
+/*   danger · damage/loss         #FF6B6B */
+/*   info                         #7FB2FF */
+/*   state Available              fill #5FE07F  on #00210A */
+/*   state Reserved               fill #7FB2FF  on #001A3D */
+/*   state Damaged                fill #FF6B6B  on #2E0000 */
+/*   state In transit             fill #C9A0FF  on #1E0640 */
+/*   state Unexplained            fill #FFD60A  on #111111 */
+.t4-dark{--primary:#FFD60A;--on-primary:#111111;--surface:#000000;--surface-alt:#151515;--text:#FFFFFF;--text-muted:#C8C8C8;--border:#E6E6E6;--success:#5FE07F;--warning:#FFB547;--danger:#FF6B6B;--info:#7FB2FF;--st-available:#5FE07F;--on-st-available:#00210A;--st-reserved:#7FB2FF;--on-st-reserved:#001A3D;--st-damaged:#FF6B6B;--on-st-damaged:#2E0000;--st-transit:#C9A0FF;--on-st-transit:#1E0640;--st-unexplained:#FFD60A;--on-st-unexplained:#111111}
+/* Slate & Emerald - LIGHT */
+/*   primary                      #065F46 */
+/*   on-primary                   #FFFFFF */
+/*   surface                      #F8FAFC */
+/*   surface-alt                  #EDF1F6 */
+/*   text                         #0F172A */
+/*   text-muted                   #45526A */
+/*   border                       #94A3B8 */
+/*   success · saved/verified     #166534 */
+/*   warning · low stock/offline  #854D0E */
+/*   danger · damage/loss         #B91C1C */
+/*   info                         #1D4ED8 */
+/*   state Available              fill #166534  on #FFFFFF */
+/*   state Reserved               fill #1D4ED8  on #FFFFFF */
+/*   state Damaged                fill #B91C1C  on #FFFFFF */
+/*   state In transit             fill #6D28D9  on #FFFFFF */
+/*   state Unexplained            fill #FBBF24  on #1F1300 */
+.t5-light{--primary:#065F46;--on-primary:#FFFFFF;--surface:#F8FAFC;--surface-alt:#EDF1F6;--text:#0F172A;--text-muted:#45526A;--border:#94A3B8;--success:#166534;--warning:#854D0E;--danger:#B91C1C;--info:#1D4ED8;--st-available:#166534;--on-st-available:#FFFFFF;--st-reserved:#1D4ED8;--on-st-reserved:#FFFFFF;--st-damaged:#B91C1C;--on-st-damaged:#FFFFFF;--st-transit:#6D28D9;--on-st-transit:#FFFFFF;--st-unexplained:#FBBF24;--on-st-unexplained:#1F1300}
+/* Slate & Emerald - DARK */
+/*   primary                      #34D399 */
+/*   on-primary                   #022C22 */
+/*   surface                      #0F172A */
+/*   surface-alt                  #1E293B */
+/*   text                         #F1F5F9 */
+/*   text-muted                   #A3B0C2 */
+/*   border                       #475569 */
+/*   success · saved/verified     #4ADE80 */
+/*   warning · low stock/offline  #FBBF24 */
+/*   danger · damage/loss         #F87171 */
+/*   info                         #93B4FD */
+/*   state Available              fill #4ADE80  on #052E14 */
+/*   state Reserved               fill #93B4FD  on #0B1E4D */
+/*   state Damaged                fill #F87171  on #3B0707 */
+/*   state In transit             fill #C4B5FD  on #2E1065 */
+/*   state Unexplained            fill #FBBF24  on #1F1300 */
+.t5-dark{--primary:#34D399;--on-primary:#022C22;--surface:#0F172A;--surface-alt:#1E293B;--text:#F1F5F9;--text-muted:#A3B0C2;--border:#475569;--success:#4ADE80;--warning:#FBBF24;--danger:#F87171;--info:#93B4FD;--st-available:#4ADE80;--on-st-available:#052E14;--st-reserved:#93B4FD;--on-st-reserved:#0B1E4D;--st-damaged:#F87171;--on-st-damaged:#3B0707;--st-transit:#C4B5FD;--on-st-transit:#2E1065;--st-unexplained:#FBBF24;--on-st-unexplained:#1F1300}
+
+/* ===== Page chrome (neutral, not part of any theme) ===== */
+*{box-sizing:border-box}
+body{margin:0;background:#E9E9E7;color:#111;font:15px/1.5 system-ui,"Segoe UI",Roboto,"Noto Sans Bengali","Nirmala UI",sans-serif}
+.page{max-width:1500px;margin:0 auto;padding:24px 16px 64px}
+.page>h1{margin:0 0 4px;font-size:26px}
+.intro{margin:0 0 20px;color:#333;max-width:900px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.toc a{background:#fff;border:1px solid #bbb;border-radius:999px;padding:6px 12px;color:#111;text-decoration:none;font-weight:600}
+.theme{background:#fff;border:1px solid #ccc;border-radius:14px;margin-bottom:28px;overflow:hidden}
+.theme>header{padding:16px 20px;border-bottom:1px solid #ddd}
+.theme h2{margin:0;font-size:22px;display:flex;align-items:center;gap:10px}
+.num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#111;color:#fff;font-size:15px}
+.reg{margin:4px 0 2px;color:#222} .sum{margin:0;color:#555;font-size:13px}
+.modes{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:1180px){.modes{grid-template-columns:1fr}}
+.mode{background:var(--surface);color:var(--text);padding:16px;border-right:1px solid #ccc}
+.mh{font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+.split{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.tokens{flex:1 1 300px;min-width:0}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.chip{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
+.sw{height:40px;display:flex;align-items:center;padding:0 10px;font-weight:700;font-size:16px;border-bottom:1px solid var(--border)}
+.cl{padding:6px 8px;font-size:12px;line-height:1.35}
+.rn{display:block;font-weight:700} .cl code{font-size:12px;color:var(--text-muted)} .cn{display:block;color:var(--text-muted)}
+.g{font-weight:700;color:var(--text)} .g-FAIL{color:var(--danger)}
+.sth{margin:14px 0 6px;font-weight:700;font-size:13px}
+.states{display:grid;gap:6px}
+.st{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:var(--f);color:var(--o);font-size:14px}
+.st code{margin-left:auto;font-size:11px;opacity:.9}
+.st .ic{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid currentColor;font-weight:900;font-size:13px}
+.st-hatch{background:repeating-linear-gradient(135deg,var(--f) 0 7px,color-mix(in srgb,var(--f) 78%,var(--o)) 7px 10px)!important;color:var(--o)}
+.st-dashed{outline:2px dashed var(--o);outline-offset:-4px}
+.st-solid{background:var(--f);color:var(--o)}
+
+/* phone snippet */
+.phone{flex:0 0 360px;width:360px;max-width:100%;background:var(--surface-alt);border:2px solid var(--border);border-radius:22px;padding:0 0 14px;overflow:hidden;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;background:var(--primary);color:var(--on-primary);padding:12px 16px;font-weight:700;font-size:16px}
+.sig{font-size:12px;font-weight:600;opacity:.95}
+.offline{display:flex;gap:10px;align-items:flex-start;margin:12px 12px 0;padding:10px 12px;border-radius:10px;border:2px solid var(--warning);background:var(--surface);color:var(--text);font-size:15px}
+.offline .ic{color:var(--warning);font-size:20px;line-height:1} .offline small{color:var(--text-muted);font-size:13px}
+.card{margin:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.sku{font-size:20px;font-weight:800} .loc{color:var(--text-muted);font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-weight:700;font-size:13px;white-space:nowrap}
+.ladder{margin-top:10px}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:16px}
+.lr .ll{display:flex;align-items:center;gap:8px}
+.lv{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums} .lv small{font-size:13px;font-weight:600;color:var(--text-muted)}
+.lr.minus .lv{color:var(--text)}
+.lr.total{border-bottom:0;border-top:3px double var(--text);margin-top:2px}
+.lr.total .ll{font-weight:800} .lr.total .lv{font-size:28px;color:var(--success)}
+.tag{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;font-weight:900;font-size:13px}
+.seg{display:flex;height:22px;border-radius:6px;overflow:hidden;margin-top:10px;gap:2px}
+.seg i{font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
+.mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.btn{display:block;width:calc(100% - 24px);margin:0 12px;min-height:60px;border:0;border-radius:14px;background:var(--primary);color:var(--on-primary);font:inherit;font-size:20px;font-weight:800;cursor:pointer}
+.btn span{font-size:15px;font-weight:600}
+.toast{display:flex;align-items:center;gap:10px;margin:12px 12px 0;padding:12px 14px;border-radius:12px;background:var(--text);color:var(--surface);font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.toast .ic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--success);color:var(--surface);font-weight:900}
+.toast small{margin-left:auto;opacity:.85;font-size:13px}
+@media (max-width:420px){.phone{flex-basis:100%;width:100%}}
+</style></head>
+<body><main class="page">
+<h1>Mojud · মজুদ: color themes (round 1)</h1>
+<p class="intro">Five candidate palettes, each in light and dark. Contrast ratios are computed per WCAG 2.x relative luminance (AAA ≥ 7:1, AA ≥ 4.5:1). Stock states never rely on color alone: each has an icon, a Bangla + English label, and Damaged/Unexplained add a hatch or dashed outline. The phone sample is 360px wide.</p>
+<nav class="toc"><a href="#t1">1. Jamdani Teal</a><a href="#t2">2. Meghna Navy</a><a href="#t3">3. Terracotta Ink</a><a href="#t4">4. Signal Black</a><a href="#t5">5. Slate & Emerald</a></nav>
+<section class="theme" id="t1">
+<header><h2><span class="num">1</span> Jamdani Teal</h2><p class="reg">Deep green-teal: steady, trustworthy, quietly Bangladeshi (river and paddy greens), banking-grade calm.</p><p class="sum">light: text/surface 17.1:1, on-primary 8.1:1 · dark: text/surface 16.2:1, on-primary 9.6:1</p></header>
+<div class="modes"><div class="mode t1-light">
+  <div class="mh">Light mode</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#0B5A54;color:#FFFFFF"></div><div class="cl"><span class="rn">primary</span><code>#0B5A54</code><span class="cn">as text on surface <b class="g g-AAA">8.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0B5A54;color:#FFFFFF">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#FFFFFF</code><span class="cn">on primary <b class="g g-AAA">8.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF"></div><div class="cl"><span class="rn">surface</span><code>#FFFFFF</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#EDF4F2"></div><div class="cl"><span class="rn">surface-alt</span><code>#EDF4F2</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#0D1F1C">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#0D1F1C</code><span class="cn">on surface <b class="g g-AAA">17.1:1 AAA</b><br>on surface-alt <b class="g g-AAA">15.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#3E524F">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#3E524F</code><span class="cn">on surface <b class="g g-AAA">8.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#8FAAA5"></div><div class="cl"><span class="rn">border</span><code>#8FAAA5</code><span class="cn">vs surface <b class="g g-FAIL">2.5:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#1B6E31"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#1B6E31</code><span class="cn">as text on surface <b class="g g-AA">6.3:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#8A4F00"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#8A4F00</code><span class="cn">as text on surface <b class="g g-AA">6.6:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#A8231B"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#A8231B</code><span class="cn">as text on surface <b class="g g-AAA">7.2:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#1D5799"></div><div class="cl"><span class="rn">info</span><code>#1D5799</code><span class="cn">as text on surface <b class="g g-AAA">7.3:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#1B6E31;--o:#FFFFFF"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#1B6E31 6.3:1</code></div><div class="st st-solid" style="--f:#1D5799;--o:#FFFFFF"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#1D5799 7.3:1</code></div><div class="st st-hatch" style="--f:#A8231B;--o:#FFFFFF"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#A8231B 7.2:1</code></div><div class="st st-solid" style="--f:#5B3E96;--o:#FFFFFF"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#5B3E96 8.2:1</code></div><div class="st st-dashed" style="--f:#FFC94D;--o:#2B1D00"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FFC94D 10.7:1</code></div></div></div>
+    <div class="phone" aria-label="Jamdani Teal light sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div><div class="mode t1-dark">
+  <div class="mh">Dark mode · for dim warehouses (v1 may ship light only)</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#63D5C6;color:#00211E"></div><div class="cl"><span class="rn">primary</span><code>#63D5C6</code><span class="cn">as text on surface <b class="g g-AAA">10.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#63D5C6;color:#00211E">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#00211E</code><span class="cn">on primary <b class="g g-AAA">9.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0E1716"></div><div class="cl"><span class="rn">surface</span><code>#0E1716</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#18241F"></div><div class="cl"><span class="rn">surface-alt</span><code>#18241F</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#0E1716;color:#EAF4F1">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#EAF4F1</code><span class="cn">on surface <b class="g g-AAA">16.2:1 AAA</b><br>on surface-alt <b class="g g-AAA">14.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0E1716;color:#AABFBA">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#AABFBA</code><span class="cn">on surface <b class="g g-AAA">9.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#3D524D"></div><div class="cl"><span class="rn">border</span><code>#3D524D</code><span class="cn">vs surface <b class="g g-FAIL">2.2:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#74D68C"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#74D68C</code><span class="cn">as text on surface <b class="g g-AAA">10.2:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F4B65C"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#F4B65C</code><span class="cn">as text on surface <b class="g g-AAA">10.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FF8F85"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#FF8F85</code><span class="cn">as text on surface <b class="g g-AAA">8.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#8DBBF2"></div><div class="cl"><span class="rn">info</span><code>#8DBBF2</code><span class="cn">as text on surface <b class="g g-AAA">9.1:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#74D68C;--o:#06210E"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#74D68C 9.5:1</code></div><div class="st st-solid" style="--f:#8DBBF2;--o:#071A33"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#8DBBF2 8.7:1</code></div><div class="st st-hatch" style="--f:#FF8F85;--o:#300704"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#FF8F85 8.2:1</code></div><div class="st st-solid" style="--f:#C4A8FF;--o:#1F0F45"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#C4A8FF 8.6:1</code></div><div class="st st-dashed" style="--f:#F4B65C;--o:#2B1D00"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#F4B65C 9.1:1</code></div></div></div>
+    <div class="phone" aria-label="Jamdani Teal dark sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div></div>
+</section><section class="theme" id="t2">
+<header><h2><span class="num">2</span> Meghna Navy</h2><p class="reg">Confident navy/indigo: authoritative, ledger-like, "the numbers are correct" corporate trust.</p><p class="sum">light: text/surface 18.2:1, on-primary 12.6:1 · dark: text/surface 16.5:1, on-primary 9.6:1</p></header>
+<div class="modes"><div class="mode t2-light">
+  <div class="mh">Light mode</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#1F2A7A;color:#FFFFFF"></div><div class="cl"><span class="rn">primary</span><code>#1F2A7A</code><span class="cn">as text on surface <b class="g g-AAA">12.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#1F2A7A;color:#FFFFFF">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#FFFFFF</code><span class="cn">on primary <b class="g g-AAA">12.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF"></div><div class="cl"><span class="rn">surface</span><code>#FFFFFF</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#EEF0F8"></div><div class="cl"><span class="rn">surface-alt</span><code>#EEF0F8</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#0D1330">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#0D1330</code><span class="cn">on surface <b class="g g-AAA">18.2:1 AAA</b><br>on surface-alt <b class="g g-AAA">16.0:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#444B6A">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#444B6A</code><span class="cn">on surface <b class="g g-AAA">8.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#9DA4C4"></div><div class="cl"><span class="rn">border</span><code>#9DA4C4</code><span class="cn">vs surface <b class="g g-FAIL">2.5:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#17693A"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#17693A</code><span class="cn">as text on surface <b class="g g-AA">6.7:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#8C4A00"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#8C4A00</code><span class="cn">as text on surface <b class="g g-AA">6.8:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#AD1F2D"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#AD1F2D</code><span class="cn">as text on surface <b class="g g-AA">7.0:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#005C8A"></div><div class="cl"><span class="rn">info</span><code>#005C8A</code><span class="cn">as text on surface <b class="g g-AAA">7.2:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#17693A;--o:#FFFFFF"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#17693A 6.7:1</code></div><div class="st st-solid" style="--f:#3B47B8;--o:#FFFFFF"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#3B47B8 7.6:1</code></div><div class="st st-hatch" style="--f:#AD1F2D;--o:#FFFFFF"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#AD1F2D 7.0:1</code></div><div class="st st-solid" style="--f:#006B73;--o:#FFFFFF"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#006B73 6.3:1</code></div><div class="st st-dashed" style="--f:#F7B731;--o:#241800"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#F7B731 9.8:1</code></div></div></div>
+    <div class="phone" aria-label="Meghna Navy light sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div><div class="mode t2-dark">
+  <div class="mh">Dark mode · for dim warehouses (v1 may ship light only)</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#AEB8FF;color:#0A1040"></div><div class="cl"><span class="rn">primary</span><code>#AEB8FF</code><span class="cn">as text on surface <b class="g g-AAA">10.0:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#AEB8FF;color:#0A1040">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#0A1040</code><span class="cn">on primary <b class="g g-AAA">9.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0B0F21"></div><div class="cl"><span class="rn">surface</span><code>#0B0F21</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#151A33"></div><div class="cl"><span class="rn">surface-alt</span><code>#151A33</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#0B0F21;color:#ECEEFA">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#ECEEFA</code><span class="cn">on surface <b class="g g-AAA">16.5:1 AAA</b><br>on surface-alt <b class="g g-AAA">14.8:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0B0F21;color:#A8AECB">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#A8AECB</code><span class="cn">on surface <b class="g g-AAA">8.7:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#363D63"></div><div class="cl"><span class="rn">border</span><code>#363D63</code><span class="cn">vs surface <b class="g g-FAIL">1.8:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#6FD69A"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#6FD69A</code><span class="cn">as text on surface <b class="g g-AAA">10.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFB869"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#FFB869</code><span class="cn">as text on surface <b class="g g-AAA">11.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FF8A94"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#FF8A94</code><span class="cn">as text on surface <b class="g g-AAA">8.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#7CCBF2"></div><div class="cl"><span class="rn">info</span><code>#7CCBF2</code><span class="cn">as text on surface <b class="g g-AAA">10.6:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#6FD69A;--o:#05220F"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#6FD69A 9.5:1</code></div><div class="st st-solid" style="--f:#AEB8FF;--o:#0A1040"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#AEB8FF 9.6:1</code></div><div class="st st-hatch" style="--f:#FF8A94;--o:#33060C"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#FF8A94 7.9:1</code></div><div class="st st-solid" style="--f:#5ED8DF;--o:#002326"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#5ED8DF 9.7:1</code></div><div class="st st-dashed" style="--f:#FFB869;--o:#2A1700"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FFB869 10.1:1</code></div></div></div>
+    <div class="phone" aria-label="Meghna Navy dark sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div></div>
+</section><section class="theme" id="t3">
+<header><h2><span class="num">3</span> Terracotta Ink</h2><p class="reg">Warm earthy brick + ink on paper: human, local, hand-ledger (khata) warmth without losing seriousness.</p><p class="sum">light: text/surface 17.2:1, on-primary 8.1:1 · dark: text/surface 15.9:1, on-primary 8.8:1</p></header>
+<div class="modes"><div class="mode t3-light">
+  <div class="mh">Light mode</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#8A3410;color:#FFFFFF"></div><div class="cl"><span class="rn">primary</span><code>#8A3410</code><span class="cn">as text on surface <b class="g g-AAA">8.0:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#8A3410;color:#FFFFFF">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#FFFFFF</code><span class="cn">on primary <b class="g g-AAA">8.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFCF6"></div><div class="cl"><span class="rn">surface</span><code>#FFFCF6</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#F4ECE0"></div><div class="cl"><span class="rn">surface-alt</span><code>#F4ECE0</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#FFFCF6;color:#22160E">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#22160E</code><span class="cn">on surface <b class="g g-AAA">17.2:1 AAA</b><br>on surface-alt <b class="g g-AAA">15.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFCF6;color:#5A483B">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#5A483B</code><span class="cn">on surface <b class="g g-AAA">8.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#C2AE99"></div><div class="cl"><span class="rn">border</span><code>#C2AE99</code><span class="cn">vs surface <b class="g g-FAIL">2.1:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#2E6B1F"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#2E6B1F</code><span class="cn">as text on surface <b class="g g-AA">6.3:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#7F5200"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#7F5200</code><span class="cn">as text on surface <b class="g g-AA">6.6:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#9E1B1B"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#9E1B1B</code><span class="cn">as text on surface <b class="g g-AAA">7.8:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#1E5A8C"></div><div class="cl"><span class="rn">info</span><code>#1E5A8C</code><span class="cn">as text on surface <b class="g g-AAA">7.1:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#2E6B1F;--o:#FFFFFF"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#2E6B1F 6.5:1</code></div><div class="st st-solid" style="--f:#1E5A8C;--o:#FFFFFF"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#1E5A8C 7.3:1</code></div><div class="st st-hatch" style="--f:#9E1B1B;--o:#FFFFFF"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#9E1B1B 8.0:1</code></div><div class="st st-solid" style="--f:#6A3F8C;--o:#FFFFFF"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#6A3F8C 7.8:1</code></div><div class="st st-dashed" style="--f:#F2B53A;--o:#2A1A00"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#F2B53A 9.2:1</code></div></div></div>
+    <div class="phone" aria-label="Terracotta Ink light sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div><div class="mode t3-dark">
+  <div class="mh">Dark mode · for dim warehouses (v1 may ship light only)</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#F2A477;color:#2A1004"></div><div class="cl"><span class="rn">primary</span><code>#F2A477</code><span class="cn">as text on surface <b class="g g-AAA">9.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F2A477;color:#2A1004">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#2A1004</code><span class="cn">on primary <b class="g g-AAA">8.8:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#18130F"></div><div class="cl"><span class="rn">surface</span><code>#18130F</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#241C16"></div><div class="cl"><span class="rn">surface-alt</span><code>#241C16</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#18130F;color:#F6EDE3">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#F6EDE3</code><span class="cn">on surface <b class="g g-AAA">15.9:1 AAA</b><br>on surface-alt <b class="g g-AAA">14.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#18130F;color:#C2B2A3">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#C2B2A3</code><span class="cn">on surface <b class="g g-AAA">8.9:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#4A3D33"></div><div class="cl"><span class="rn">border</span><code>#4A3D33</code><span class="cn">vs surface <b class="g g-FAIL">1.8:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#9BD47F"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#9BD47F</code><span class="cn">as text on surface <b class="g g-AAA">10.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F2C063"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#F2C063</code><span class="cn">as text on surface <b class="g g-AAA">11.0:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FF8B7A"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#FF8B7A</code><span class="cn">as text on surface <b class="g g-AAA">8.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#8EC0EE"></div><div class="cl"><span class="rn">info</span><code>#8EC0EE</code><span class="cn">as text on surface <b class="g g-AAA">9.6:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#9BD47F;--o:#122404"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#9BD47F 9.5:1</code></div><div class="st st-solid" style="--f:#8EC0EE;--o:#06213A"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#8EC0EE 8.5:1</code></div><div class="st st-hatch" style="--f:#FF8B7A;--o:#330A04"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#FF8B7A 7.8:1</code></div><div class="st st-solid" style="--f:#CFA8F0;--o:#24103A"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#CFA8F0 8.7:1</code></div><div class="st st-dashed" style="--f:#F2C063;--o:#2A1A00"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#F2C063 10.0:1</code></div></div></div>
+    <div class="phone" aria-label="Terracotta Ink dark sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div></div>
+</section><section class="theme" id="t4">
+<header><h2><span class="num">4</span> Signal Black</h2><p class="reg">Near-black + signal yellow: maximum legibility, industrial/safety-sign energy built for gloves, glare and dim aisles.</p><p class="sum">light: text/surface 21.0:1, on-primary 13.4:1 · dark: text/surface 21.0:1, on-primary 13.4:1</p></header>
+<div class="modes"><div class="mode t4-light">
+  <div class="mh">Light mode</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#111111;color:#FFD60A"></div><div class="cl"><span class="rn">primary</span><code>#111111</code><span class="cn">as text on surface <b class="g g-AAA">18.9:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#111111;color:#FFD60A">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#FFD60A</code><span class="cn">on primary <b class="g g-AAA">13.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF"></div><div class="cl"><span class="rn">surface</span><code>#FFFFFF</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#F1F1EE"></div><div class="cl"><span class="rn">surface-alt</span><code>#F1F1EE</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#000000">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#000000</code><span class="cn">on surface <b class="g g-AAA">21.0:1 AAA</b><br>on surface-alt <b class="g g-AAA">18.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFFFFF;color:#3A3A3A">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#3A3A3A</code><span class="cn">on surface <b class="g g-AAA">11.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#1A1A1A"></div><div class="cl"><span class="rn">border</span><code>#1A1A1A</code><span class="cn">vs surface <b class="g g-AAA">17.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0F6B2A"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#0F6B2A</code><span class="cn">as text on surface <b class="g g-AA">6.7:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#7A4A00"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#7A4A00</code><span class="cn">as text on surface <b class="g g-AAA">7.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#B00010"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#B00010</code><span class="cn">as text on surface <b class="g g-AAA">7.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0047AB"></div><div class="cl"><span class="rn">info</span><code>#0047AB</code><span class="cn">as text on surface <b class="g g-AAA">8.4:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#0F6B2A;--o:#FFFFFF"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#0F6B2A 6.7:1</code></div><div class="st st-solid" style="--f:#0047AB;--o:#FFFFFF"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#0047AB 8.4:1</code></div><div class="st st-hatch" style="--f:#B00010;--o:#FFFFFF"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#B00010 7.4:1</code></div><div class="st st-solid" style="--f:#5A2D91;--o:#FFFFFF"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#5A2D91 9.5:1</code></div><div class="st st-dashed" style="--f:#FFD60A;--o:#111111"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FFD60A 13.4:1</code></div></div></div>
+    <div class="phone" aria-label="Signal Black light sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div><div class="mode t4-dark">
+  <div class="mh">Dark mode · for dim warehouses (v1 may ship light only)</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#FFD60A;color:#111111"></div><div class="cl"><span class="rn">primary</span><code>#FFD60A</code><span class="cn">as text on surface <b class="g g-AAA">14.9:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFD60A;color:#111111">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#111111</code><span class="cn">on primary <b class="g g-AAA">13.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#000000"></div><div class="cl"><span class="rn">surface</span><code>#000000</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#151515"></div><div class="cl"><span class="rn">surface-alt</span><code>#151515</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#000000;color:#FFFFFF">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#FFFFFF</code><span class="cn">on surface <b class="g g-AAA">21.0:1 AAA</b><br>on surface-alt <b class="g g-AAA">18.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#000000;color:#C8C8C8">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#C8C8C8</code><span class="cn">on surface <b class="g g-AAA">12.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#E6E6E6"></div><div class="cl"><span class="rn">border</span><code>#E6E6E6</code><span class="cn">vs surface <b class="g g-AAA">16.8:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#5FE07F"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#5FE07F</code><span class="cn">as text on surface <b class="g g-AAA">12.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FFB547"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#FFB547</code><span class="cn">as text on surface <b class="g g-AAA">12.0:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FF6B6B"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#FF6B6B</code><span class="cn">as text on surface <b class="g g-AAA">7.6:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#7FB2FF"></div><div class="cl"><span class="rn">info</span><code>#7FB2FF</code><span class="cn">as text on surface <b class="g g-AAA">9.7:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#5FE07F;--o:#00210A"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#5FE07F 10.2:1</code></div><div class="st st-solid" style="--f:#7FB2FF;--o:#001A3D"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#7FB2FF 8.0:1</code></div><div class="st st-hatch" style="--f:#FF6B6B;--o:#2E0000"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#FF6B6B 6.8:1</code></div><div class="st st-solid" style="--f:#C9A0FF;--o:#1E0640"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#C9A0FF 8.6:1</code></div><div class="st st-dashed" style="--f:#FFD60A;--o:#111111"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FFD60A 13.4:1</code></div></div></div>
+    <div class="phone" aria-label="Signal Black dark sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div></div>
+</section><section class="theme" id="t5">
+<header><h2><span class="num">5</span> Slate & Emerald</h2><p class="reg">Calm cool slate with a fresh emerald: modern SaaS clarity, low visual noise, easy on eyes over a long shift.</p><p class="sum">light: text/surface 17.1:1, on-primary 7.7:1 · dark: text/surface 16.3:1, on-primary 7.9:1</p></header>
+<div class="modes"><div class="mode t5-light">
+  <div class="mh">Light mode</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#065F46;color:#FFFFFF"></div><div class="cl"><span class="rn">primary</span><code>#065F46</code><span class="cn">as text on surface <b class="g g-AAA">7.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#065F46;color:#FFFFFF">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#FFFFFF</code><span class="cn">on primary <b class="g g-AAA">7.7:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F8FAFC"></div><div class="cl"><span class="rn">surface</span><code>#F8FAFC</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#EDF1F6"></div><div class="cl"><span class="rn">surface-alt</span><code>#EDF1F6</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#F8FAFC;color:#0F172A">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#0F172A</code><span class="cn">on surface <b class="g g-AAA">17.1:1 AAA</b><br>on surface-alt <b class="g g-AAA">15.7:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F8FAFC;color:#45526A">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#45526A</code><span class="cn">on surface <b class="g g-AAA">7.5:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#94A3B8"></div><div class="cl"><span class="rn">border</span><code>#94A3B8</code><span class="cn">vs surface <b class="g g-FAIL">2.5:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#166534"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#166534</code><span class="cn">as text on surface <b class="g g-AA">6.8:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#854D0E"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#854D0E</code><span class="cn">as text on surface <b class="g g-AA">6.5:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#B91C1C"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#B91C1C</code><span class="cn">as text on surface <b class="g g-AA">6.2:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#1D4ED8"></div><div class="cl"><span class="rn">info</span><code>#1D4ED8</code><span class="cn">as text on surface <b class="g g-AA">6.4:1 AA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#166534;--o:#FFFFFF"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#166534 7.1:1</code></div><div class="st st-solid" style="--f:#1D4ED8;--o:#FFFFFF"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#1D4ED8 6.7:1</code></div><div class="st st-hatch" style="--f:#B91C1C;--o:#FFFFFF"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#B91C1C 6.5:1</code></div><div class="st st-solid" style="--f:#6D28D9;--o:#FFFFFF"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#6D28D9 7.1:1</code></div><div class="st st-dashed" style="--f:#FBBF24;--o:#1F1300"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FBBF24 10.9:1</code></div></div></div>
+    <div class="phone" aria-label="Slate & Emerald light sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div><div class="mode t5-dark">
+  <div class="mh">Dark mode · for dim warehouses (v1 may ship light only)</div>
+  <div class="split">
+    <div class="tokens"><div class="chips"><div class="chip"><div class="sw" style="background:#34D399;color:#022C22"></div><div class="cl"><span class="rn">primary</span><code>#34D399</code><span class="cn">as text on surface <b class="g g-AAA">9.3:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#34D399;color:#022C22">Aa অক্ষর</div><div class="cl"><span class="rn">on-primary</span><code>#022C22</code><span class="cn">on primary <b class="g g-AAA">7.9:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0F172A"></div><div class="cl"><span class="rn">surface</span><code>#0F172A</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#1E293B"></div><div class="cl"><span class="rn">surface-alt</span><code>#1E293B</code><span class="cn">background</span></div></div><div class="chip"><div class="sw" style="background:#0F172A;color:#F1F5F9">Aa অক্ষর</div><div class="cl"><span class="rn">text</span><code>#F1F5F9</code><span class="cn">on surface <b class="g g-AAA">16.3:1 AAA</b><br>on surface-alt <b class="g g-AAA">13.4:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#0F172A;color:#A3B0C2">Aa অক্ষর</div><div class="cl"><span class="rn">text-muted</span><code>#A3B0C2</code><span class="cn">on surface <b class="g g-AAA">8.1:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#475569"></div><div class="cl"><span class="rn">border</span><code>#475569</code><span class="cn">vs surface <b class="g g-FAIL">2.4:1 FAIL</b></span></div></div><div class="chip"><div class="sw" style="background:#4ADE80"></div><div class="cl"><span class="rn">success · saved/verified</span><code>#4ADE80</code><span class="cn">as text on surface <b class="g g-AAA">10.2:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#FBBF24"></div><div class="cl"><span class="rn">warning · low stock/offline</span><code>#FBBF24</code><span class="cn">as text on surface <b class="g g-AAA">10.7:1 AAA</b></span></div></div><div class="chip"><div class="sw" style="background:#F87171"></div><div class="cl"><span class="rn">danger · damage/loss</span><code>#F87171</code><span class="cn">as text on surface <b class="g g-AA">6.5:1 AA</b></span></div></div><div class="chip"><div class="sw" style="background:#93B4FD"></div><div class="cl"><span class="rn">info</span><code>#93B4FD</code><span class="cn">as text on surface <b class="g g-AAA">8.7:1 AAA</b></span></div></div></div>
+      <div class="sth">Stock states · always icon + label + pattern</div><div class="states"><div class="st st-solid" style="--f:#4ADE80;--o:#052E14"><span class="ic" aria-hidden="true">✓</span><span class="sl"><b>Available</b> উপলব্ধ</span><code>#4ADE80 8.6:1</code></div><div class="st st-solid" style="--f:#93B4FD;--o:#0B1E4D"><span class="ic" aria-hidden="true">◆</span><span class="sl"><b>Reserved</b> বুক করা</span><code>#93B4FD 7.8:1</code></div><div class="st st-hatch" style="--f:#F87171;--o:#3B0707"><span class="ic" aria-hidden="true">✕</span><span class="sl"><b>Damaged</b> ক্ষতিগ্রস্ত</span><code>#F87171 6.2:1</code></div><div class="st st-solid" style="--f:#C4B5FD;--o:#2E1065"><span class="ic" aria-hidden="true">➜</span><span class="sl"><b>In transit</b> পথে আছে</span><code>#C4B5FD 8.3:1</code></div><div class="st st-dashed" style="--f:#FBBF24;--o:#1F1300"><span class="ic" aria-hidden="true">?</span><span class="sl"><b>Unexplained</b> অব্যাখ্যাত</span><code>#FBBF24 10.9:1</code></div></div></div>
+    <div class="phone" aria-label="Slate & Emerald dark sample screen">
+  <div class="bar"><span class="who">আমার কাজ · My tasks</span><span class="sig">Narayanganj WH</span></div>
+  <div class="offline" role="status"><span class="ic" aria-hidden="true">⚠</span><span><b>অফলাইন · ৩টি কাজ অপেক্ষায়</b><br><small>Offline · 3 actions waiting</small></span></div>
+  <div class="card">
+    <div class="ch"><div><div class="sku">Rice 25 kg</div><div class="loc">Narayanganj · চাল ২৫ কেজি</div></div><span class="pill st-solid" style="--f:var(--st-available);--o:var(--on-st-available)">✓ উপলব্ধ</span></div>
+    <div class="ladder">
+      <div class="lr"><span class="ll">হাতে আছে · On hand</span><span class="lv">60 <small>ctn</small></span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-hatch" style="--f:var(--st-damaged);--o:var(--on-st-damaged)">✕</span> ক্ষতিগ্রস্ত · Damaged</span><span class="lv">− 8</span></div>
+      <div class="lr minus"><span class="ll"><span class="tag st-solid" style="--f:var(--st-reserved);--o:var(--on-st-reserved)">◆</span> বুক করা · Reserved</span><span class="lv">− 20</span></div>
+      <div class="lr total"><span class="ll">বিক্রয়যোগ্য · Promisable</span><span class="lv">32 <small>ctn</small></span></div>
+    </div>
+    <div class="seg" aria-hidden="true"><i class="st-hatch" style="flex:8;--f:var(--st-damaged);--o:var(--on-st-damaged)">8</i><i class="st-solid" style="flex:20;--f:var(--st-reserved);--o:var(--on-st-reserved)">20</i><i class="st-solid" style="flex:32;--f:var(--st-available);--o:var(--on-st-available)">32</i></div>
+    <div class="mini"><span class="pill st-solid" style="--f:var(--st-transit);--o:var(--on-st-transit)">➜ পথে আছে 12</span><span class="pill st-dashed" style="--f:var(--st-unexplained);--o:var(--on-st-unexplained)">? অব্যাখ্যাত 2</span></div>
+  </div>
+  <button class="btn" type="button">ক্ষতি জানান <span>/ Flag damage</span></button>
+  <div class="toast" role="status"><span class="ic" aria-hidden="true">✓</span><b>সেভ হয়েছে ✓</b><small>Saved ✓</small></div>
+</div>
+  </div>
+</div></div>
+</section>
+</main></body></html>

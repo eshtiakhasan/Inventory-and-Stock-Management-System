@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojud Key Screen: Picking</title>
+<style>
+/* =====================================================================
+   KEY SCREEN · Pick Dispatch order (S8) + Flag damage mode (S4/S9) + Offline
+   UI language shown: Bangla (chosen language). Western digits throughout.
+   Governing spine sections (check these before changing this mock):
+   DESIGN.md   Brand & Style (hybrid: Calm app bar/cards + Big & Bold floor);
+               Colors (Jamdani Teal light, control-border, Stock states:
+               Damaged hatch on leading 12px); Typography (qty-display,
+               label-scan, label-button, Language display rule, Bangla >= 16px,
+               Western digits); Layout & Spacing (phone 360px, fixed bottom
+               zone = Flag damage + Scan bar, 64px floor primary, 48px targets);
+               Elevation & Depth (toast shadow); Shapes;
+               Components: App bar, Scan bar, Scan overlay (Flag damage mode),
+               Floor primary button, Flag damage button, Task card, Task status
+               tag, Quantity entry, Stock-state pill, Offline banner,
+               Confirmation toast, Focus ring.
+   EXPERIENCE.md  Voice and Tone (Language display; UI glossary);
+               Component Patterns: App bar, Scan bar, Scan overlay, Floor primary
+               button, Quantity entry (pick pre-fill = full remaining line qty),
+               Task card, Task status tag, Line completion (Confirm dispatch),
+               Flag damage (scan saves), Offline banner, Confirmation toast.
+               State Patterns: Offline, Focus. Interaction Primitives: When does a
+               scan record (pick = pre-fill only; Flag damage mode = scan saves),
+               Budget (1 scan + 1 tap), no Undo.
+               Accessibility Floor: Language of parts (bilingual parts lang-marked).
+               Key Flows: UJ-2 steps 2-4 (+ UJ-1 offline failure path).
+   PRD: FR-25, FR-29, FR-41, FR-42, FR-52, NFR-2, NFR-3.
+   ===================================================================== */
+.light{--primary:#0B5A54;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EDF4F2;--text:#0D1F1C;--text-muted:#3E524F;--border:#8FAAA5;--control-border:#6B8580;--success:#1B6E31;--on-success:#FFFFFF;--warning:#8A4F00;--on-warning:#FFFFFF;--danger:#A8231B;--on-danger:#FFFFFF;--scrim-dark:rgba(0,0,0,.6);--st-damaged:#A8231B;--on-st-damaged:#FFFFFF;--st-damaged-hatch:#BB534D}
+*{box-sizing:border-box}
+body{margin:0;background:#D5DEDC;color:#0D1F1C;font-family:system-ui,"Segoe UI",Roboto,"Noto Sans Bengali","Nirmala UI",sans-serif;line-height:1.5}
+button{font-family:inherit;cursor:pointer}
+.page{padding:24px 16px 48px}
+.page>header h1{margin:0 0 4px;font-size:22px}
+.page>header p{margin:0;max-width:1180px;font-size:15px;color:#3E524F}
+.row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-top:20px}
+.col{display:flex;flex-direction:column;gap:20px}
+.cap{margin:0 0 8px;font-size:14px;font-weight:600;color:#3E524F;max-width:376px}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{width:24px;height:24px;flex:none}
+
+/* phone frame 360 x 760 */
+.phone{width:376px;border-radius:30px;background:#111;padding:8px;box-shadow:0 8px 24px rgba(13,31,28,.2)}
+.screen{width:360px;height:760px;border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--surface-alt);color:var(--text)}
+.sb{height:24px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 14px;font-size:12px;background:var(--surface);color:var(--text-muted)}
+
+/* app bar: title left; signed-in User name + online status (icon + text) right */
+.appbar{flex:none;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px 8px 4px}
+.ab-top{display:flex;align-items:center;gap:4px;min-height:56px}
+.back{flex:none;width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;color:var(--primary);border-radius:12px}
+.title{margin:0;flex:1;font-size:20px;font-weight:700;line-height:1.4}
+.who{display:flex;flex-direction:column;align-items:flex-end;line-height:1.4}
+.user{font-size:16px;font-weight:400}
+.net{display:inline-flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--text)}
+.net .ic{width:20px;height:20px}
+.net.on .ic{color:var(--success)}
+.net.off .ic{color:var(--warning)}
+.sub{padding-left:12px;font-size:16px;color:var(--text-muted)}
+
+/* offline banner */
+.offban{flex:none;display:flex;gap:10px;align-items:center;min-height:48px;padding:8px 16px;background:var(--warning);color:var(--on-warning);font-size:16px;font-weight:600;line-height:1.4;text-decoration:none}
+
+/* body + task cards (lines) */
+.body{flex:1;overflow:hidden;padding:12px 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;min-height:64px;box-shadow:0 1px 2px rgba(13,31,28,.06)}
+.card.cur{border-left:5px solid var(--primary);padding-left:10px}
+.nm{font-size:17px;font-weight:700;line-height:1.45}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+.prog{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 10px;border:2px solid var(--control-border);border-radius:6px;font-size:16px;font-weight:600;line-height:1.4;color:var(--text);white-space:nowrap}
+.tag .ic{width:18px;height:18px}
+.tag.ns{border-style:dashed;border-color:var(--warning);color:var(--warning)}
+
+/* quantity entry: stacked rows [-][field][+] below 600px */
+.qe{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.ql{font-size:16px;font-weight:600;line-height:1.5}
+.qline{display:grid;grid-template-columns:64px minmax(6rem,1fr) 64px;gap:8px;margin-top:2px}
+.step{min-height:64px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);display:flex;align-items:center;justify-content:center;padding:0}
+.step .ic{width:28px;height:28px}
+.field{min-height:64px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.field.focused{border-color:var(--primary)}
+.maxl{font-size:16px;color:var(--text-muted)}
+.maxl b{color:var(--text);font-weight:600}
+
+/* stock-state pill: Damaged, hatch on leading 12px only */
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 12px 2px 6px;border-radius:9999px;font-size:16px;font-weight:600;line-height:1.4;font-variant-numeric:tabular-nums}
+.pill .ic{width:18px;height:18px}
+.pill.dmg{color:var(--on-st-damaged);background:repeating-linear-gradient(135deg,var(--st-damaged) 0 7px,var(--st-damaged-hatch) 7px 10px) left/12px 100% no-repeat,var(--st-damaged)}
+
+/* floor primary button: bilingual, each part lang-marked */
+.fp{width:100%;min-height:64px;border:0;border-radius:12px;background:var(--primary);color:var(--on-primary);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:8px;padding:6px 12px;line-height:1.4;text-align:center;margin-top:12px}
+.fp [lang="bn"]{font-size:18px;font-weight:700}
+.fp [lang="en"]{font-size:16px;font-weight:600}
+
+/* fixed bottom zone: Flag damage above Scan bar */
+.dock{flex:none;background:var(--surface);border-top:1px solid var(--border);padding:12px 16px;display:flex;flex-direction:column;gap:12px}
+.flag{width:100%;min-height:64px;border:2px solid var(--danger);border-radius:12px;background:var(--surface);color:var(--danger);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:8px;padding:4px 12px;line-height:1.4}
+.flag [lang="bn"]{font-size:18px;font-weight:700}
+.flag [lang="en"]{font-size:16px;font-weight:600}
+.scan{width:100%;min-height:72px;border:0;border-radius:16px;background:var(--primary);color:var(--on-primary);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:10px;padding:6px 12px;line-height:1.4}
+.scan .ic{width:30px;height:30px}
+.scan [lang="bn"]{font-size:24px;font-weight:800}
+.scan [lang="en"]{font-size:18px;font-weight:600}
+.sep{font-size:16px;opacity:.85}
+
+/* focus ring: two-tone (2px surface inner + 3px text outer), never primary */
+.focus{outline:3px solid var(--text);outline-offset:2px;box-shadow:0 0 0 2px var(--surface)}
+
+/* confirmation toast */
+.toast{position:absolute;left:16px;right:16px;border-radius:12px;padding:6px 8px 6px 12px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:16px;font-weight:600;line-height:1.4;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.toast.ok{background:var(--success);color:var(--on-success)}
+.toast.off{background:var(--warning);color:var(--on-warning)}
+.toast .msg{display:flex;align-items:center;gap:8px;flex:1 1 auto;min-height:40px}
+.t-act{min-height:48px;margin-left:auto;padding:0 8px;border:0;background:none;color:inherit;font-size:16px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+/* scan overlay (Flag damage mode) */
+.ov{position:absolute;inset:24px 0 0 0;display:flex;flex-direction:column}
+.cam{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#69736f 0%,#3a4341 40%,#151b1a 100%)}
+.hint{position:relative;z-index:2;margin:0;display:flex;gap:10px;align-items:center;min-height:64px;padding:10px 16px;font-size:18px;font-weight:700;line-height:1.4}
+.hint.flagmode{background:var(--danger);color:var(--on-danger)}
+.vf-wrap{position:relative;flex:1;display:flex;justify-content:center;padding-top:44px}
+.vf{position:relative;width:260px;height:190px;border-radius:12px;background:rgba(0,0,0,.15);box-shadow:0 0 0 999px rgba(0,0,0,.6)}
+.vf i{position:absolute;width:40px;height:40px;border:3px solid #FFFFFF}
+.vf i:nth-child(1){top:-2px;left:-2px;border-right:0;border-bottom:0;border-top-left-radius:12px}
+.vf i:nth-child(2){top:-2px;right:-2px;border-left:0;border-bottom:0;border-top-right-radius:12px}
+.vf i:nth-child(3){bottom:-2px;left:-2px;border-right:0;border-top:0;border-bottom-left-radius:12px}
+.vf i:nth-child(4){bottom:-2px;right:-2px;border-left:0;border-top:0;border-bottom-right-radius:12px}
+.carton{position:absolute;left:38px;top:30px;width:184px;height:130px;border-radius:4px;background:linear-gradient(160deg,#a27a4c,#7d5a35);transform:rotate(-4deg)}
+.carton:after{content:"";position:absolute;right:0;top:0;width:60px;height:40px;background:linear-gradient(135deg,transparent 45%,#5e4226 46%,#5e4226 52%,transparent 53%)}
+.bc{position:absolute;left:46px;top:46px;width:92px;height:44px;background:#F4F1EA;border-radius:2px;padding:5px 6px}
+.bc span{display:block;height:100%;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px,#111 8px 11px,transparent 11px 12px)}
+.oact{position:relative;z-index:2;margin-top:auto;background:var(--surface);border-radius:16px 16px 0 0;padding:16px 16px 28px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn2{min-height:64px;min-width:9rem;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);font-size:18px;font-weight:700;line-height:1.4;display:flex;gap:8px;align-items:center;justify-content:center;padding:4px 8px}
+.btn2.close{color:var(--text)}
+.note{max-width:1180px;margin-top:24px;font-size:14px;color:#3E524F}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 8v8M10 8v8M13.5 8v8M17 8v8" stroke="currentColor" stroke-width="2"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 2 20.5h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-cloud-check" viewBox="0 0 24 24"><path d="M7 19h10.5a4.5 4.5 0 0 0 .4-8.98A6.5 6.5 0 0 0 5.6 9.2 4.9 4.9 0 0 0 7 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m9 13.5 2.2 2.2L15.5 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cloud-off" viewBox="0 0 24 24"><path d="M7 19h10.5a4.5 4.5 0 0 0 .4-8.98A6.5 6.5 0 0 0 5.6 9.2 4.9 4.9 0 0 0 7 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7.5 3v3.5L12 12l-4.5 5.5V21M16.5 3v3.5L12 12l4.5 5.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h1.5M10 10h1.5M14 10h1.5M18 10h.5M7 14h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+<div class="page">
+<header>
+  <h1>Mojud · Key screen · Pick Dispatch order (S8) + Flag damage mode</h1>
+  <p>Karim, Warehouse worker, picking DO-1042 at the Narayanganj Warehouse (UJ-2, FR-25, FR-29). UI language: Bangla (Karim's choice) — only the Scan bar and floor primary buttons are bilingual, each part lang-marked. Product, customer and Warehouse names shown exactly as entered. Columns: (1) a scan pre-filled the full remaining line quantity; one tap on Confirm line records it · (2) Flag damage mode: overlay open, then the scan saves and the toast offers Change qty/reason · (3) offline.</p>
+</header>
+
+<div class="row">
+
+  <!-- ============ 1. PICKING: scan pre-filled, one tap records ============ -->
+  <div>
+    <p class="cap">1 · DO-1042 · scanned Rice 25 kg → line selected, pre-filled with the full remaining 8 ctn · one tap on "Confirm line" records it (1 scan + 1 tap)</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">14:02</span><span class="num">62%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <a class="back" href="#" aria-label="আমার কাজ"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></a>
+          <h1 class="title num">DO-1042</h1>
+          <div class="who"><span class="user">Karim</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+        </div>
+        <div class="sub">Rahman Traders · Narayanganj</div>
+      </div>
+      <div class="body">
+        <div class="card cur">
+          <span class="sr">বর্তমান</span>
+          <div class="nm">Rice 25 kg</div>
+          <div class="prow"><span class="prog">12 / 20 কার্টন</span><span class="tag">চলছে</span></div>
+          <div class="qe">
+            <div>
+              <div class="ql">কার্টন</div>
+              <div class="qline">
+                <button class="step" aria-label="কার্টন কমান"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                <div class="field focused">8</div>
+                <button class="step" aria-label="কার্টন বাড়ান"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+              </div>
+            </div>
+            <div>
+              <div class="ql">পিস</div>
+              <div class="qline">
+                <button class="step" aria-label="পিস কমান"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                <div class="field">0</div>
+                <button class="step" aria-label="পিস বাড়ান"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+              </div>
+            </div>
+            <div class="maxl num">সর্বোচ্চ <b>8 কার্টন</b></div>
+          </div>
+          <button class="fp"><span lang="bn">লাইন নিশ্চিত করুন</span><span class="sep" aria-hidden="true">·</span><span lang="en">Confirm line</span></button>
+        </div>
+        <div class="card">
+          <div class="nm">Soybean oil 5 L</div>
+          <div class="prow"><span class="prog">0 / 10 কার্টন</span><span class="tag">নতুন</span></div>
+        </div>
+        <div class="card">
+          <div class="nm">Lentils 1 kg</div>
+          <div class="prow"><span class="prog">0 / 3 কার্টন + 6 পিস</span><span class="tag">নতুন</span></div>
+        </div>
+      </div>
+      <div class="dock">
+        <button class="flag"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg><span lang="bn">ক্ষতি জানান</span><span class="sep" aria-hidden="true">·</span><span lang="en">Flag damage</span></button>
+        <button class="scan"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ============ 2. FLAG DAMAGE MODE ============ -->
+  <div class="col">
+    <div>
+      <p class="cap">2a · Tapped "Flag damage" → Scan overlay opens in Flag damage mode: red hint strip, "Type code" and "Close" always visible. The next scan saves.</p>
+      <div class="phone"><div class="screen light">
+        <div class="sb" style="background:#151b1a;color:#cfd8d6"><span class="num">14:05</span><span class="num">61%</span></div>
+        <div class="ov" role="dialog" aria-labelledby="fm-h">
+          <div class="cam"></div>
+          <h2 class="hint flagmode" id="fm-h" tabindex="-1"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg>ক্ষতি জানান — ক্ষতিগ্রস্ত পণ্যটি স্ক্যান করুন</h2>
+          <div class="vf-wrap">
+            <div class="vf"><i></i><i></i><i></i><i></i>
+              <div class="carton"><div class="bc"><span></span></div></div>
+            </div>
+          </div>
+          <div class="oact">
+            <button class="btn2 close"><svg class="ic" aria-hidden="true"><use href="#i-cross"/></svg>বন্ধ</button>
+            <button class="btn2"><svg class="ic" aria-hidden="true"><use href="#i-keyboard"/></svg>কোড লিখুন</button>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">2b · The scan saved 1 ctn as damaged (from Reserved; a replacement is reserved, so the line count is unchanged). Toast "Saved" with "Change qty/reason" (stays ≥ 10 s).</p>
+      <div class="phone"><div class="screen light">
+        <div class="sb"><span class="num">14:05</span><span class="num">61%</span></div>
+        <div class="appbar">
+          <div class="ab-top">
+            <a class="back" href="#" aria-label="আমার কাজ"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></a>
+            <h1 class="title num">DO-1042</h1>
+            <div class="who"><span class="user">Karim</span><span class="net on"><svg class="ic" aria-hidden="true"><use href="#i-cloud-check"/></svg>অনলাইন</span></div>
+          </div>
+          <div class="sub">Rahman Traders · Narayanganj</div>
+        </div>
+        <div class="body">
+          <div class="card">
+            <div class="nm">Rice 25 kg</div>
+            <div class="prow"><span class="prog">20 / 20 কার্টন</span><span class="tag">চলছে</span></div>
+          </div>
+          <div class="card cur">
+            <span class="sr">বর্তমান</span>
+            <div class="nm">Soybean oil 5 L</div>
+            <div class="prow"><span class="prog">4 / 10 কার্টন</span><span class="tag">চলছে</span></div>
+            <div style="margin-top:8px"><span class="pill dmg"><svg class="ic" aria-hidden="true"><use href="#i-cross"/></svg>ক্ষতিগ্রস্ত 1 কার্টন</span></div>
+          </div>
+          <div class="card">
+            <div class="nm">Lentils 1 kg</div>
+            <div class="prow"><span class="prog">0 / 3 কার্টন + 6 পিস</span><span class="tag">নতুন</span></div>
+          </div>
+        </div>
+        <div class="toast ok" role="status" style="bottom:182px">
+          <span class="msg"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>সেভ হয়েছে · 1 কার্টন ক্ষতিগ্রস্ত</span></span>
+          <button class="t-act">পরিমাণ/কারণ বদলান</button>
+        </div>
+        <div class="dock">
+          <button class="flag"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg><span lang="bn">ক্ষতি জানান</span><span class="sep" aria-hidden="true">·</span><span lang="en">Flag damage</span></button>
+          <button class="scan"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ============ 3. OFFLINE ============ -->
+  <div>
+    <p class="cap">3 · Offline · app bar "অফলাইন" (icon + text), banner with queue count, "Not synced" tags on queued lines, toast "Saved on phone, will sync" moved under the app bar so it never covers Confirm dispatch · focus back on the Scan bar</p>
+    <div class="phone"><div class="screen light">
+      <div class="sb"><span class="num">14:11</span><span class="num">58%</span></div>
+      <div class="appbar">
+        <div class="ab-top">
+          <a class="back" href="#" aria-label="আমার কাজ"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></a>
+          <h1 class="title num">DO-1042</h1>
+          <div class="who"><span class="user">Karim</span><span class="net off"><svg class="ic" aria-hidden="true"><use href="#i-cloud-off"/></svg>অফলাইন</span></div>
+        </div>
+        <div class="sub">Rahman Traders · Narayanganj</div>
+      </div>
+      <a class="offban" href="#"><svg class="ic" aria-hidden="true"><use href="#i-cloud-off"/></svg><span class="num">অফলাইন · 2টি কাজ অপেক্ষায়</span></a>
+      <div class="body">
+        <div class="card">
+          <div class="nm">Rice 25 kg</div>
+          <div class="prow"><span class="prog">20 / 20 কার্টন</span><span class="tag ns"><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg>সিঙ্ক বাকি</span></div>
+        </div>
+        <div class="card">
+          <div class="nm">Soybean oil 5 L</div>
+          <div class="prow"><span class="prog">10 / 10 কার্টন</span><span class="tag ns"><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg>সিঙ্ক বাকি</span></div>
+        </div>
+        <div class="card cur">
+          <span class="sr">বর্তমান</span>
+          <div class="nm">Lentils 1 kg</div>
+          <div class="prow"><span class="prog">0 / 3 কার্টন + 6 পিস</span><span class="tag">নতুন</span></div>
+        </div>
+        <button class="fp" style="margin-top:4px"><span lang="bn">ডিসপ্যাচ নিশ্চিত করুন</span><span class="sep" aria-hidden="true">·</span><span lang="en">Confirm dispatch</span></button>
+      </div>
+      <div class="toast off" role="status" style="top:186px">
+        <span class="msg"><svg class="ic" aria-hidden="true"><use href="#i-hourglass"/></svg><span>ফোনে সেভ হয়েছে, নেট এলে সিঙ্ক হবে</span></span>
+      </div>
+      <div class="dock">
+        <button class="flag"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg><span lang="bn">ক্ষতি জানান</span><span class="sep" aria-hidden="true">·</span><span lang="en">Flag damage</span></button>
+        <button class="scan focus"><svg class="ic" aria-hidden="true"><use href="#i-scan"/></svg><span lang="bn">স্ক্যান করুন</span><span lang="en">Scan</span></button>
+      </div>
+    </div></div>
+  </div>
+
+</div>
+<p class="note">Language display: the whole UI is in Bangla; only the Scan bar, Flag damage button, Confirm line and Confirm dispatch carry Bangla + English, each part in its own <code>lang</code> span with no <code>aria-label</code>. Western digits everywhere. Icons are inline SVG (aria-hidden); the visible text is the name. Focus ring is two-tone (2px surface + 3px text), shown on the Scan bar where focus returns after a save. No Undo anywhere. The 1 ctn flagged in 2b came from Reserved on this order; "Change qty/reason" opens the pre-filled Flag damage sheet and records a linked correction. Strings not in the UI glossary yet: সর্বোচ্চ 8 কার্টন (max line), the "1 কার্টন ক্ষতিগ্রস্ত" toast wording, the Flag damage mode hint, কমান / বাড়ান stepper names.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojud Design Directions</title>
+<style>
+/* =========================================================
+   Mojud (মজুদ) - Design directions round 1
+   Shared neutral, trustworthy base (palette decided separately):
+     Navy ink      #0B2540   Teal primary  #0E6E6E   Teal dark #0A5555
+     Paper         #FFFFFF   Canvas        #F3F5F7   Line      #D5DBE1
+     Text strong   #0F1720   Text muted    #4A5563
+     Success       #1E7B3A   Warning       #B45309   Danger    #B42318
+     Offline amber #FDE68A on #3D2E00 text
+   Directions differ on personality: density, type, targets, card vs list.
+   ========================================================= */
+:root{
+  --navy:#0B2540; --teal:#0E6E6E; --teal-d:#0A5555; --paper:#FFFFFF; --canvas:#F3F5F7;
+  --line:#D5DBE1; --ink:#0F1720; --muted:#4A5563; --ok:#1E7B3A; --warn:#B45309; --bad:#B42318;
+  --amber:#FDE68A; --amber-ink:#3D2E00;
+  --font: system-ui, "Segoe UI", Roboto, "Noto Sans Bengali", "Nirmala UI", sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#E6EAEE;color:var(--ink);font-family:var(--font);line-height:1.45}
+.page{max-width:1500px;margin:0 auto;padding:24px 16px 64px}
+.page>header h1{margin:0 0 4px;font-size:28px;color:var(--navy)}
+.page>header p{margin:0;color:var(--muted);max-width:900px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sw{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.sw i{width:16px;height:16px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+
+section.dir{margin-top:40px;background:#fff;border-radius:14px;padding:24px;border:1px solid var(--line)}
+section.dir>h2{margin:0;font-size:22px;color:var(--navy)}
+section.dir>h2 small{font-weight:500;color:var(--muted);font-size:15px;margin-left:8px}
+.why{max-width:980px;color:#26313d;margin:8px 0 18px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tags span{font-size:12px;background:var(--canvas);border:1px solid var(--line);padding:3px 8px;border-radius:999px;color:#26313d}
+.row{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.cap{font-size:13px;color:var(--muted);margin:0 0 8px;font-weight:600;letter-spacing:.02em}
+
+/* phone frame: 360 x 760 viewport */
+.phone{width:376px;border-radius:30px;background:#111;padding:8px;box-shadow:0 8px 24px rgba(11,37,64,.18)}
+.screen{width:360px;height:760px;border-radius:22px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:var(--canvas)}
+.sb{height:24px;display:flex;justify-content:space-between;align-items:center;padding:0 14px;font-size:12px;color:#fff;background:var(--navy)}
+.wide{width:820px;max-width:100%;border-radius:10px;border:1px solid #9aa5b1;overflow:hidden;box-shadow:0 8px 24px rgba(11,37,64,.14);background:#fff}
+.chrome{height:30px;background:#dfe4ea;display:flex;align-items:center;gap:6px;padding:0 10px}
+.chrome i{width:10px;height:10px;border-radius:50%;background:#aab4bf;display:inline-block}
+.chrome b{margin-left:10px;font-weight:500;font-size:12px;color:#4a5563;background:#fff;border-radius:4px;padding:2px 10px}
+.num{font-variant-numeric:tabular-nums}
+.en{color:var(--muted);font-weight:500}
+
+/* =========================================================
+   D1  BIG & BOLD FLOOR
+   Navy header #0B2540, teal action bar #0E6E6E, white cards #FFFFFF,
+   heavy 800 weight, body 18px / qty 28px, 64-72px tap targets,
+   pure black text #000000 on white for maximum contrast.
+   ========================================================= */
+.d1 .top{background:var(--navy);color:#fff;padding:12px 16px 14px}
+.d1 .top .back{font-size:16px;font-weight:700;opacity:.9}
+.d1 .top h3{margin:6px 0 0;font-size:24px;font-weight:800;letter-spacing:.01em}
+.d1 .top .sub{font-size:17px;font-weight:600;margin-top:2px}
+.d1 .chip{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:800;padding:5px 12px;border-radius:999px}
+.d1 .chip.on{background:#D7F5E1;color:#0B4F24}
+.d1 .chip.off{background:var(--amber);color:var(--amber-ink)}
+.d1 .chip .dot{width:10px;height:10px;border-radius:50%;background:currentColor}
+.d1 .due{display:inline-block;background:#FFE1DC;color:#7A1408;font-weight:800;font-size:15px;padding:4px 10px;border-radius:6px;margin-top:8px}
+.d1 .body{flex:1;overflow:hidden;padding:12px 12px 0}
+.d1 .line{background:#fff;border:2px solid #C3CCD5;border-radius:14px;padding:14px;margin-bottom:12px;color:#000}
+.d1 .line.cur{border:3px solid var(--teal);box-shadow:0 0 0 3px #CDEBEB}
+.d1 .line .nm{font-size:20px;font-weight:800;line-height:1.25}
+.d1 .line .nm .en{display:block;font-size:16px;font-weight:600;color:#33404d}
+.d1 .line .q{display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px}
+.d1 .line .big{font-size:30px;font-weight:900;line-height:1}
+.d1 .line .big small{font-size:17px;font-weight:700}
+.d1 .line .pk{font-size:17px;font-weight:800;color:var(--teal-d)}
+.d1 .bar{height:12px;border-radius:6px;background:#E3E8ED;margin-top:10px;overflow:hidden}
+.d1 .bar i{display:block;height:100%;background:var(--teal)}
+.d1 .actions{background:#fff;border-top:2px solid #C3CCD5;padding:10px 12px 14px}
+.d1 .scan{width:100%;height:72px;border:0;border-radius:16px;background:var(--teal);color:#fff;font:inherit;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:12px}
+.d1 .scan .en{color:#D6F0F0;font-size:18px;font-weight:700}
+.d1 .flag{width:100%;height:56px;margin-top:10px;border:3px solid var(--bad);border-radius:14px;background:#fff;color:var(--bad);font:inherit;font-size:19px;font-weight:800}
+.d1 .toast{position:absolute;left:12px;right:12px;bottom:168px;background:#0B4F24;color:#fff;border-radius:14px;padding:14px 16px;font-size:20px;font-weight:800;display:flex;justify-content:space-between;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.d1 .toast small{font-size:15px;font-weight:700;color:#C9F2D6}
+.d1 .offban{background:var(--amber);color:var(--amber-ink);padding:12px 16px;font-size:18px;font-weight:800;border-bottom:3px solid #E0A800}
+.d1 .offban small{display:block;font-size:15px;font-weight:700}
+.d1 .queued{display:inline-block;margin-top:8px;font-size:15px;font-weight:800;color:var(--amber-ink);background:#FFF4CC;border:2px dashed #C99700;border-radius:8px;padding:4px 10px}
+/* D1 owner */
+.d1o{padding:20px;font-size:18px}
+.d1o h4{margin:0 0 4px;font-size:26px;font-weight:900;color:var(--navy)}
+.d1o .hero{background:var(--navy);color:#fff;border-radius:16px;padding:20px 22px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.d1o .hero .v{font-size:48px;font-weight:900;line-height:1}
+.d1o .hero .l{font-size:18px;font-weight:700;opacity:.9}
+.d1o .hero .split{display:flex;gap:18px;font-size:18px;font-weight:700}
+.d1o .hero .split b{display:block;font-size:26px;font-weight:900}
+.d1o .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.d1o .tile{border:3px solid #C3CCD5;border-radius:16px;padding:16px}
+.d1o .tile .v{font-size:40px;font-weight:900;line-height:1}
+.d1o .tile .l{font-size:18px;font-weight:800;margin-top:6px}
+.d1o .tile.alert{border-color:var(--bad)} .d1o .tile.alert .v{color:var(--bad)}
+.d1o .tile.warn{border-color:var(--warn)} .d1o .tile.warn .v{color:var(--warn)}
+.d1o .tile .go{display:inline-block;margin-top:10px;background:var(--teal);color:#fff;font-weight:800;border-radius:10px;padding:8px 14px;font-size:16px}
+
+/* =========================================================
+   D2  CALM PROFESSIONAL
+   White app bar #FFFFFF with navy text #0B2540, teal #0E6E6E accents,
+   soft canvas #F3F5F7, cards with 1px #D5DBE1 + subtle shadow,
+   600 weight headings, body 16-17px, 52-56px buttons.
+   ========================================================= */
+.d2 .sb{background:#fff;color:var(--navy);border-bottom:1px solid var(--line)}
+.d2 .top{background:#fff;padding:10px 16px 12px;border-bottom:1px solid var(--line)}
+.d2 .crumb{font-size:14px;color:var(--teal);font-weight:600}
+.d2 .top h3{margin:4px 0 2px;font-size:20px;font-weight:700;color:var(--navy)}
+.d2 .meta{font-size:15px;color:var(--muted)}
+.d2 .pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.d2 .pill.on{color:var(--ok);border-color:#9FD3AE;background:#EEF9F1}
+.d2 .pill.due{color:var(--bad);border-color:#F1B3AA;background:#FDF0EE}
+.d2 .pill .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.d2 .prog{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:14px;color:var(--muted)}
+.d2 .prog .bar{flex:1;height:8px;background:#E3E8ED;border-radius:4px;overflow:hidden}
+.d2 .prog .bar i{display:block;height:100%;background:var(--teal)}
+.d2 .body{flex:1;overflow:hidden;padding:12px}
+.d2 .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(11,37,64,.06)}
+.d2 .card.cur{border-left:5px solid var(--teal)}
+.d2 .card .nm{font-size:17px;font-weight:700;color:var(--ink)}
+.d2 .card .nm .en{font-size:15px;font-weight:500}
+.d2 .card .r{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:16px}
+.d2 .card .q{font-weight:700;color:var(--navy);font-size:18px}
+.d2 .card .st{font-size:14px;font-weight:600;color:var(--teal-d);background:#E7F4F4;padding:3px 8px;border-radius:6px}
+.d2 .card .st.todo{color:var(--muted);background:#EEF1F4}
+.d2 .actions{background:#fff;border-top:1px solid var(--line);padding:12px;display:grid;grid-template-columns:1fr;gap:8px}
+.d2 .scan{height:56px;border:0;border-radius:12px;background:var(--teal);color:#fff;font:inherit;font-size:19px;font-weight:700}
+.d2 .scan .en{color:#CFEAEA;font-weight:500;font-size:16px}
+.d2 .flag{height:48px;border:1px solid #E8B4AC;border-radius:12px;background:#fff;color:var(--bad);font:inherit;font-size:16px;font-weight:600}
+.d2 .toast{position:absolute;left:16px;right:16px;bottom:140px;background:var(--navy);color:#fff;border-radius:10px;padding:12px 14px;font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(11,37,64,.25)}
+.d2 .toast .ck{width:24px;height:24px;border-radius:50%;background:#2FA35A;display:flex;align-items:center;justify-content:center;font-size:14px}
+.d2 .tabs{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:1px solid var(--line);height:64px}
+.d2 .tabs div{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;color:var(--muted);font-weight:600}
+.d2 .tabs div.on{color:var(--teal);border-top:3px solid var(--teal)}
+.d2 .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.d2 .empty .ic{width:96px;height:96px;border-radius:50%;background:#E7F4F4;display:flex;align-items:center;justify-content:center;font-size:44px}
+.d2 .empty h4{margin:16px 0 4px;font-size:21px;color:var(--navy)}
+.d2 .empty p{margin:0;color:var(--muted);font-size:16px}
+.d2 .empty .sum{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px;width:100%;text-align:left}
+.d2 .empty .sum div{display:flex;justify-content:space-between;padding:4px 0}
+/* D2 owner */
+.d2o{display:grid;grid-template-columns:180px 1fr;min-height:470px}
+.d2o nav{background:var(--navy);color:#C9D5E2;padding:16px 12px;font-size:15px}
+.d2o nav b{display:block;color:#fff;font-size:18px;margin-bottom:16px}
+.d2o nav div{padding:8px 10px;border-radius:8px;margin-bottom:2px}
+.d2o nav div.on{background:#163A5E;color:#fff;font-weight:600}
+.d2o main{background:var(--canvas);padding:18px}
+.d2o h4{margin:0;font-size:20px;color:var(--navy)}
+.d2o .g{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:12px}
+.d2o .c{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.d2o .c .h{font-size:14px;color:var(--muted);font-weight:600}
+.d2o .c .v{font-size:32px;font-weight:700;color:var(--navy);margin:2px 0 8px}
+.d2o .wh{display:flex;justify-content:space-between;font-size:15px;padding:6px 0;border-top:1px solid #EDF0F3}
+.d2o .lr{display:grid;grid-template-columns:120px 1fr 80px;gap:8px;align-items:center;font-size:15px;padding:5px 0}
+.d2o .lr .b{height:10px;border-radius:5px;background:#E3E8ED;overflow:hidden}
+.d2o .lr .b i{display:block;height:100%;background:#5B7A99}
+.d2o .lr.unx .b i{background:var(--warn)}
+.d2o .lr .a{text-align:right;font-weight:600}
+.d2o .mini{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.d2o .mini .c{display:flex;justify-content:space-between;align-items:center}
+.d2o .mini .n{font-size:30px;font-weight:700}
+.d2o .mini a{color:var(--teal);font-weight:600;text-decoration:none;font-size:15px}
+
+/* =========================================================
+   D3  COMPACT DATA-FIRST
+   Dark navy chrome #0B2540, ink #0F1720 on paper #FFFFFF list rows,
+   hairlines #D5DBE1, zebra #F7F9FA, teal #0E6E6E status/qty,
+   tabular numerals, body 16px (Bangla floor) / meta 13px, 48px row + button targets.
+   ========================================================= */
+.d3 .top{background:var(--navy);color:#fff;padding:8px 12px}
+.d3 .top .l1{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#B8C6D6}
+.d3 .top .l2{display:flex;justify-content:space-between;align-items:baseline;margin-top:2px}
+.d3 .top h3{margin:0;font-size:18px;font-weight:700}
+.d3 .top .tot{font-size:14px;font-weight:600;color:#9FE0E0}
+.d3 .net{display:inline-flex;align-items:center;gap:5px;font-weight:700}
+.d3 .net .dot{width:8px;height:8px;border-radius:50%;background:#4ADE80}
+.d3 .net.off .dot{background:#FBBF24}
+.d3 .kv{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-bottom:1px solid var(--line)}
+.d3 .kv div{padding:6px 10px;border-right:1px solid var(--line);font-size:13px;color:var(--muted)}
+.d3 .kv div:last-child{border-right:0}
+.d3 .kv b{display:block;font-size:16px;color:var(--ink)}
+.d3 .kv b.r{color:var(--bad)}
+.d3 .th{display:grid;grid-template-columns:1fr 58px 58px 34px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--muted);background:#EEF1F4;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--line)}
+.d3 .th span:not(:first-child){text-align:right}
+.d3 .tr{display:grid;grid-template-columns:1fr 58px 58px 34px;align-items:center;padding:8px 12px;min-height:56px;background:#fff;border-bottom:1px solid var(--line);font-size:16px}
+.d3 .tr:nth-child(even){background:#F7F9FA}
+.d3 .tr.cur{background:#E7F4F4;box-shadow:inset 4px 0 0 var(--teal)}
+.d3 .tr .nm{font-weight:600;line-height:1.25}
+.d3 .tr .nm .en{display:block;font-size:13px;font-weight:500}
+.d3 .tr .n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.d3 .tr .n small{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.d3 .tr .ok{text-align:right;font-size:16px;color:var(--muted)}
+.d3 .tr .ok.part{color:var(--teal);font-weight:800}
+.d3 .body{flex:1;overflow:hidden}
+.d3 .actions{display:grid;grid-template-columns:1fr 112px;gap:8px;padding:8px;background:#fff;border-top:1px solid var(--line)}
+.d3 .scan{height:52px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-size:18px;font-weight:700}
+.d3 .scan .en{color:#CFEAEA;font-size:14px;font-weight:500}
+.d3 .flag{height:52px;border:1.5px solid var(--bad);border-radius:8px;background:#fff;color:var(--bad);font:inherit;font-size:14px;font-weight:700;line-height:1.15}
+.d3 .toast{position:absolute;left:8px;right:8px;bottom:76px;background:#0B4F24;color:#fff;border-radius:8px;padding:10px 12px;font-size:16px;font-weight:600;display:flex;justify-content:space-between}
+.d3 .toast small{font-size:13px;color:#C9F2D6}
+.d3 .offban{background:var(--amber);color:var(--amber-ink);font-size:15px;font-weight:700;padding:8px 12px;display:flex;justify-content:space-between}
+.d3 .task{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);font-size:16px;min-height:64px}
+.d3 .task .id{font-weight:700;font-variant-numeric:tabular-nums}
+.d3 .task .c{color:var(--muted);font-size:14px}
+.d3 .task .s{text-align:right;font-size:14px;font-weight:700}
+.d3 .task .s.due{color:var(--bad)} .d3 .task .s.q{color:var(--warn)}
+.d3 .task .p{text-align:right;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted)}
+.d3 .seg{display:flex;gap:6px;padding:8px 12px;background:#fff;border-bottom:1px solid var(--line)}
+.d3 .seg span{font-size:14px;font-weight:600;padding:6px 10px;border-radius:6px;background:#EEF1F4;color:var(--muted)}
+.d3 .seg span.on{background:var(--navy);color:#fff}
+/* D3 owner */
+.d3o{padding:14px;font-size:14px}
+.d3o .hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--navy);padding-bottom:6px}
+.d3o .hd h4{margin:0;font-size:18px;color:var(--navy)}
+.d3o .hd span{color:var(--muted);font-size:13px}
+.d3o .strip{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);margin-top:10px}
+.d3o .strip div{padding:8px 10px;border-right:1px solid var(--line)}
+.d3o .strip div:last-child{border-right:0}
+.d3o .strip .l{font-size:12px;color:var(--muted);font-weight:600}
+.d3o .strip .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.d3o .strip .v.r{color:var(--bad)} .d3o .strip .v.w{color:var(--warn)}
+.d3o .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.d3o table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.d3o caption{text-align:left;font-weight:700;color:var(--navy);padding:4px 0;font-size:14px}
+.d3o th{font-size:12px;text-align:left;color:var(--muted);background:#EEF1F4;padding:5px 6px;border-bottom:1px solid var(--line)}
+.d3o td{padding:6px;border-bottom:1px solid #E8ECF0;font-size:14px}
+.d3o td.n,.d3o th.n{text-align:right}
+.d3o tr.unx td{color:var(--warn);font-weight:700}
+.d3o tr.tot td{font-weight:700;border-top:2px solid var(--ink)}
+.d3o .tag{font-size:12px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FDF0EE;color:var(--bad)}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>মজুদ Mojud · Design directions (round 1)</h1>
+  <p>Same content, same neutral palette, three different personalities. Hero: warehouse worker picking Dispatch order DO-1042 on a 360px Android. Secondary: Owner overview on a wide screen. Each shows at least one state variant. Bangla first, English second; Bangla body never below 16px on phone.</p>
+  <div class="legend">
+    <span class="sw"><i style="background:#0B2540"></i>Navy #0B2540</span>
+    <span class="sw"><i style="background:#0E6E6E"></i>Teal #0E6E6E</span>
+    <span class="sw"><i style="background:#F3F5F7"></i>Canvas #F3F5F7</span>
+    <span class="sw"><i style="background:#D5DBE1"></i>Line #D5DBE1</span>
+    <span class="sw"><i style="background:#1E7B3A"></i>Success #1E7B3A</span>
+    <span class="sw"><i style="background:#B45309"></i>Warning #B45309</span>
+    <span class="sw"><i style="background:#B42318"></i>Danger #B42318</span>
+    <span class="sw"><i style="background:#FDE68A"></i>Offline #FDE68A</span>
+  </div>
+</header>
+
+<!-- ===================== DIRECTION 1 ===================== -->
+<section class="dir d1">
+  <h2>১ · Big &amp; Bold Floor <small>বড় ও স্পষ্ট</small></h2>
+  <p class="why">Built for a gloved thumb under a tin roof: every screen does one job, the quantity to pick is the biggest thing on it, and the Scan button is a 72px full-width bar you can hit without looking. Heavy 800-900 weight type and thick borders survive glare and cheap screens; the trade-off is scrolling on longer orders and an owner view that shows fewer numbers, only the ones that need action.</p>
+  <div class="tags"><span>1 action / screen</span><span>Body 18-20px, qty 30px</span><span>Targets 56-72px</span><span>Cards, thick 2-3px borders</span><span>Fixed bottom action bar</span></div>
+  <div class="row">
+    <div>
+      <p class="cap">HERO · Picking DO-1042 · online + saved toast</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>10:42</span><span>▮▮▮ 62%</span></div>
+        <div class="top">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="back">← আমার কাজ <span style="opacity:.75">/ My tasks</span></span>
+            <span class="chip on"><span class="dot"></span>অনলাইন</span>
+          </div>
+          <h3 class="num">DO-1042 · Rahman Traders</h3>
+          <div class="sub">নারায়ণগঞ্জ <span style="opacity:.75">/ Narayanganj</span></div>
+          <span class="due">আজই লাগবে · Required today</span>
+        </div>
+        <div class="body">
+          <div class="line cur">
+            <div class="nm">চাল ২৫ কেজি<span class="en">Rice 25 kg</span></div>
+            <div class="q"><span class="big num">12<small> / 20 কার্টন</small></span><span class="pk">আরও ৮টি · 8 left</span></div>
+            <div class="bar"><i style="width:60%"></i></div>
+          </div>
+          <div class="line">
+            <div class="nm">সয়াবিন তেল ৫ লি.<span class="en">Soybean oil 5 L</span></div>
+            <div class="q"><span class="big num">0<small> / 10 কার্টন</small></span><span class="pk" style="color:#4A5563">শুরু হয়নি</span></div>
+          </div>
+          <div class="line">
+            <div class="nm">ডাল ১ কেজি<span class="en">Lentils 1 kg</span></div>
+            <div class="q"><span class="big num">0<small> / 3 কার্টন + 6 পিস</small></span></div>
+          </div>
+        </div>
+        <div class="toast"><span>সেভ হয়েছে ✓</span><small>Saved ✓ · চাল +1</small></div>
+        <div class="actions">
+          <button class="scan">▣ স্ক্যান করুন <span class="en">Scan</span></button>
+          <button class="flag">⚠ ক্ষতি জানান · Flag damage</button>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">STATE · Offline, scans queued on device</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>10:51</span><span>✕ 58%</span></div>
+        <div class="offban">অফলাইন · ৩টি কাজ অপেক্ষায়<small>Offline · 3 actions waiting to sync. কাজ চালিয়ে যান, নেট এলে পাঠানো হবে।</small></div>
+        <div class="top" style="padding-top:10px">
+          <span class="back">← আমার কাজ <span style="opacity:.75">/ My tasks</span></span>
+          <h3 class="num">DO-1042 · Rahman Traders</h3>
+          <div class="sub">নারায়ণগঞ্জ · আজই লাগবে</div>
+        </div>
+        <div class="body">
+          <div class="line">
+            <div class="nm">চাল ২৫ কেজি<span class="en">Rice 25 kg</span></div>
+            <div class="q"><span class="big num">20<small> / 20 কার্টন</small></span><span class="pk" style="color:#1E7B3A">✓ সম্পূর্ণ</span></div>
+            <span class="queued">⏳ সিঙ্ক বাকি · Not synced</span>
+          </div>
+          <div class="line cur">
+            <div class="nm">সয়াবিন তেল ৫ লি.<span class="en">Soybean oil 5 L</span></div>
+            <div class="q"><span class="big num">4<small> / 10 কার্টন</small></span><span class="pk">আরও ৬টি · 6 left</span></div>
+            <div class="bar"><i style="width:40%"></i></div>
+            <span class="queued">⏳ সিঙ্ক বাকি · Not synced</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="scan">▣ স্ক্যান করুন <span class="en">Scan</span></button>
+          <button class="flag">⚠ ক্ষতি জানান · Flag damage</button>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">SECONDARY · Owner overview (wide)</p>
+      <div class="wide">
+        <div class="chrome"><i></i><i></i><i></i><b>mojud.app/owner</b></div>
+        <div class="d1o">
+          <h4>আজকের অবস্থা <span class="en" style="font-size:18px">/ Today at a glance</span></h4>
+          <div class="hero">
+            <div><div class="l">মোট মজুদের মূল্য · Total stock value</div><div class="v num">৳12,45,000</div></div>
+            <div class="split num"><span>নারায়ণগঞ্জ<b>৳8,10,000</b></span><span>গাজীপুর<b>৳4,35,000</b></span></div>
+          </div>
+          <div class="tiles">
+            <div class="tile alert"><div class="v num">3</div><div class="l">গরমিল কেস খোলা<br><span class="en">Open discrepancy cases</span></div><span class="go">দেখুন · Review →</span></div>
+            <div class="tile warn"><div class="v num">7</div><div class="l">পণ্য কম মজুদে<br><span class="en">Products low on stock</span></div><span class="go">অর্ডার দিন · Reorder →</span></div>
+            <div class="tile"><div class="v num">৳19,850</div><div class="l">এই মাসের ক্ষতি<br><span class="en">Losses this month</span></div><div style="font-size:16px;font-weight:700;margin-top:8px;line-height:1.6">নষ্ট ৳11,200 · মেয়াদোত্তীর্ণ ৳4,900<br>নিশ্চিত হারানো ৳2,300<br><span style="color:#B45309">অব্যাখ্যাত ৳1,450 · Unexplained</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DIRECTION 2 ===================== -->
+<section class="dir d2">
+  <h2>২ · Calm Professional <small>শান্ত ও পেশাদার</small></h2>
+  <p class="why">Reads like a serious business tool the owner is proud to put in staff hands: white app bar, quiet cards, one teal accent reserved for the next action. Medium density shows the whole three-line order without scrolling and keeps 56px primary targets; the risk is that in harsh light the softer grey secondary text and 1px borders carry less punch than Direction 1.</p>
+  <div class="tags"><span>Balanced density</span><span>Body 16-17px, headings 600-700</span><span>Targets 48-56px</span><span>Cards + bottom tabs</span><span>Accent used sparingly</span></div>
+  <div class="row">
+    <div>
+      <p class="cap">HERO · Picking DO-1042 · online + saved toast</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>10:42</span><span>▮▮▮ 62%</span></div>
+        <div class="top">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="crumb">← আমার কাজ · My tasks</span>
+            <span class="pill on"><span class="dot"></span>অনলাইন · Online</span>
+          </div>
+          <h3 class="num">ডিসপ্যাচ DO-1042</h3>
+          <div class="meta">Rahman Traders · নারায়ণগঞ্জ</div>
+          <div style="margin-top:6px"><span class="pill due">আজই লাগবে · Due today</span></div>
+          <div class="prog"><span class="num">12 / 33 কার্টন</span><div class="bar"><i style="width:36%"></i></div><span>36%</span></div>
+        </div>
+        <div class="body">
+          <div class="card cur">
+            <div class="nm">চাল ২৫ কেজি <span class="en">· Rice 25 kg</span></div>
+            <div class="r"><span class="q num">20 কার্টন</span><span class="st num">তোলা 12 · Picked</span></div>
+          </div>
+          <div class="card">
+            <div class="nm">সয়াবিন তেল ৫ লি. <span class="en">· Soybean oil 5 L</span></div>
+            <div class="r"><span class="q num">10 কার্টন</span><span class="st todo">বাকি · To pick</span></div>
+          </div>
+          <div class="card">
+            <div class="nm">ডাল ১ কেজি <span class="en">· Lentils 1 kg</span></div>
+            <div class="r"><span class="q num">3 কার্টন + 6 পিস</span><span class="st todo">বাকি · To pick</span></div>
+          </div>
+        </div>
+        <div class="toast"><span class="ck">✓</span><span>সেভ হয়েছে ✓ <span style="color:#B8C6D6;font-weight:500">/ Saved ✓ · চাল 12/20</span></span></div>
+        <div class="actions">
+          <button class="scan">স্ক্যান করুন <span class="en">· Scan</span></button>
+          <button class="flag">ক্ষতি জানান · Flag damage</button>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">STATE · My tasks, all done (empty)</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>17:20</span><span>▮▮ 31%</span></div>
+        <div class="top">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin:0">আমার কাজ <span class="en" style="font-size:16px;font-weight:500">· My tasks</span></h3>
+            <span class="pill on"><span class="dot"></span>অনলাইন</span>
+          </div>
+          <div class="meta">নারায়ণগঞ্জ গুদাম · Narayanganj warehouse</div>
+        </div>
+        <div class="empty">
+          <div class="ic">🎉</div>
+          <h4>আজকের সব কাজ শেষ 🎉</h4>
+          <p>All tasks done for today</p>
+          <div class="sum">
+            <div><span>ডিসপ্যাচ সম্পন্ন · Dispatched</span><b class="num">6</b></div>
+            <div><span>গ্রহণ সম্পন্ন · Received</span><b class="num">2</b></div>
+            <div><span>ক্ষতি জানানো · Damage flagged</span><b class="num">1</b></div>
+          </div>
+        </div>
+        <div class="tabs"><div class="on">☑<span>কাজ · Tasks</span></div><div>▣<span>স্ক্যান · Scan</span></div><div>☰<span>আরও · More</span></div></div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">SECONDARY · Owner overview (wide)</p>
+      <div class="wide">
+        <div class="chrome"><i></i><i></i><i></i><b>mojud.app/owner</b></div>
+        <div class="d2o">
+          <nav><b>মজুদ</b><div class="on">সারসংক্ষেপ · Overview</div><div>মজুদ · Stock</div><div>অর্ডার · Orders</div><div>গরমিল · Cases</div><div>রিপোর্ট · Reports</div></nav>
+          <main>
+            <h4>সারসংক্ষেপ <span class="en" style="font-size:16px">· Overview, October</span></h4>
+            <div class="g">
+              <div class="c">
+                <div class="h">মোট মজুদের মূল্য · Total stock value</div>
+                <div class="v num">৳12,45,000</div>
+                <div class="wh num"><span>নারায়ণগঞ্জ · Narayanganj</span><b>৳8,10,000</b></div>
+                <div class="wh num"><span>গাজীপুর · Gazipur</span><b>৳4,35,000</b></div>
+              </div>
+              <div class="c">
+                <div class="h">এই মাসের ক্ষতি, কারণ অনুযায়ী · Losses by reason</div>
+                <div class="lr num"><span>নষ্ট · Damaged</span><span class="b"><i style="width:100%"></i></span><span class="a">৳11,200</span></div>
+                <div class="lr num"><span>মেয়াদোত্তীর্ণ · Expired</span><span class="b"><i style="width:44%"></i></span><span class="a">৳4,900</span></div>
+                <div class="lr num"><span>হারানো · Lost</span><span class="b"><i style="width:21%"></i></span><span class="a">৳2,300</span></div>
+                <div class="lr unx num" style="color:#B45309"><span>অব্যাখ্যাত · Unexplained</span><span class="b"><i style="width:13%"></i></span><span class="a">৳1,450</span></div>
+              </div>
+            </div>
+            <div class="mini">
+              <div class="c"><div><div class="h">খোলা গরমিল কেস · Open discrepancy cases</div><div class="n num" style="color:#B42318">3</div></div><a href="#">দেখুন →</a></div>
+              <div class="c"><div><div class="h">কম মজুদের পণ্য · Low-stock products</div><div class="n num" style="color:#B45309">7</div></div><a href="#">তালিকা →</a></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DIRECTION 3 ===================== -->
+<section class="dir d3">
+  <h2>৩ · Compact Data-first <small>ঘন ও তথ্যভিত্তিক</small></h2>
+  <p class="why">For the experienced storekeeper and the owner who wants numbers, not pictures: a table-style pick list with tabular figures, a summary strip on top, and Scan + Flag side-by-side in one 52px row. Everything for an order fits above the fold, even a 12-line order, while Bangla stays at 16px and rows stay 56px tall; the cost is a steeper first day for new or low-literacy staff and smaller secondary labels.</p>
+  <div class="tags"><span>High density</span><span>Body 16px, meta 12-13px</span><span>Rows 56px, buttons 52px</span><span>Table rows, zebra</span><span>Tabular numerals</span></div>
+  <div class="row">
+    <div>
+      <p class="cap">HERO · Picking DO-1042 · online + saved toast</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>10:42</span><span>▮▮▮ 62%</span></div>
+        <div class="top">
+          <div class="l1"><span>← আমার কাজ · My tasks</span><span class="net"><span class="dot"></span>অনলাইন</span></div>
+          <div class="l2"><h3 class="num">DO-1042</h3><span class="tot num">12/33 ctn · 36%</span></div>
+        </div>
+        <div class="kv">
+          <div>গ্রাহক<b>Rahman Tr.</b></div>
+          <div>এলাকা<b>নারায়ণগঞ্জ</b></div>
+          <div>লাগবে<b class="r">আজ · Today</b></div>
+        </div>
+        <div class="body">
+          <div class="th"><span>পণ্য · Item</span><span>চাই</span><span>তোলা</span><span></span></div>
+          <div class="tr cur"><span class="nm">চাল ২৫ কেজি<span class="en">Rice 25 kg</span></span><span class="n">20<small>ctn</small></span><span class="n" style="color:#0E6E6E">12<small>ctn</small></span><span class="ok part">◐</span></div>
+          <div class="tr"><span class="nm">সয়াবিন তেল ৫ লি.<span class="en">Soybean oil 5 L</span></span><span class="n">10<small>ctn</small></span><span class="n">0<small>ctn</small></span><span class="ok">○</span></div>
+          <div class="tr"><span class="nm">ডাল ১ কেজি<span class="en">Lentils 1 kg</span></span><span class="n">3+6<small>ctn+pcs</small></span><span class="n">0<small>ctn</small></span><span class="ok">○</span></div>
+          <div style="padding:10px 12px;font-size:13px;color:#4A5563;background:#fff;border-bottom:1px solid #D5DBE1">শেষ স্ক্যান · Last scan: চাল 25kg ×1 · 10:42 · Bay A-3</div>
+        </div>
+        <div class="toast"><span>সেভ হয়েছে ✓</span><small>Saved ✓ · 12/20</small></div>
+        <div class="actions">
+          <button class="scan">▣ স্ক্যান করুন <span class="en">Scan</span></button>
+          <button class="flag">ক্ষতি জানান<br>Flag damage</button>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">STATE · My tasks list, offline with queue</p>
+      <div class="phone"><div class="screen">
+        <div class="sb"><span>10:55</span><span>✕ 57%</span></div>
+        <div class="top">
+          <div class="l1"><span>নারায়ণগঞ্জ গুদাম</span><span class="net off"><span class="dot"></span>অফলাইন</span></div>
+          <div class="l2"><h3>আমার কাজ · My tasks</h3><span class="tot num">4 open</span></div>
+        </div>
+        <div class="offban"><span>অফলাইন · ৩টি কাজ অপেক্ষায়</span><span style="font-weight:600">Offline · 3 queued</span></div>
+        <div class="seg"><span class="on">সব · All 4</span><span>ডিসপ্যাচ 3</span><span>গ্রহণ 1</span></div>
+        <div class="body">
+          <div class="task" style="background:#E7F4F4;box-shadow:inset 4px 0 0 #0E6E6E"><span class="id">DO-1042 · ডিসপ্যাচ</span><span class="s due">আজ · Today</span><span class="c">Rahman Traders · নারায়ণগঞ্জ</span><span class="p">20/33 ctn ⏳</span></div>
+          <div class="task"><span class="id">DO-1045 · ডিসপ্যাচ</span><span class="s due">আজ · Today</span><span class="c">Sonali Store · নারায়ণগঞ্জ</span><span class="p">0/18 ctn</span></div>
+          <div class="task" style="background:#F7F9FA"><span class="id">DO-1047 · ডিসপ্যাচ</span><span class="s">কাল · Tmrw</span><span class="c">Bhai Bhai Enterprise · Fatullah</span><span class="p">0/42 ctn</span></div>
+          <div class="task"><span class="id">GR-0311 · গ্রহণ</span><span class="s q">ট্রাক এসেছে</span><span class="c">ACI supplier · Receive</span><span class="p">0/60 ctn</span></div>
+        </div>
+        <div class="actions">
+          <button class="scan">▣ স্ক্যান করুন <span class="en">Scan</span></button>
+          <button class="flag">ক্ষতি জানান<br>Flag damage</button>
+        </div>
+      </div></div>
+    </div>
+    <div>
+      <p class="cap">SECONDARY · Owner overview (wide)</p>
+      <div class="wide">
+        <div class="chrome"><i></i><i></i><i></i><b>mojud.app/owner</b></div>
+        <div class="d3o">
+          <div class="hd"><h4>মালিকের সারসংক্ষেপ · Owner overview</h4><span>অক্টোবর ২০২৬ · updated 10:55</span></div>
+          <div class="strip">
+            <div><div class="l">মোট মজুদ · Stock value</div><div class="v">৳12,45,000</div></div>
+            <div><div class="l">এই মাসের ক্ষতি · Losses</div><div class="v">৳19,850</div></div>
+            <div><div class="l">অব্যাখ্যাত · Unexplained</div><div class="v w">৳1,450</div></div>
+            <div><div class="l">খোলা গরমিল · Open cases</div><div class="v r">3</div></div>
+            <div><div class="l">কম মজুদ · Low stock</div><div class="v w">7</div></div>
+          </div>
+          <div class="cols">
+            <table>
+              <caption>গুদাম অনুযায়ী মূল্য · Value by warehouse</caption>
+              <tr><th>গুদাম</th><th class="n">মূল্য ৳</th><th class="n">%</th></tr>
+              <tr><td>নারায়ণগঞ্জ · Narayanganj</td><td class="n">8,10,000</td><td class="n">65.1</td></tr>
+              <tr><td>গাজীপুর · Gazipur</td><td class="n">4,35,000</td><td class="n">34.9</td></tr>
+              <tr class="tot"><td>মোট · Total</td><td class="n">12,45,000</td><td class="n">100</td></tr>
+            </table>
+            <table>
+              <caption>এই মাসের ক্ষতি · Losses by reason</caption>
+              <tr><th>কারণ · Reason</th><th class="n">৳</th><th class="n">%</th></tr>
+              <tr><td>নষ্ট · Damaged</td><td class="n">11,200</td><td class="n">56.4</td></tr>
+              <tr><td>মেয়াদোত্তীর্ণ · Expired</td><td class="n">4,900</td><td class="n">24.7</td></tr>
+              <tr><td>নিশ্চিত হারানো · Confirmed loss</td><td class="n">2,300</td><td class="n">11.6</td></tr>
+              <tr class="unx"><td>অব্যাখ্যাত · Unexplained</td><td class="n">1,450</td><td class="n">7.3</td></tr>
+              <tr class="tot"><td>মোট · Total</td><td class="n">19,850</td><td class="n">100</td></tr>
+            </table>
+          </div>
+          <div class="cols">
+            <table>
+              <caption>খোলা গরমিল কেস · Open discrepancy cases (3)</caption>
+              <tr><th>কেস</th><th>পণ্য</th><th class="n">পার্থক্য</th></tr>
+              <tr><td class="num">DC-021</td><td>চাল ২৫ কেজি</td><td class="n"><span class="tag">−2 ctn</span></td></tr>
+              <tr><td class="num">DC-022</td><td>সয়াবিন তেল ৫ লি.</td><td class="n"><span class="tag">−1 ctn</span></td></tr>
+              <tr><td class="num">DC-024</td><td>চিনি ১ কেজি</td><td class="n"><span class="tag">−8 pcs</span></td></tr>
+            </table>
+            <table>
+              <caption>কম মজুদ · Low stock (7) · top 3</caption>
+              <tr><th>পণ্য</th><th class="n">আছে</th><th class="n">ন্যূনতম</th></tr>
+              <tr><td>ডাল ১ কেজি</td><td class="n">4 ctn</td><td class="n">15</td></tr>
+              <tr><td>আটা ২ কেজি</td><td class="n">6 ctn</td><td class="n">20</td></tr>
+              <tr><td>লবণ ১ কেজি</td><td class="n">9 ctn</td><td class="n">25</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<p style="color:#4A5563;font-size:13px;margin-top:24px">[ASSUMPTION] Quantities shown in Latin digits for scan/count accuracy, Bangla digits in prose; to be confirmed. Discrepancy case IDs, low-stock products and extra tasks are illustrative.</p>
+</div>
+</body>
+</html>

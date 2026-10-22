@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojud Key Screen: Owner View</title>
+<style>
+/* =====================================================================
+   KEY SCREEN · Owner view (S18) + drill-down, desktop, LIGHT and DARK
+   Governing spine sections (check these before changing this mock):
+   DESIGN.md   Colors (Jamdani Teal light AND dark token sets, control-border,
+               danger for losses in taka, warning for low stock, Stock states:
+               Unexplained ? + dashed inner outline), Typography (amount-hero,
+               meta, headline, title), Layout & Spacing (desktop: side nav +
+               content, two-column card grid, 24px gutter), Elevation & Depth
+               (dark mode: no shadows, raised = surface-alt-dark), Shapes,
+               Components: Owner metric tile, Side nav, Stock-state pill,
+               Button (secondary), Focus ring. Do's and Don'ts (calm desk
+               screens, test light + dark).
+   EXPERIENCE.md  Component Patterns: Owner metric tile (every figure taps
+               through to evidence; month selector for losses), Bottom tab bar /
+               Side nav, Stock-state pill. IA: Home per Role (Owner -> Owner view;
+               side nav Overview · Issues · Stock · Orders · Counts · Settings).
+               Voice and Tone (৳ + lakh grouping, Western digits).
+               Responsive & Platform (desktop >= 1024px: list + detail).
+               State Patterns: Dark mode, Loading ("as of HH:MM").
+               Key Flows: UJ-6 (steps 1-3).
+               Voice and Tone: Language display rule (desk screen = chosen
+               language only, Bangla shown; no bilingual parts).
+               Accessibility Floor: icons are inline SVG, never emoji.
+   PRD: FR-48, FR-49, FR-50, FR-31, FR-33.
+   ===================================================================== */
+.light{--primary:#0B5A54;--on-primary:#FFFFFF;--surface:#FFFFFF;--surface-alt:#EDF4F2;--text:#0D1F1C;--text-muted:#3E524F;--border:#8FAAA5;--control-border:#6B8580;--success:#1B6E31;--warning:#8A4F00;--danger:#A8231B;--info:#1D5799;--st-unexplained:#FFC94D;--on-st-unexplained:#2B1D00;--shadow:0 1px 2px rgba(13,31,28,.06)}
+.dark{--primary:#63D5C6;--on-primary:#00211E;--surface:#0E1716;--surface-alt:#18241F;--text:#EAF4F1;--text-muted:#AABFBA;--border:#3D524D;--control-border:#6B827C;--success:#74D68C;--warning:#F4B65C;--danger:#FF8F85;--info:#8DBBF2;--st-unexplained:#F4B65C;--on-st-unexplained:#2B1D00;--shadow:none}
+*{box-sizing:border-box}
+body{margin:0;background:#D5DEDC;color:#0D1F1C;font-family:system-ui,"Segoe UI",Roboto,"Noto Sans Bengali","Nirmala UI",sans-serif;line-height:1.5}
+button{font-family:inherit}
+.page{padding:24px 16px 48px}
+.page>header h1{margin:0 0 4px;font-size:22px}
+.page>header p{margin:0;max-width:1100px;font-size:15px;color:#3E524F}
+.row{display:flex;gap:32px;align-items:flex-start;margin-top:20px;overflow-x:auto;padding-bottom:12px}
+.cap{margin:0 0 8px;font-size:14px;font-weight:600;color:#3E524F}
+.num{font-variant-numeric:tabular-nums}
+
+/* browser frame */
+.browser{flex:none;width:1200px;border-radius:10px;border:1px solid #8FAAA5;overflow:hidden;box-shadow:0 8px 24px rgba(13,31,28,.16)}
+.chrome{height:36px;background:#DCE4E2;display:flex;align-items:center;gap:6px;padding:0 12px}
+.chrome i{width:11px;height:11px;border-radius:50%;background:#9FB0AC;display:inline-block}
+.chrome b{margin-left:12px;font-weight:500;font-size:13px;color:#3E524F;background:#fff;border-radius:6px;padding:3px 12px}
+.browser.dk .chrome{background:#26302D}
+.browser.dk .chrome b{background:#0E1716;color:#AABFBA}
+
+.app{display:grid;grid-template-columns:220px 1fr 360px;min-height:760px;background:var(--surface-alt);color:var(--text)}
+.en{color:var(--text-muted);font-weight:500}
+.ic{width:20px;height:20px;flex:none;vertical-align:-4px}
+
+/* side nav */
+.side{background:var(--surface-alt);border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.brand{font-size:20px;font-weight:700;padding:4px 12px 14px}
+.brand .en{font-size:14px}
+.side a{display:flex;flex-direction:column;justify-content:center;min-height:48px;padding:4px 12px;border-radius:12px;color:var(--text);text-decoration:none;font-size:16px;font-weight:600;line-height:1.35}
+.side a .e{font-size:14px;font-weight:500;color:var(--text-muted)}
+.side a.on{background:var(--surface);color:var(--primary)}
+.side .who{margin-top:auto;padding:12px;font-size:14px;color:var(--text-muted)}
+.side .who b{display:block;font-size:16px;color:var(--text)}
+
+/* main */
+main{padding:24px}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.mh h1{margin:0;font-size:20px;font-weight:700;line-height:1.4}
+.mh h1 .en{font-size:16px}
+.asof{font-size:16px;color:var(--info);margin-top:2px}
+.btn-sec{height:48px;padding:0 16px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--primary);font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-sec .e{font-weight:500;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:start}
+
+/* owner metric tile */
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+.tile.sel{outline:3px solid var(--primary);outline-offset:2px}
+.tl{font-size:16px;font-weight:600;color:var(--text-muted);line-height:1.5}
+.tv{font-size:32px;font-weight:700;line-height:1.2;margin:4px 0 6px;font-variant-numeric:tabular-nums}
+.tv.loss{color:var(--danger)}
+.tv.low{color:var(--warning);display:flex;align-items:center;gap:8px}
+.tv.low .ic{width:28px;height:28px}
+.side .who span{font-size:16px}
+.tv small{font-size:16px;font-weight:600;color:var(--text-muted)}
+.lrow{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-top:1px solid var(--border);font-size:16px;color:var(--text);text-decoration:none;gap:12px}
+.lrow .e{font-size:14px;color:var(--text-muted);font-weight:500}
+.lrow b{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lrow b.loss{color:var(--danger)}
+.lrow .chev{color:var(--text-muted);margin-left:6px;width:20px;height:20px;vertical-align:-4px}
+.go{display:inline-flex;align-items:center;gap:4px;min-height:48px;color:var(--primary);font-weight:600;font-size:16px;text-decoration:none}
+.go .e{font-weight:500;color:var(--primary)}
+.tstack{display:flex;flex-direction:column;gap:16px}
+
+/* Unexplained state tag: ? icon + dashed inner outline (never colour alone) */
+.unx{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:3px 12px;border-radius:9999px;background:var(--st-unexplained);color:var(--on-st-unexplained);outline:2px dashed var(--on-st-unexplained);outline-offset:-4px;font-size:16px;font-weight:700;line-height:1.4;font-variant-numeric:tabular-nums;white-space:nowrap}
+.unx .e{font-size:14px;font-weight:500;color:var(--on-st-unexplained)}
+.vrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* drill-down panel */
+.drill{background:var(--surface);border-left:1px solid var(--border);padding:20px 20px 24px;display:flex;flex-direction:column}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.dh h2{margin:0;font-size:17px;font-weight:700;line-height:1.45}
+.dh h2 .en{font-size:14px}
+.btn-close{flex:none;height:48px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border:2px solid var(--control-border);border-radius:12px;background:var(--surface);color:var(--text);font-size:16px;font-weight:600}
+.dsub{font-size:16px;color:var(--text-muted);margin-top:4px}
+.case{display:block;text-decoration:none;color:var(--text);border-top:1px solid var(--border);padding:12px 0;min-height:64px}
+.case:first-of-type{margin-top:12px}
+.c1{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.c1 .p{font-size:16px;font-weight:700}
+.c1 .p .e{font-size:14px;font-weight:500;color:var(--text-muted)}
+.c1 .v{font-weight:700;color:var(--danger);font-variant-numeric:tabular-nums;white-space:nowrap}
+.c2{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.c3{font-size:16px;color:var(--text-muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.dfoot{margin-top:auto;padding-top:16px;font-size:14px;color:var(--text-muted)}
+.note{max-width:1200px;margin-top:20px;font-size:14px;color:#3E524F}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 2 20.5h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24"><path d="M8.5 9a3.5 3.5 0 1 1 5 3.2c-1 .5-1.5 1.2-1.5 2.3v.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+<div class="page">
+<header>
+  <h1>Mojud · Key screen · Owner view (S18) with drill-down · light and dark</h1>
+  <p>Mr. Haque, Owner, on a laptop (UJ-6, FR-48, FR-49). Calm Professional desk density, Jamdani Teal. Stock value per Warehouse and in total; this month's losses in taka by Reason; the current Unexplained value; open Discrepancy cases and other open Issues; Products at or below their Low-stock threshold. He has tapped Unexplained, and the drill-down panel lists the open Discrepancy cases behind it. Light (left) and dark (right) both ship in v1; the page scrolls sideways to show both.</p>
+</header>
+
+<div class="row">
+<!--LIGHT-->
+<div>
+  <p class="cap">LIGHT · Owner view · Unexplained tile selected · drill-down open</p>
+  <div class="browser">
+    <div class="chrome"><i></i><i></i><i></i><b>mojud.app/overview</b></div>
+    <div class="app light">
+      <nav class="side">
+        <div class="brand">মজুদ</div>
+        <a class="on" href="#" aria-current="page">সারসংক্ষেপ</a>
+        <a href="#">সমস্যা</a>
+        <a href="#">মজুদ</a>
+        <a href="#">অর্ডার</a>
+        <a href="#">মজুদ গণনা</a>
+        <a href="#">সেটিংস</a>
+        <div class="who"><b>Mr. Haque</b><span>মালিক</span></div>
+      </nav>
+      <main>
+        <div class="mh">
+          <div><h1>সারসংক্ষেপ</h1><div class="asof num">10:55 পর্যন্ত</div></div>
+          <button class="btn-sec">অক্টোবর 2026 <svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+        </div>
+        <div class="grid">
+          <div class="tstack">
+            <div class="tile">
+              <div class="tl">মজুদের মূল্য</div>
+              <div class="tv">৳12,45,000</div>
+              <a class="lrow" href="#"><span>Narayanganj গুদাম</span><span><b>৳8,10,000</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>Gazipur গুদাম</span><span><b>৳4,35,000</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+            <div class="tile sel">
+              <div class="tl">অব্যাখ্যাত, এখন</div>
+              <div class="vrow"><div class="tv loss">৳1,450</div><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> অব্যাখ্যাত</span></div>
+              <a class="go" href="#">দেখুন <svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+            </div>
+            <div class="tile">
+              <div class="tl">খোলা গরমিল কেস ও সমস্যা</div>
+              <a class="lrow" href="#"><span>গরমিল কেস</span><span><b>3 · ৳1,450</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>অন্যান্য সমস্যা</span><span><b>5 · ৳41,240</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+          </div>
+          <div class="tstack">
+            <div class="tile">
+              <div class="tl">এই মাসের ক্ষতি, কারণ অনুযায়ী</div>
+              <div class="tv loss">৳18,400</div>
+              <a class="lrow" href="#"><span>ক্ষতিগ্রস্ত</span><span><b class="loss">৳11,200</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>মেয়াদোত্তীর্ণ</span><span><b class="loss">৳4,900</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>নিশ্চিত হারানো</span><span><b class="loss">৳2,300</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>স্থানান্তরে ক্ষতি</span><span><b>৳0</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>অন্যান্য</span><span><b>৳0</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+            <div class="tile">
+              <div class="tl">কম মজুদ</div>
+              <div class="tv low"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg>7 <small>পণ্য</small></div>
+              <a class="go" href="#">দেখুন <svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </main>
+      <aside class="drill" aria-labelledby="dd-h">
+        <div class="dh">
+          <div><h2 id="dd-h">অব্যাখ্যাত · ৳1,450</h2>
+          <div class="dsub num">3টি খোলা গরমিল কেস</div></div>
+          <button class="btn-close"><svg class="ic" aria-hidden="true"><use href="#i-cross"/></svg>বন্ধ</button>
+        </div>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Sugar 1 kg</span><span class="v">৳880</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −8 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-024 · Narayanganj</span></div>
+          <div class="c3">SC-014 · গুনেছেন Rahim · 20/10 16:10</div>
+        </a>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Salt 1 kg</span><span class="v">৳420</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −10 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-022 · Gazipur</span></div>
+          <div class="c3">SC-013 · গুনেছেন Jamal · 18/10 11:30</div>
+        </a>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Lentils 1 kg</span><span class="v">৳150</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −1 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-021 · Narayanganj</span></div>
+          <div class="c3">SC-014 · গুনেছেন Karim · 20/10 16:25</div>
+        </a>
+      </aside>
+    </div>
+  </div>
+</div>
+<!--/LIGHT-->
+
+<!--DARK (generated from LIGHT block)-->
+<div>
+  <p class="cap">DARK · Owner view (same state, -dark tokens, no shadows) · Unexplained tile selected · drill-down open</p>
+  <div class="browser dk">
+    <div class="chrome"><i></i><i></i><i></i><b>mojud.app/overview</b></div>
+    <div class="app dark">
+      <nav class="side">
+        <div class="brand">মজুদ</div>
+        <a class="on" href="#" aria-current="page">সারসংক্ষেপ</a>
+        <a href="#">সমস্যা</a>
+        <a href="#">মজুদ</a>
+        <a href="#">অর্ডার</a>
+        <a href="#">মজুদ গণনা</a>
+        <a href="#">সেটিংস</a>
+        <div class="who"><b>Mr. Haque</b><span>মালিক</span></div>
+      </nav>
+      <main>
+        <div class="mh">
+          <div><h1>সারসংক্ষেপ</h1><div class="asof num">10:55 পর্যন্ত</div></div>
+          <button class="btn-sec">অক্টোবর 2026 <svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+        </div>
+        <div class="grid">
+          <div class="tstack">
+            <div class="tile">
+              <div class="tl">মজুদের মূল্য</div>
+              <div class="tv">৳12,45,000</div>
+              <a class="lrow" href="#"><span>Narayanganj গুদাম</span><span><b>৳8,10,000</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>Gazipur গুদাম</span><span><b>৳4,35,000</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+            <div class="tile sel">
+              <div class="tl">অব্যাখ্যাত, এখন</div>
+              <div class="vrow"><div class="tv loss">৳1,450</div><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> অব্যাখ্যাত</span></div>
+              <a class="go" href="#">দেখুন <svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+            </div>
+            <div class="tile">
+              <div class="tl">খোলা গরমিল কেস ও সমস্যা</div>
+              <a class="lrow" href="#"><span>গরমিল কেস</span><span><b>3 · ৳1,450</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>অন্যান্য সমস্যা</span><span><b>5 · ৳41,240</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+          </div>
+          <div class="tstack">
+            <div class="tile">
+              <div class="tl">এই মাসের ক্ষতি, কারণ অনুযায়ী</div>
+              <div class="tv loss">৳18,400</div>
+              <a class="lrow" href="#"><span>ক্ষতিগ্রস্ত</span><span><b class="loss">৳11,200</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>মেয়াদোত্তীর্ণ</span><span><b class="loss">৳4,900</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>নিশ্চিত হারানো</span><span><b class="loss">৳2,300</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>স্থানান্তরে ক্ষতি</span><span><b>৳0</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+              <a class="lrow" href="#"><span>অন্যান্য</span><span><b>৳0</b><svg class="ic chev" aria-hidden="true"><use href="#i-chev-r"/></svg></span></a>
+            </div>
+            <div class="tile">
+              <div class="tl">কম মজুদ</div>
+              <div class="tv low"><svg class="ic" aria-hidden="true"><use href="#i-warn"/></svg>7 <small>পণ্য</small></div>
+              <a class="go" href="#">দেখুন <svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </main>
+      <aside class="drill" aria-labelledby="dd-h-dk">
+        <div class="dh">
+          <div><h2 id="dd-h-dk">অব্যাখ্যাত · ৳1,450</h2>
+          <div class="dsub num">3টি খোলা গরমিল কেস</div></div>
+          <button class="btn-close"><svg class="ic" aria-hidden="true"><use href="#i-cross"/></svg>বন্ধ</button>
+        </div>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Sugar 1 kg</span><span class="v">৳880</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −8 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-024 · Narayanganj</span></div>
+          <div class="c3">SC-014 · গুনেছেন Rahim · 20/10 16:10</div>
+        </a>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Salt 1 kg</span><span class="v">৳420</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −10 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-022 · Gazipur</span></div>
+          <div class="c3">SC-013 · গুনেছেন Jamal · 18/10 11:30</div>
+        </a>
+        <a class="case" href="#">
+          <div class="c1"><span class="p">Lentils 1 kg</span><span class="v">৳150</span></div>
+          <div class="c2"><span class="unx"><svg class="ic" aria-hidden="true"><use href="#i-question"/></svg> −1 পিস</span><span class="num" style="font-size:14px;color:var(--text-muted)">DC-021 · Narayanganj</span></div>
+          <div class="c3">SC-014 · গুনেছেন Karim · 20/10 16:25</div>
+        </a>
+      </aside>
+    </div>
+  </div>
+</div>
+<!--/DARK-->
+</div>
+<p class="note">Language display: a desk screen, so Bangla only (the Owner's chosen language) — no English halves; Product and Warehouse names as entered; Western digits; ৳ with lakh grouping. Bangla secondary text raised to 16px (tile labels, "10:55 পর্যন্ত", drill-down lines). Icons are inline SVG (chevrons, warning, question, close, arrow), never emoji or font glyphs. Losses use danger text plus the Reason name beside each figure; Unexplained adds the question icon and dashed outline; Low stock adds the warning icon with warning text. Drill-down rows are 64px tap targets that open Issue detail (S13). Strings not in the UI glossary yet: "অব্যাখ্যাত, এখন", "খোলা গরমিল কেস ও সমস্যা", "অন্যান্য সমস্যা", "এই মাসের ক্ষতি, কারণ অনুযায়ী", "গুনেছেন" (counted by).</p>
+</div>
+</body>
+</html>
