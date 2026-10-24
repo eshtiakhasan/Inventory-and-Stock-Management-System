@@ -63,6 +63,12 @@
 
 
 
+- **Active Unit**: backend
+
+- **Unit Stage**: functional-design
+
+- **Unit State**: in-progress
+
 ## Phase Progress
 <!-- Status values: Pending, Active, Verified, Skipped -->
 
@@ -124,7 +130,9 @@ Per unit: [TBD]
 - **Current Stage**: functional-design
 - **Next Stage**: nfr-requirements
 - **Status**: Running
-- **Last Updated**: 2026-10-24T20:38:29Z
+- **Last Updated**: 2026-10-24T20:58:28Z
+
+- **Construction Autonomy Mode**: autonomous
 
 ## Session Resume Point
 - **Last Completed Stage**: delivery-planning
