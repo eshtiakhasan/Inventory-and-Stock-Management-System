@@ -2,7 +2,7 @@
 title: "PRD: Mojud (working name)"
 status: final
 created: 2026-10-22
-updated: 2026-10-22
+updated: 2026-10-24
 inputs:
   - _bmad-output/planning-artifacts/briefs/brief-E2E_IAM-2026-10-22/brief.md
   - _bmad-output/planning-artifacts/briefs/brief-E2E_IAM-2026-10-22/addendum.md
@@ -75,7 +75,7 @@ Mojud is **a stock-control system, not an ERP**. It does not handle sales invoic
   Mr. Haque, the **Owner**, opens the owner view from home. It shows this month's losses by Reason: damaged ৳11,200, expired ৳4,900, confirmed loss ৳2,300, plus ৳1,450 currently **Unexplained**. Mr. Haque taps "Unexplained" and sees the open **Discrepancy cases**. Each one lists the product, warehouse, quantity, the **Stock count** that found it, and who counted. Mr. Haque assigns one case to the Manager.
 
 - **UJ-7. The manager runs a weekly count of one aisle's products.**
-  The **Manager** starts a **Stock count** for 20 products at Narayanganj and assigns two workers. The workers count without seeing system quantities. For every line that differs from **On hand**, Mojud opens a **Discrepancy case**. The Manager, who did not count, resolves each case as "found" or "confirmed loss" with a **Reason**.
+  The **Manager** starts a **Stock count** for 20 products at Narayanganj and assigns two workers. The workers count without seeing system quantities. When the Manager closes the count, Mojud opens a **Discrepancy case** for every line that differs from **On hand**. The Manager, who did not count, resolves each case as "found" or "confirmed loss" with a **Reason**.
 
 ## 3. Glossary
 
@@ -84,6 +84,7 @@ Mojud is **a stock-control system, not an ERP**. It does not handle sales invoic
 - **Role**: one of six fixed roles that decide what a User can do: Owner, Manager, Supervisor, Warehouse worker, Sales rep, Accountant (see FR-4).
 - **Assigned Warehouses**: the Warehouses where a User may record and decide. Owners, Managers and Accountants cover all Warehouses.
 - **Product**: an item the Business stocks. Each Product has one **SKU**.
+- **Alternate name**: an extra name for a Product, in either language, that search also matches. The Product's main name is still the one shown everywhere.
 - **SKU**: the Business's unique code for a Product.
 - **Barcode**: a scannable code on packaging. A Product can have one barcode for its **Base unit** and one for its **Pack unit**.
 - **Base unit**: the smallest unit a Product is counted in, such as a piece. All quantities are stored in Base units.
@@ -110,7 +111,7 @@ Mojud is **a stock-control system, not an ERP**. It does not handle sales invoic
 - **Blind count**: counting without being able to see the expected quantity.
 - **Shortfall**: a smaller quantity counted in than expected.
 - **Dispatch order**: a request to send Products from one Warehouse to a customer. It is not an invoice.
-- **Transfer**: moving stock from one Warehouse of the Business to another.
+- **Transfer**: moving stock from one Warehouse of the Business to another. Until it is sent, a Transfer is a **draft** and moves no stock (FR-26).
 - **Damage flag**: a report that some stock is damaged, expired or otherwise unusable.
 - **Write-off**: a Move that removes stock from the Business as a loss, with a Reason.
 - **Issue**: an item that needs a person's decision. Each Issue type has fixed decisions (see FR-33a).
@@ -119,7 +120,7 @@ Mojud is **a stock-control system, not an ERP**. It does not handle sales invoic
 - **Discrepancy case**: an Issue opened when a Stock count line does not match On hand.
 - **Unit cost**: the cost of one Base unit of a Product, the same across all Warehouses of the Business.
 - **Stock value**: quantity × Unit cost.
-- **Low-stock threshold**: a minimum Available quantity for a Product at a Warehouse.
+- **Low-stock threshold**: a minimum Promisable quantity for a Product at a Warehouse. A Product is **low** when its Promisable quantity is at or below the threshold, and **out of stock** when its Promisable quantity is 0.
 - **Offline queue**: actions recorded on a device without a connection, waiting to be sent to the server.
 - **Sync conflict**: a queued action that the server refuses, for example because it would make stock negative.
 - **My tasks**: a User's list of open work in their Assigned Warehouses.
@@ -143,6 +144,8 @@ A person can sign up as an Owner by entering the Business name and the Owner's n
 A User can sign in with a phone number and password, and can sign out. *Decided: v1 has no SMS code.*
 - A wrong sign-in shows an error that does not say which field was wrong.
 - After 5 failed attempts in a row, sign-in is paused for 15 minutes. `[ASSUMPTION]`
+- **Shared phone:** each device has a Shared phone setting. It is asked at the first sign-in on that device and is on by default for Warehouse workers and Supervisors. `[ASSUMPTION: default]` When it is on, the sign-in form asks the browser not to save the password, offers no "remember me", and shows a short hint not to save the password. Some browsers may still offer to save it. `[ASSUMPTION: browser behaviour; test on Chrome Android]` When it is off (for example, an Owner on a personal device), password managers work as normal.
+- **Sign out with unsynced actions:** if the Offline queue still holds the User's actions, sign-out warns how many are not synced and says they stay on the device and will sync as that User (FR-41).
 
 #### FR-3: Invite and manage Users
 An Owner or Manager can add a User (name, phone number, Role, Assigned Warehouses, temporary password), change a User's Role or Assigned Warehouses, and deactivate a User.
@@ -166,6 +169,8 @@ The system enforces this table on the server, not only by hiding buttons. "Assig
 
 Other FRs name the Roles involved only for readability. If they ever disagree, this table wins.
 
+Two narrower limits apply on top of the table: during a Blind count, assigned counters cannot see system quantities for the counted Products at that Warehouse (FR-35); and value at risk on Issues is shown only to Roles that may view Stock value (FR-31).
+
 #### FR-5: Segregation of duties
 The system refuses these combinations:
 - Deciding an Issue that came from your own Stock movement.
@@ -186,8 +191,9 @@ Exception: when no other eligible User exists, an Owner may do these, and the re
 **Description:** FMCG goods are bought in cartons and sold in cartons or pieces, so every Product has a Base unit and can have a Pack unit.
 
 #### FR-6: Create and edit a Product
-A Manager can create a Product with a name, SKU, category, Base unit name, an optional Pack unit name and Conversion factor, optional Barcodes, and an optional Low-stock threshold per Warehouse.
+A Manager can create a Product with a name, SKU, category, Base unit name, an optional Pack unit name and Conversion factor, optional Barcodes, optional Alternate names, and an optional Low-stock threshold per Warehouse.
 - Each SKU is unique within the Business.
+- A Product can have up to 5 Alternate names, in either language, for example "চাল 25 কেজি" for "Rice 25 kg". `[ASSUMPTION: up to 5]` The main name is shown everywhere (FR-45); Alternate names are used by search (FR-8). There is no automatic transliteration.
 - A Barcode cannot belong to two Products.
 - The Conversion factor is a whole number of 2 or more.
 - Selling prices are not stored (see Non-Goals).
@@ -197,9 +203,10 @@ A Manager can archive a Product, which hides it from new transactions. Its histo
 - A Product cannot be archived while it has On hand, In transit or Unexplained quantity above zero.
 
 #### FR-8: Search Products
-Any User can search Products by name, SKU or Barcode, with results appearing while they type.
+Any User can search Products by main name, Alternate names, SKU or Barcode, with results appearing while they type.
 - Search ignores upper and lower case.
 - Search works for both Bangla and English names.
+- When the match came from an Alternate name, the result shows that Alternate name under the main name.
 
 #### FR-9: Enter quantities in either unit
 Wherever a quantity is entered, the User can give it in Pack units, Base units or both (for example "3 cartons + 5 pieces"). The total is stored in Base units.
@@ -231,6 +238,7 @@ No one can edit or delete a Stock movement, not even the Owner.
 Any User can see a "stock ladder" for each Product per Warehouse: On hand → Damaged → Reserved → Promisable (On hand, minus Damaged, minus Reserved, equals the Promisable quantity). Totals for In transit and Unexplained are shown too.
 - Every figure equals the sum of that Product's Stock movements.
 - The screen shows when the figures were last updated.
+- During a Blind count, assigned counters see "Hidden during count" instead of these figures for the counted Products at that Warehouse (FR-35).
 
 #### FR-13: Stock can never go negative
 The system refuses any action that would make the quantity of any Stock state, for any Product at any Warehouse, drop below zero.
@@ -269,7 +277,8 @@ A Manager can create a PO for one Supplier and one Warehouse. It lists the Produ
 
 #### FR-21: Blind receiving
 A Warehouse worker can open a Sent or Partly received PO for an Assigned Warehouse and enter the counted quantity for each line. The screen shows the Products but no ordered or outstanding quantities. Realizes UJ-1.
-- Counted quantities move into Available with the Reason "received" and the cost from the PO.
+- **Each saved line is its own Stock movement.** When a line is saved, its counted quantity moves into Available with the Reason "received" and the cost from the PO. Offline, the line waits in the Offline queue like any action (FR-41).
+- **Mark delivery complete** closes the Receipt and raises any Shortfall or over-delivery Issues (FR-22). It never posts the saved lines again.
 - One PO can have several Receipts, so partial deliveries are supported.
 - The User who created the PO cannot record its Receipts (FR-5).
 
@@ -290,23 +299,34 @@ A Sales rep, Manager or Owner can create a Dispatch order with a customer name (
 The creator, a Manager or the Owner can reduce quantities or cancel an order that has not been dispatched. The quantity released goes back to Available.
 
 #### FR-25: Pick and confirm dispatch
-A Warehouse worker can open a Dispatch order, scan or tick each line as it is picked, and confirm dispatch. The confirmed quantities move from Reserved out of the Business with the Reason "dispatched".
+A Warehouse worker can open a Dispatch order, scan or tick each line as it is picked, and confirm dispatch.
+- **Each confirmed line is its own Stock movement.** When a line is confirmed, its quantity moves from Reserved out of the Business with the Reason "dispatched". Offline, it waits in the Offline queue like any action (FR-41).
+- **Confirm dispatch** closes the pick. It never posts the confirmed lines again.
 - Partial dispatch is allowed. Whatever is not dispatched stays Reserved until it is dispatched or cancelled.
 - After confirming, the worker sees their next task from My tasks (FR-53).
 
 ### 4.7 Transfers Between Warehouses
 
 #### FR-26: Send a Transfer
-A Warehouse worker can create a Transfer from an Assigned Warehouse to another Warehouse, entering the Products and the quantities counted out. Those quantities move from Available at the source to In transit. Realizes UJ-5.
+A Warehouse worker can create a Transfer from an Assigned Warehouse to another Warehouse, entering the Products and the quantities counted out. Realizes UJ-5.
+- **A Transfer is a draft until it is sent.** Saved lines are recorded but move no stock and reserve nothing. The stock stays Available at the source.
+- **Send Transfer** moves every line from Available at the source to In transit, one Stock movement per line, at that moment.
+- If Available has dropped below a draft line by then, Send is refused for that line and shows the maximum, for example "Only 18 ctn available. Max 18 ctn." (FR-13).
+- Drafts are always visible: as a "Draft transfer · not sent" item in the creator's My tasks (FR-53) and in the Transfers list.
+- The creator, a Supervisor, a Manager or the Owner can discard a draft. Discarding moves no stock.
+- A draft not sent within 24 hours raises a Draft-transfer-not-sent Issue for the source Warehouse's Supervisor. `[ASSUMPTION: 24 hours]`
+- Once a Transfer is sent, FR-28 applies, so stock never sits In transit without someone being told.
 
 #### FR-27: Receive a Transfer with a Blind count
-A Warehouse worker at the destination can open an incoming Transfer and enter the counted quantities without seeing what was sent. The counted quantities move from In transit to Available at the destination.
+A Warehouse worker at the destination can open an incoming Transfer and enter the counted quantities without seeing what was sent.
+- **Each saved line is its own Stock movement.** When a line is saved, its counted quantity moves from In transit to Available at the destination, up to the quantity still In transit on that line. Any extra is handled by FR-28. Offline, the line waits in the Offline queue like any action (FR-41).
+- **Finish receipt** closes the receipt and raises any Transfer-shortage or Transfer-overage Issue (FR-28). It never posts the saved lines again.
 - The sender cannot be the receiver (FR-5).
 
 #### FR-28: Transfer differences
 - **Received less than sent:** the missing quantity stays In transit, linked to the Transfer, and a Transfer-shortage Issue is raised.
 - **Received more than sent:** nothing extra is added, and a Transfer-overage Issue is raised. `[ASSUMPTION]`
-- **Not received within 48 hours:** a Transfer-overdue Issue is raised. `[ASSUMPTION — provisional target]`
+- **Not received within 48 hours of being sent:** a Transfer-overdue Issue is raised. `[ASSUMPTION — provisional target]`
 
 Each of these Issues shows the sender's count and the receiver's count, the User who made each one, and the time of each. Decisions follow FR-33a.
 
@@ -332,6 +352,7 @@ A Supervisor, Manager or Owner who did not raise the flag can decide it in one t
 #### FR-31: One ranked inbox
 Each User sees one list of the open Issues they are allowed to decide (FR-4). There are no separate notifications for each Issue. Realizes UJ-3.
 - Each Issue shows its type, Product, Warehouse, quantity, value at risk, who raised it and how long ago.
+- Value at risk is used for ranking for every User, but the taka amount is shown only to Roles allowed to view Stock value (FR-4). Supervisors and Sales reps see the quantity and unit instead, never taka.
 - `[ASSUMPTION]` Issues are ranked in this order: Issues assigned to the User first, then Issues that affect Reserved stock, then by value at risk (quantity × Unit cost), then the oldest.
 
 #### FR-32: Act on an Issue
@@ -352,7 +373,9 @@ Every Issue type has a fixed set of decisions. Each decision has a defined effec
 | Transfer shortage | FR-28 | Supervisor (destination), Manager, Owner | **Found:** In transit → Available at a Warehouse chosen by the decider. **Transfer loss:** Write-off from In transit with the Reason "transfer loss". |
 | Transfer overage | FR-28 | Supervisor (destination), Manager, Owner | **Sender undercounted:** the extra moves from Available at the source to Available at the destination (refused if the source does not have enough). **Recount:** the receiver counts again. |
 | Transfer overdue | FR-28 | Supervisor, Manager, Owner | **Still coming:** check again in 24 hours. **Transfer loss:** Write-off from In transit. |
+| Draft transfer not sent | FR-26 | Supervisor (source), Manager, Owner | **Keep draft:** no stock change; check again in 24 hours. **Discard draft:** the draft is removed; no stock change. `[ASSUMPTION: these two decisions]` |
 | Discrepancy case | FR-36 | Supervisor, Manager, Owner (not the counter) | See FR-37. |
+| Late count line | FR-36 | The Manager who started the count, Owner | **Start recount:** opens a Stock count for that one Product at that Warehouse. **Dismiss:** nothing changes; the late line stays recorded. `[ASSUMPTION: two decisions are enough]` |
 | Dispatch short | FR-29, FR-36 | Order creator, Manager, Owner | **Reduce order:** the short line is reduced. **Keep open:** the line stays open until the creator edits it. |
 | Sync conflict | FR-44 | Supervisor, Manager, Owner | **Discard:** the action is not applied (for example, a duplicate or a mistake). **Recount:** opens a Stock count for that one Product at that Warehouse, so the record is corrected properly. |
 | Reversal request | FR-15 | A different Manager or Owner | **Approve:** the Reversal is recorded. **Reject:** nothing changes. |
@@ -364,10 +387,15 @@ A Manager can start a Stock count at one Warehouse for all Products, one categor
 
 #### FR-35: Count blind
 An assigned User enters the counted quantity for each Product, by scanning or searching, without seeing any system quantities.
-- Each line records who counted it and when.
+- Each saved line records who counted it, the quantity and when. It moves no stock until the count is closed (FR-36).
+- **Nothing gives the count away.** While the count is open, a User assigned to count it cannot see On hand, Promisable quantity, the stock ladder, movement quantities or low-stock status for the Products in that count, at that Warehouse, on any screen (for example Product search, Product stock, Low stock and scan results). They see "Hidden during count" instead. Everything else stays normal.
+- The Manager who started the count sees its progress (lines counted) but no counted quantities until the count is closed.
+- The server enforces these limits; hiding them on screen is not enough. They end when the count is closed.
 
 #### FR-36: Compare and open Discrepancy cases
-When the Manager closes the count, each line is compared with On hand at the moment that line was counted. `[ASSUMPTION: this handles stock movements that happen during the count]`
+Count discrepancies apply when the count is closed. When the Manager closes the count, each line is compared with On hand at the moment that line was counted. `[ASSUMPTION: this handles stock movements that happen during the count]`
+- **Close count warning:** the confirm step warns if any assigned counter still has lines the server has not received, for example "2 lines from Karim not received yet".
+- **Late count line:** a line that reaches the server after the count was closed (for example, from an offline sync) never changes the closed count. It opens a Late count line Issue for the Manager who started the count, showing the counted quantity, On hand at the time it was counted, and both times (FR-33a).
 - **Match:** the line is recorded as "verified". It is the evidence for the Product's last verified date.
 - **Shortage:** a Discrepancy case opens, and the missing quantity moves to Unexplained. It is taken from Available first, then from Damaged, then from Reserved, so no state goes negative (FR-13). If Reserved stock is taken, the affected Dispatch orders (latest-created first) get Dispatch-short Issues. `[ASSUMPTION]`
 - **Surplus:** a Discrepancy case opens. Nothing is added to stock until the case is decided.
@@ -410,6 +438,11 @@ Conditions:
 - The User must have signed in on that device while it was online at least once.
 - `[ASSUMPTION — provisional target]` Actions can be queued for up to 24 hours. After that, the device asks the User to reconnect.
 
+Queued actions stay with their author (shared phones, FR-2):
+- Every queued action is stamped, when it is recorded, with the User who recorded it and a signed token for that sign-in session. New actions are always stamped with the User signed in now. `[ASSUMPTION: signed action tokens to be confirmed in architecture]`
+- Queued actions keep syncing as their author, even after that User signs out.
+- A different User who signs in on the same device cannot edit, discard or re-send them, and sees only how many are waiting, for example "2 actions from another person waiting to sync".
+
 #### FR-42: Show offline status
 The screen always shows whether the device is online or offline and how many actions are waiting in the queue. Stock figures shown while offline are labelled "as of (time)".
 
@@ -435,6 +468,7 @@ Each User can switch the interface between Bangla and English at any time. The c
 
 #### FR-46: Download templates
 A Manager can download Excel templates for Products, Suppliers and opening stock.
+- The Products template has an optional **Alternate names** column. Several Alternate names in one cell are separated by ";" (FR-6).
 
 #### FR-47: Import with preview
 A Manager can upload a filled template. The system checks every row and shows a preview of the valid rows and the errors, each error with its row number and reason.
@@ -449,7 +483,7 @@ The Owner, Manager and Accountant can see one summary screen showing:
 - Stock value per Warehouse and in total.
 - Losses for the chosen month in taka by Reason (damaged, expired, other, transfer loss, confirmed loss), plus the current Unexplained value.
 - The number and value of open Discrepancy cases and other open Issues.
-- The number of Products below their Low-stock threshold.
+- The number of low-stock Products: Promisable quantity at or below the Low-stock threshold, per Warehouse (same rule as FR-50).
 
 Realizes UJ-6.
 
@@ -457,8 +491,8 @@ Realizes UJ-6.
 Every figure in the owner view can be tapped to show the Issues or Stock movements behind it. Each item shows the Product, quantity, value, User and time.
 
 #### FR-50: Low-stock list
-Any User can see the Products whose Available quantity at a Warehouse is at or below that Warehouse's Low-stock threshold. The list also shows the quantity on open POs.
-- Out-of-stock Products (zero Available) appear first.
+Any User can see the Products whose Promisable quantity at a Warehouse is at or below that Warehouse's Low-stock threshold. The list also shows the quantity on open POs.
+- Out-of-stock Products (Promisable quantity 0) appear first.
 
 ### 4.16 My Tasks and My Record
 
@@ -468,6 +502,7 @@ Each Warehouse worker and Supervisor sees a list of open work in their Assigned 
 - Sent POs to receive
 - Incoming Transfers to receive
 - Stock count lines assigned to them
+- Their own draft Transfers not yet sent, shown as "Draft transfer · not sent" (FR-26)
 
 After any action, the next task appears.
 
@@ -614,6 +649,7 @@ All 18 MUST capabilities from the brief are covered by FR-1 to FR-54:
 
 1. Will owners pay a monthly fee, and how much? About ৳1,000–3,000/month is an unverified guess.
 2. Do warehouse workers have their own smartphones, or do they share them? If they share, how does each worker sign in quickly as themselves?
+   *Partly decided 2026-10-24 (DD-8):* v1 supports shared phones. A device can be marked Shared phone so passwords are not saved (FR-2), and queued actions stay with the User who recorded them, even after sign-out (FR-41). *Still open:* how many workers really share phones, and whether a quicker way to switch User than phone number + password is needed.
 3. Can the camera scanner read FMCG barcodes reliably on the low-cost phones staff actually use?
 4. Why would an owner switch from an Excel sheet that works "well enough"? Is the taka lost to stock problems big enough to justify paying?
 5. Will staff accept more accountability if the product clearly protects them too?
@@ -624,16 +660,36 @@ All 18 MUST capabilities from the brief are covered by FR-1 to FR-54:
 ## 10. Assumptions Index
 
 - §4.1 FR-2: sign-in pauses after 5 failed attempts.
+- §4.1 FR-2: Shared phone is on by default for Warehouse workers and Supervisors. Browsers may still offer to save the password even when asked not to (test on Chrome Android).
 - §4.1 FR-5: an Owner can self-approve when no other eligible User exists, and the record is marked.
+- §4.2 FR-6: a Product can have up to 5 Alternate names.
+- §4.7 FR-26: a draft Transfer not sent within 24 hours raises a Draft-transfer-not-sent Issue. Its decisions are Keep draft and Discard draft (FR-33a).
 - §4.7 FR-28: extra received on a Transfer is held until someone decides. An overdue Issue is raised after 48 hours (**provisional target**).
 - §4.8 FR-29: damage flagged from Reserved stock triggers an automatic re-reservation from Available.
 - §4.8 FR-30: **open for validation**. Approving a Damage flag always writes the stock off.
 - §4.9 FR-31: inbox ranking is assigned Issues first, then Reserved stock, then value at risk, then age.
 - §4.10 FR-36: count lines are compared with On hand at the moment each line is counted. Shortages are taken from Available, then Damaged, then Reserved.
+- §4.10 FR-36 / FR-33a: Start recount and Dismiss are enough decisions for a Late count line Issue.
 - §4.12 FR-41: the Offline queue holds up to 24 hours of actions (**provisional target**).
+- §4.12 FR-41: queued actions carry a signed per-session action token (to be confirmed in architecture).
 - §4.13 FR-45: Western digits are used in both languages.
 - §5: all NFR numbers are provisional.
 - §7.2: the order of build increments is a suggestion.
 - §8: all success targets are provisional.
 
-*Decided (no longer assumptions):* phone number + password sign-in with Owner recovery code and admin reset; Unit cost = latest Receipt cost with Revalue movements; one Warehouse per Dispatch order; segregation-of-duties rules in FR-5; returns are a non-goal.
+*Decided (no longer assumptions):* phone number + password sign-in with Owner recovery code and admin reset; Unit cost = latest Receipt cost with Revalue movements; one Warehouse per Dispatch order; segregation-of-duties rules in FR-5; returns are a non-goal; per-line posting on receiving and picking, draft Transfers, count discrepancies applied at close, and server-enforced Blind counts (2026-10-24, §11).
+
+## 11. Change log
+
+**2026-10-24** — applied UX design decisions DD-1…DD-10 (`design-process/C-UX-Scenarios/00-design-decisions.md`). FR numbers are unchanged and no new FR was added.
+
+- **DD-1:** each saved line is its own Stock movement on Receive PO (FR-21), Pick (FR-25) and Receive Transfer (FR-27). Finish actions close the task and raise Issues; they never post lines again.
+- **DD-2:** value at risk still ranks Issues, but taka is shown only to Roles that may view Stock value (FR-31, FR-4 note).
+- **DD-3:** low stock = Promisable quantity at or below the threshold; out of stock = Promisable 0 (Glossary, FR-48, FR-50).
+- **DD-4:** no PRD change (screen layout belongs in DESIGN.md and EXPERIENCE.md).
+- **DD-5:** a Transfer is a draft until sent; drafts visible and discardable; Send refused when Available dropped; new Draft-transfer-not-sent Issue type (Glossary, FR-26, FR-28, FR-33a, FR-53).
+- **DD-6:** count discrepancies apply at Close count; Close count warns about unsynced lines; late lines open a new Late count line Issue type (FR-35, FR-36, FR-33a).
+- **DD-7:** during a Blind count, assigned counters cannot see system quantities for the counted Products at that Warehouse on any screen; server-enforced (FR-35, FR-12, FR-4 note).
+- **DD-8:** Shared phone device setting with no password saving; queued actions stay with their author after sign-out (FR-2, FR-41, §9 Q2 partly decided).
+- **DD-9:** no PRD change (the PRD does not describe navigation; Owner Orders access is in EXPERIENCE.md).
+- **DD-10:** optional Alternate names on Products; search matches them; new optional template column (Glossary, FR-6, FR-8, FR-46).

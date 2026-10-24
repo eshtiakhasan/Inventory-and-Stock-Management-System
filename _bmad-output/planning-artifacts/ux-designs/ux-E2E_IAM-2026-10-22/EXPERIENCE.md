@@ -3,7 +3,7 @@ title: "Mojud - Experience"
 name: Mojud
 status: final
 created: 2026-10-22
-updated: 2026-10-23
+updated: 2026-10-24
 sources:
   - _bmad-output/planning-artifacts/prds/prd-E2E_IAM-2026-10-22/prd.md
   - _bmad-output/planning-artifacts/prds/prd-E2E_IAM-2026-10-22/addendum.md
@@ -53,18 +53,18 @@ Every PRD feature lands on a surface. "Journey" shows which Key Flow reaches it;
 | S13 | **Issue detail** (evidence, history, decisions, comment) | Both | As S12 | FR-32, FR-33a, FR-30, FR-37, FR-5 | UJ-3, UJ-5, UJ-6, UJ-7 |
 | S14 | **Dispatch orders** (list, create, change, cancel) | Both | Sales rep, Manager, Owner | FR-23, FR-24 | UJ-4 |
 | S15 | **Purchase orders** (list, create, close short) | Desk | Manager, Owner | FR-20, FR-22 | — (PO creation precedes UJ-1) |
-| S16 | **Transfers** (incoming / outgoing list, "Send Transfer") | Both | Floor roles, Manager, Owner | FR-26–FR-28 status | UJ-5 |
-| S17 | **Stock counts** (start, assign, progress, close) | Desk | Manager, Owner | FR-34, FR-36 | UJ-7 |
+| S16 | **Transfers** (Incoming / Outgoing / **Drafts** segments, "Send Transfer") | Both | Floor roles, Manager, Owner | FR-26–FR-28 status; draft Transfers (FR-26) | UJ-5 |
+| S17 | **Stock counts** (start, assign, progress as lines counted only, close) | Desk | Manager, Owner | FR-34, FR-35, FR-36 | UJ-7 |
 | S18 | **Owner view** + drill-down panel | Both | Owner, Manager, Accountant | FR-48, FR-49 | UJ-6 |
-| S19 | **Low stock** | Both | All | FR-50 | — |
+| S19 | **Low stock** (Promisable at or below threshold; out of stock = Promisable 0) | Both | All | FR-50 | — |
 | S20 | **My record** | Both | All (own); Owner, Manager (anyone's) | FR-51, Sync conflict outcomes (FR-44) | UJ-9 |
 | S21 | **Offline queue** | Floor | Anyone who recorded offline | FR-42, FR-44 | UJ-1 (edge case) |
 | S22 | **Settings: Users** | Desk | Owner, Manager | FR-3, password reset (FR-54) | UJ-8 |
 | S23 | **Settings: Warehouses** | Desk | Owner, Manager | FR-10 | UJ-8 |
-| S24 | **Settings: Products** (create, edit, archive, thresholds, opening stock, barcode link) | Desk | Manager, Owner | FR-6, FR-7, FR-16, FR-38 link | UJ-8 |
+| S24 | **Settings: Products** (create, edit, archive, Alternate names, thresholds, opening stock, barcode link) | Desk | Manager, Owner | FR-6, FR-7, FR-16, FR-38 link | UJ-8 |
 | S25 | **Settings: Suppliers** | Desk | Manager, Owner | FR-19 | UJ-8 |
 | S26 | **Settings: Excel import** (templates, upload, preview, confirm) | Desk | Manager, Owner | FR-46, FR-47 | UJ-8 |
-| S27 | **Settings: Me** (language, theme, recovery code, install app, sign out) | Both | All | FR-45, FR-54, FR-40, FR-2 | — (spine-only by decision) |
+| S27 | **Settings: Me** (language, theme, recovery code, install app, Shared phone device setting, sign out) | Both | All | FR-45, FR-54, FR-40, FR-2 | — (spine-only by decision) |
 
 ### Home and navigation per Role
 
@@ -75,14 +75,14 @@ Every PRD feature lands on a surface. "Journey" shows which Key Flow reaches it;
 | Warehouse worker | My tasks (S3) | Tasks · Scan · More | — (phone only) |
 | Supervisor | Issues inbox (S12) | Issues · Tasks · Scan · More | — (phone first) |
 | Sales rep | Product search (S5) | Stock · Orders · Issues · More | Stock · Orders · Issues |
-| Manager | Issues inbox (S12) | Issues · Stock · Counts · More | Overview · Issues · Stock · Orders · Counts · Settings |
-| Owner | Owner view (S18) — UJ-6 "opens the owner view from home" | Overview · Issues · Stock · More | Overview · Issues · Stock · Orders · Counts · Settings |
+| Manager | Issues inbox (S12) | Issues · Stock · Counts · More (Orders is the first item in More) | Overview · Issues · Stock · Orders · Counts · Settings |
+| Owner | Owner view (S18) — UJ-6 "opens the owner view from home" | Overview · Issues · Stock · Orders · More | Overview · Issues · Stock · Orders · Counts · Settings |
 | Accountant | Owner view (S18) | Overview · Stock · More | Overview · Stock |
 
-- **Orders** groups Dispatch orders (S14), Purchase orders (S15) and Transfers (S16) as segments; each Role sees only the segments FR-4 allows.
-- **More** holds Transfers (S16, for Warehouse workers and Supervisors, who have no Orders tab), Low stock (S19), My record (S20), Offline queue (S21) and Settings (S22–S27). The offline banner also links straight to S21.
+- **Orders** groups Dispatch orders (S14), Purchase orders (S15) and Transfers (S16) as segments; each Role sees only the segments FR-4 allows. The Owner reaches it from the phone tab bar; the Manager, who has no Orders tab, finds **Orders** as the first item in More. [ASSUMPTION: five tabs fit at 320 px with Bangla labels; verify.]
+- **More** holds Orders (Manager only, first), Transfers (S16, for Warehouse workers and Supervisors, who have no Orders tab), Low stock (S19), My record (S20), Offline queue (S21) and Settings (S22–S27). The offline banner also links straight to S21.
 - **Send Transfer** (FR-26) is reachable for Warehouse workers and Supervisors from a button in the My tasks header and from More → Transfers. Both open S10 in send mode.
-- **Scan** is a tab *and* the fixed Scan bar on floor screens. What a scan does depends on where it happens (Interaction Primitives → When does a scan record). It never records a Stock movement by itself, except in Flag damage mode.
+- **Scan** is a tab *and* the fixed Scan bar on floor screens. **The fixed Scan bar appears on floor screens only:** My tasks and the task screens (S3, S6–S11) for floor roles. Desk-role home screens (Issues inbox, including the Supervisor's; Owner view; Product search for the Sales rep) have no fixed Scan bar; scanning goes through the Scan tab, or the search field's scan button where a Role has no Scan tab. What a scan does depends on where it happens (Interaction Primitives → When does a scan record). It never records a Stock movement by itself, except in Flag damage mode.
 - Navigation depth: at most one level under a tab, plus one bottom sheet. Back always returns to the list it came from with scroll position kept.
 - Buttons and tabs a Role cannot use are **hidden**; the server still enforces FR-4.
 
@@ -202,6 +202,25 @@ English terms are the PRD Glossary terms and UI labels. [ASSUMPTION: every Bangl
 | Already decided by {name} at {time} | {name} {time}-এ সিদ্ধান্ত নিয়েছেন |
 | Reason | কারণ † |
 
+**Strings added 2026-10-24 (DD-5 to DD-10)**
+
+[BN: verify] on every row: new drafts written from the meaning, not from the mocks.
+
+| English | Bangla |
+|---|---|
+| Hidden during count | গণনা চলছে, তাই লুকানো [BN: verify] |
+| Draft transfer · not sent | খসড়া স্থানান্তর · পাঠানো হয়নি [BN: verify] |
+| Drafts (Transfers segment) / Draft (status tag) | খসড়া [BN: verify] |
+| Discard draft | খসড়া বাতিল করুন [BN: verify] |
+| Only {qty} available. Max {qty}. (Send refused for a draft line) | মাত্র {qty} উপলব্ধ। সর্বোচ্চ {qty}। [BN: verify] |
+| Shared phone | শেয়ার করা ফোন [BN: verify] |
+| Don't save your password on a shared phone. (sign-in hint) | শেয়ার করা ফোনে পাসওয়ার্ড সেভ করবেন না। [BN: verify] |
+| {n} actions not synced yet. They stay on this phone and will sync as {name}. (sign-out dialog) | {n}টি কাজ এখনও সিঙ্ক হয়নি। এগুলো এই ফোনেই থাকবে এবং {name}-এর নামে সিঙ্ক হবে। [BN: verify] |
+| Sign out anyway (sign-out dialog confirm) | তবুও সাইন আউট করুন [BN: verify] |
+| {n} actions from another person waiting to sync | অন্য একজনের {n}টি কাজ সিঙ্কের অপেক্ষায় [BN: verify] |
+| {n} lines from {name} not received yet (Close count warning) | {name}-এর {n}টি লাইন এখনও আসেনি [BN: verify] |
+| Alternate names | অন্য নাম [BN: verify] |
+
 **Floor screen strings from the mockups**
 
 [ASSUMPTION: drafts taken from the `mockups/` files; each needs native-speaker review before build.] {qty}, {n} and {total} are filled in at run time with Western digits.
@@ -234,6 +253,8 @@ English terms are the PRD Glossary terms and UI labels. [ASSUMPTION: every Bangl
 | keep PO open / close line | ক্রয় অর্ডার খোলা থাকবে / লাইন বন্ধ হবে |
 | extra stays Available / request Reversal | বাড়তি উপলব্ধে থাকবে / রিভার্সাল অনুরোধ |
 | no change | কোনো পরিবর্তন নেই |
+| check in 24 h (Keep draft) | 24 ঘণ্টা পরে আবার দেখা হবে [BN: verify] |
+| no stock change (Discard draft) | মজুদে কোনো পরিবর্তন নেই [BN: verify] |
 
 **Issue types (FR-33a)**
 
@@ -245,7 +266,9 @@ English terms are the PRD Glossary terms and UI labels. [ASSUMPTION: every Bangl
 | Transfer shortage | স্থানান্তরে ঘাটতি † |
 | Transfer overage | স্থানান্তরে বেশি |
 | Transfer overdue | স্থানান্তর দেরিতে |
+| Draft transfer not sent | খসড়া স্থানান্তর পাঠানো হয়নি [BN: verify] |
 | Discrepancy case | গরমিল কেস † |
+| Late count line | দেরিতে আসা গণনা লাইন [BN: verify] |
 | Dispatch short | ডিসপ্যাচে ঘাটতি |
 | Sync conflict | সিঙ্ক দ্বন্দ্ব † |
 | Reversal request | রিভার্সাল অনুরোধ |
@@ -264,6 +287,8 @@ English terms are the PRD Glossary terms and UI labels. [ASSUMPTION: every Bangl
 | Discard | বাতিল † |
 | Confirmed loss | নিশ্চিত হারানো † |
 | Surplus confirmed / Surplus rejected (miscount) | বাড়তি নিশ্চিত / বাড়তি নয় (ভুল গণনা) |
+| Keep draft / Discard draft | খসড়া রাখুন / খসড়া বাতিল করুন [BN: verify] |
+| Start recount / Dismiss | আবার গণনা শুরু করুন / খারিজ করুন [BN: verify] |
 
 **Reason codes**
 
@@ -295,20 +320,21 @@ Mocks: Scan overlay (Flag damage mode), Floor primary button, Quantity entry pic
 | Component | Where | Behavioral rules |
 |---|---|---|
 | **App bar** | Top of every screen | Shows the screen title, the signed-in User's name (floor screens; shared phones) and the online status as icon + text ("Online" / "Offline"), never color alone, so the screen always shows online or offline (FR-42). Sticky; compacts on short screens and scrolls away only below 20rem tall (DESIGN.md → Layout). |
-| **Scan bar** | Fixed bottom of every floor screen (S3, S6, S7, S8, S10, S11) | One tap opens the **Scan overlay** (S4). What the scan then does follows Interaction Primitives → When does a scan record. Camera denied or unsupported → tapping the bar opens Type code directly (FR-39). Never covered by the keyboard: it hides while a field is focused and returns on blur. |
+| **Scan bar** | Fixed bottom of every floor screen (S3, S6, S7, S8, S10, S11) for floor roles; never on desk-role home screens (Home and navigation per Role) | One tap opens the **Scan overlay** (S4). What the scan then does follows Interaction Primitives → When does a scan record. Camera denied or unsupported → tapping the bar opens Type code directly (FR-39). Never covered by the keyboard: it hides while a field is focused and returns on blur. |
 | **Scan overlay** | S4, opened from the Scan bar, a Product field's scan button, or Flag damage | `role="dialog"` named "Scan" (or "Flag damage — scan the damaged item" in Flag damage mode). On open, focus goes to the dialog heading; the camera starts (permission asked the first time only). **"Type code" is always visible**, not only on camera failure: it opens a field that takes a Barcode, SKU or name search; choosing a result acts exactly like a scan, except in Flag damage mode, where it opens the pre-filled Flag damage sheet. **Close** (and Escape / Back) closes without doing anything and returns focus to the control that opened it. After about 8 s without a read the hint changes to "Can't scan? Type the code." On a read: short vibration where supported, the overlay closes, and the polite live region announces the match ("Rice 25 kg selected, 8 ctn" / "Rice 25 kg — Flagged 1 ctn damaged"). The camera closes after every successful scan. Unknown Barcode → "Not found" with search (FR-38); offline and not in the catalogue on the phone → "Not on this phone yet". |
 | **Floor primary button** | Selected line (Confirm line, Save line); end of task lists (Mark delivery complete, Finish receipt, Confirm dispatch, Send Transfer) | Disables on tap until saved (FR-14). After saving, the toast shows, the line shows its new state, and focus returns to the Scan bar. Line buttons sit directly under the line's quantity entry, inside the scrolling content, and scroll into view above the fixed zone and the keyboard. |
-| **Stock ladder** | S6; compact version in S5 results | Shows On hand → − Damaged → − Reserved → **Promisable** per Warehouse, plus In transit and Unexplained totals (FR-12). One ladder per Warehouse the User can see; the User's own Warehouse first. Shows "as of HH:MM" (FR-12); offline it reads "as of HH:MM (offline)" (FR-42). Each row is a 48px target that opens movement history filtered by that state. The stacked bar is hidden from screen readers; the rows carry every value. |
+| **Stock ladder** | S6; compact version in S5 results | Shows On hand → − Damaged → − Reserved → **Promisable** per Warehouse, plus In transit and Unexplained totals (FR-12). For a User assigned to an open count, the ladder of a counted Product at that Warehouse is replaced by "Hidden during count" (State Patterns → Hidden during count). One ladder per Warehouse the User can see; the User's own Warehouse first. Shows "as of HH:MM" (FR-12); offline it reads "as of HH:MM (offline)" (FR-42). Each row is a 48px target that opens movement history filtered by that state. The stacked bar is hidden from screen readers; the rows carry every value. |
 | **Stock-state pill** | Ladder, task lines, Issue cards | Always icon + label + quantity; never color alone. Read as "Damaged, 8 cartons". |
 | **Quantity entry** | S7, S8, S9, S10, S11, S14 | Carton and piece rows (FR-9), stacked on phones; stored in Base units. Pre-fill follows the screen: **pick** (S8) = the full remaining line quantity; **Flag damage sheet** = 1 of the scanned unit or the saved flag's quantity; **blind screens and Send Transfer** = empty (no default), with the scanned unit's row focused. − / + steppers (64px) allow entry without typing; typing uses the numeric keypad. Pieces ≥ Conversion factor roll into cartons on blur ("27 pcs" → "1 ctn + 3 pcs" for 24/ctn). Shows the max inline when a limit exists (Dispatch order: Promisable; pick: remaining on the line). Blind screens (S7, S10 receive, S11) **never** show expected, ordered, sent or system quantities (FR-21, FR-27, FR-35). |
-| **Task card** | S3, S7, S8, S10, S11 | Tap opens the task (the whole card is one target; it holds no other buttons). The current line has the left bar. Picks show progress "12 / 20 ctn"; blind screens show only "counted 12 ctn". Status tag shows New, In progress, Done or Not synced. |
-| **Task status tag** | Task cards | Display only, not tappable. "New" until the first line is saved; "In progress" after; "Done" when the task is finished (every line picked or counted, or the finishing button confirmed); "Not synced" while any of its lines is queued, shown in place of the others. A line on its own also shows "Done" once fully picked or counted. [ASSUMPTION: these four values.] |
-| **Line completion** | S7, S8, S10 receive | **Mark delivery complete** (S7), **Finish receipt** (S10 receive) and **Confirm dispatch** (S8) are available at any time — not only when every line is counted — at the end of the line list. Each opens a Confirmation dialog. S7 / S10: "Finish this delivery? 3 of 5 lines counted. Lines with no count are saved as not received in this delivery." (counts lines, never quantities, so it stays blind; FR-21, FR-22). S8: shown only when lines are short — "2 lines are short. Short quantities stay Reserved." (FR-25). |
+| **Task card** | S3, S7, S8, S10, S11 | Tap opens the task (the whole card is one target; it holds no other buttons). The current line has the left bar. Picks show progress "12 / 20 ctn"; blind screens show only "counted 12 ctn". Status tag shows New, In progress, Done, Not synced or Draft. A "Draft transfer · not sent" card in the creator's My tasks reopens S10 in send mode on that draft (FR-26). |
+| **Task status tag** | Task cards | Display only, not tappable. "New" until the first line is saved; "In progress" after; "Done" when the task is finished (every line picked or counted, or the finishing button confirmed); "Not synced" while any of its lines is queued, shown in place of the others; "Draft" on a Transfer whose lines are saved but not yet sent. A line on its own also shows "Done" once fully picked or counted. [ASSUMPTION: these five values.] |
+| **Line completion** | S7, S8, S10 receive | **Every saved or confirmed line has already moved its stock** (FR-21, FR-25, FR-27); the finish buttons close the task and raise Shortfall or difference Issues, and never post the lines again. **Mark delivery complete** (S7), **Finish receipt** (S10 receive) and **Confirm dispatch** (S8) are available at any time — not only when every line is counted — at the end of the line list. Each opens a Confirmation dialog. S7 / S10: "Finish this delivery? 3 of 5 lines counted. Lines with no count are saved as not received in this delivery." (counts lines, never quantities, so it stays blind; FR-21, FR-22). S8: shown only when lines are short — "2 lines are short. Short quantities stay Reserved." (FR-25). |
+| **Send Transfer (finish)** | S10 send | Saved send lines are a **draft**: nothing moves and nothing is reserved (FR-26). **Send Transfer** posts every line to In transit at that moment, one movement per line; no dialog (routine floor action). If Available has dropped below a draft line, Send is refused for that line with an inline Refusal message ("Only 18 ctn available. Max 18 ctn." + "Use max") and nothing is sent until it is fixed. While unsent, the draft stays visible as a "Draft transfer · not sent" card in the creator's My tasks and in the **Drafts** segment of Transfers (S16). **Discard draft** (creator, Supervisor, Manager, Owner) opens a danger Confirmation dialog and moves no stock. |
 | **Flag damage** | Flag damage button above the Scan bar on S6 and S8 | Tap **Flag damage** → the Scan overlay opens in **Flag damage mode** → **the scan itself saves** 1 of the scanned unit (Pack barcode → 1 carton, Base barcode → 1 piece) with Reason "damaged" (FR-29; memlog decision). One tap + one scan. On S8 it flags from Reserved on that order's line and a replacement is reserved automatically; a Product not on the order flags from Available. On S6 it flags from Available at the User's Warehouse. [ASSUMPTION: Product not on the order flags from Available.] The toast reads "Flagged 1 ctn damaged" with a **Change qty/reason** action. Close exits the mode without saving. If nothing is Available or Reserved to flag, nothing is saved and a Refusal states the max. Without a camera, Flag damage opens the sheet with a Product field (type or search). |
 | **Flag damage** (sheet) | Opened by "Change qty/reason", Type code in Flag damage mode, or the no-camera path | Pre-filled: Product, quantity, Reason "damaged". Reason chips: damaged / expired / other; optional note. The sheet's one big button saves. From "Change qty/reason" it records a correction linked to the saved flag; the original record is never edited (FR-11). [ASSUMPTION: how the correction is recorded is an architecture decision; it must stay append-only.] "Change qty/reason" is also available on the flag in My record until the flag is decided. [ASSUMPTION] |
 | **Bottom sheet** | S9 and small pickers | Over a scrim; page behind is inert; focus moves into the sheet and is trapped; Close, Escape and Back close it and return focus. Tapping the backdrop closes the sheet only when nothing has been changed; once a field is changed, the backdrop does nothing and only Close or the save button leave. |
 | **Confirmation dialog** | Actions listed in Interaction Primitives → Confirm vs undo | `role="alertdialog"`; title is a question, description is the one-sentence consequence. Labels name the action ("Finish delivery", "Cancel order"), never "OK". Initial focus on **Go back**. Escape / Back = Go back. The backdrop does nothing. Confirm uses danger style when it cancels, removes or deactivates something. |
-| **Issue card** | S12 | Shows type, Product, Warehouse, quantity, value at risk, raised by, age (FR-31) — e.g. "Damage flag · Rice 25 kg · 1 carton · Narayanganj · Karim · 14:05". The **title is a link** to Issue detail (S13); the decision buttons are **sibling buttons**, never inside a tappable card. Card buttons follow the Issue decisions table below; a decision on the card is **one tap** (FR-30). If FR-5 blocks this User, no buttons show, only "You raised this — another person must decide". |
+| **Issue card** | S12 | Shows type, Product, Warehouse, quantity, value at risk, raised by, age (FR-31). The taka value shows only to Owner, Manager and Accountant; Supervisors and Sales reps see quantity and unit instead, though the ranking is the same (FR-31, FR-4). E.g. "Damage flag · Rice 25 kg · 1 carton · Narayanganj · Karim · 14:05". The **title is a link** to Issue detail (S13); the decision buttons are **sibling buttons**, never inside a tappable card. Card buttons follow the Issue decisions table below; a decision on the card is **one tap** (FR-30). If FR-5 blocks this User, no buttons show, only "You raised this — another person must decide". |
 | **Issue decision button** | S12 cards, S13 | Two-line label: decision + effect, e.g. "Approve · write off 1 ctn". The button grows taller instead of shrinking text (Bangla ≥ 16px). One tap decides; no dialog (FR-30). Offline: disabled, with "Needs internet" shown beside it. |
 | **Issue detail** | S13 | Evidence (both counts, both Users, both times for Transfer Issues, FR-28; counted vs On hand for Discrepancy cases, FR-37), history, all decisions for the type, optional comment, and (Owner/Manager) "Assign to…" (FR-33). Decisions needing a choice open one small picker: Transfer shortage "Found" asks which Warehouse; "Confirmed loss" asks a Reason from the FR-37 list. |
 | **Offline banner** | Under the app bar while offline | Appears within 2 s of losing connection, stays until back online. Shows count of queued actions (FR-42). Tap opens Offline queue (S21). When online with items still syncing it shows "Syncing 3…", then disappears. From 20 h of queued actions it changes to "Connect within 4 hours to keep recording" (State Patterns). Never blocks recording. |
@@ -316,12 +342,12 @@ Mocks: Scan overlay (Flag damage mode), Floor primary button, Quantity entry pic
 | **Confirmation toast** | After every action | "Saved" (with the success icon) online or "Saved on phone, will sync" offline (FR-52). Above the fixed bottom zone; never covers the focused element or the save button (moves under the app bar if it would). A toast moved under the app bar may briefly cover the first list item, but never the focused element. Stays 5 s or until the next action, whichever comes first; a toast with an action ("Change qty/reason") stays at least 10 s. Rapid saves combine ("Saved 3 lines"). Does not steal focus or block the next scan. The next task is already on screen underneath (FR-53, FR-25). No Undo button (Decided — see Interaction Primitives). [ASSUMPTION: 5 s and 10 s.] |
 | **Refusal message** | Under quantity entry; Issue detail | Shown when a quantity exceeds what the no-negative rule allows (FR-13), stating the max in the entry's units. Checked as the User types with about 0.5 s pause, announced once per change. Offers one "Use max" button. Save stays disabled (focusable, with the reason in its description) until the quantity is valid. [ASSUMPTION: "Use max" shortcut.] |
 | **Disabled button** | Any | Stays focusable (`aria-disabled`) and its reason is visible next to it ("Needs internet", "Enter a quantity"), not only in a tooltip. |
-| **Product search field** | S5, S14, S24, Type code | Results while typing (FR-8, NFR-1: < 1 s), case-insensitive, Bangla or English names, SKU or barcode. Each result shows name, SKU and the compact ladder (Promisable per Warehouse) so a Sales rep has the answer without opening the Product (UJ-4). Offline: searches the catalogue on the phone, stock "as of". |
+| **Product search field** | S5, S14, S24, Type code | Results while typing (FR-8, NFR-1: < 1 s), case-insensitive, Bangla or English names, Alternate names, SKU or barcode. When the match came from an Alternate name, the result shows it under the main name (no automatic transliteration). For a User assigned to an open count, counted Products at that Warehouse show "Hidden during count" instead of figures. Each result shows name, SKU and the compact ladder (Promisable per Warehouse) so a Sales rep has the answer without opening the Product (UJ-4). Offline: searches the catalogue on the phone, stock "as of". |
 | **Owner metric tile** | S18 | The whole tile is one target that opens the **drill-down panel** for that figure (FR-49). While its panel is open the tile is **selected** (`aria-expanded="true"`, "Showing" tag); only one tile is selected at a time. |
 | **Losses by Reason** | S18 | Rows, not a chart: damaged, expired, other, transfer loss, confirmed loss, then the total, for the chosen month (FR-48). Unexplained is its own tile with the current value. Each row opens the drill-down for that Reason. |
 | **Month selector** | S18 losses | Previous / next month buttons named "Previous month" / "Next month"; the month name in the chosen language. Defaults to the current month; next is disabled on the current month. Changes only the loss figures; Stock value, Unexplained and open Issues are always "now". |
 | **Drill-down panel** | S18 | Lists the Issues or Stock movements behind the figure: Product, quantity, value, User, time (FR-49), highest value first. [ASSUMPTION: sort order.] Each row opens S13 or the movement. On open, focus moves to the panel heading; Close (desk) or Back (phone) returns focus to the tile. Empty: "No open discrepancy cases." (or the matching sentence). |
-| **Bottom tab bar / Side nav** | All home surfaces | Tabs per Role (IA table). Labels in the chosen language only. Side nav marks the current item with `aria-current="page"`. |
+| **Bottom tab bar / Side nav** | All home surfaces | Tabs per Role (IA table), at most five (Owner). Labels wrap rather than shrink. Labels in the chosen language only. Side nav marks the current item with `aria-current="page"`. |
 | **Count badge** | Issues tab and side-nav item only | Count of open Issues the User can decide. The tab's name includes it ("Issues, 4 open"). Hidden at 0. [ASSUMPTION: a count badge on the Issues tab only; no other badges, no notifications (PRD §6).] |
 | **Language switch** | S27, and on S2 before sign-in | One tap toggles বাংলা / English; applies instantly without reload and is remembered for the User (FR-45). |
 
@@ -337,6 +363,8 @@ From FR-33a and FR-37 (card buttons for Damage flag, Transfer shortage and Sync 
 | Transfer shortage | Open to decide | Found (asks Warehouse) [ASSUMPTION] | Transfer loss · write off {qty} | Found needs a Warehouse |
 | Transfer overage | Recount · receiver counts again; Sender undercounted · move {qty} | Recount [ASSUMPTION] | Sender undercounted | — |
 | Transfer overdue | Still coming · check in 24 h; Transfer loss · write off {qty} | Still coming [ASSUMPTION] | Transfer loss | — |
+| Draft transfer not sent | Keep draft · check in 24 h; Discard draft · no stock change | Keep draft [ASSUMPTION] | Discard draft | — (decisions per FR-33a [ASSUMPTION]) |
+| Late count line | Open to decide | Start recount · open a count [ASSUMPTION] | Dismiss · no change | Evidence first: counted vs On hand and both times (FR-36) |
 | Discrepancy case (shortage) | Open to decide | Found · back to Available [ASSUMPTION] | Confirmed loss (asks Reason) | Confirmed loss needs a Reason; evidence first |
 | Discrepancy case (surplus) | Open to decide | Surplus rejected · no change [ASSUMPTION] | Surplus confirmed · add {qty} | Evidence first (FR-37) |
 | Dispatch short | Keep open · line stays open; Reduce order · reduce line | Keep open [ASSUMPTION] | Reduce order | — |
@@ -364,6 +392,13 @@ From FR-33a and FR-37 (card buttons for Damage flag, Transfer shortage and Sync 
 | **Refused by segregation of duties** | S13, S7, S10 receive | Plain sentence naming the rule: "You sent this Transfer, so someone else must receive it." (FR-5). Owner self-approval, when allowed, shows a second-step "Approve as Owner (marked self-approved)". |
 | **Already decided** | S12, S13 | When another User decided or reassigned the Issue first (NFR-4): "Already decided by Nasima at 14:20: Approve." (or "Assigned to {name}"). Nothing changes stock twice; the card leaves the list and focus moves to the next card. |
 | **Blind** | S7, S10 receive, S11 | No expected quantity anywhere — not on screen, not in the page code, `aria-*` attributes or hidden text — including after save and in the Mark delivery complete dialog (FR-21, FR-27, FR-35). After finishing, the worker sees only "Receipt saved"; any Shortfall goes to the Supervisor, not to the worker's screen (UJ-1). |
+| **Hidden during count** | S5, S6, S19, S4 scan results, S8/S10 line hints, S17 | While a count is open, a User assigned to it sees "Hidden during count" (DESIGN.md → Hidden during count) in place of On hand, Promisable, the stock ladder, movement quantities and low-stock status **for the counted Products at that Warehouse**. Everything else is normal. The server never sends those figures, so they are not in the page code or offline data either (FR-35). The Manager who started the count sees lines counted in S17 but no counted quantities until Close count. Ends at Close count. |
+| **Draft transfer** | S3, S10 send, S16 Drafts | Saved send lines, not yet sent: card "Draft transfer · not sent" with the Draft tag; stock still Available at the source. After 24 h unsent, a Draft-transfer-not-sent Issue goes to the source Supervisor (FR-26) [ASSUMPTION: 24 h]. Discarded drafts leave the lists. |
+| **Send refused (draft)** | S10 send | Available dropped below a draft line since it was saved: that line shows the Refusal message with its max; Send stays disabled until fixed or the line is removed (FR-26, FR-13). Offline, Send queues; if the server then refuses, the normal Sync conflict path applies (FR-44). |
+| **Late count line** | S11 (counter), S12/S13 (Manager) | A count line that syncs after Close count never changes the closed count. The counter's chip clears as normal (it was recorded). The Manager who started the count gets a Late count line Issue with counted vs On hand and both times (FR-36). |
+| **Shared phone sign-in** | S2 | When the device's Shared phone setting is on, the password field uses `autocomplete="off"`, no "remember me" is offered, and a short hint reads "Don't save your password on a shared phone." The setting is asked at the first sign-in on a device (on by default for floor roles) and can be changed in Settings: Me (FR-2) [ASSUMPTION: default; browsers may still offer to save — test on Chrome Android]. |
+| **Sign out with unsynced actions** | S27, More | Confirmation dialog: "3 actions not synced yet. They stay on this phone and will sync as Karim." Confirm: "Sign out anyway". The actions keep syncing as their author after sign-out (FR-41). |
+| **Another person's queued actions** | Offline banner, S21 | A User who signs in while another User's actions are still queued sees only a count, "2 actions from another person waiting to sync", in S21 and the banner. They cannot open, edit, discard or re-send them; their own new actions are stamped with their own name (FR-41). |
 | **Error — server / unknown** | All | "Something went wrong. Your work is saved on this phone." if queued; otherwise "Couldn't save. Try again." with a Retry button. Never lose typed quantities. |
 | **Not found (barcode)** | S4 (online) | "Not found" + search field; Manager also sees "Link this barcode to a product" (FR-38). |
 | **Not in this task** | S7, S8, S10, S11 | A scanned Product that is not on the open task: "Not on this order" (or delivery / Transfer / count). Nothing is recorded. |
@@ -380,8 +415,8 @@ From FR-33a and FR-37 (card buttons for Damage flag, Transfer shortage and Sync 
   |---|---|---|
   | Scan tab, My tasks, S5, S6 (no mode) | Opens Product stock (S6) | — |
   | Pick Dispatch order (S8) | Selects the line and pre-fills the **full remaining line quantity** | One tap on **Confirm line** (adjust first if short) |
-  | Receive PO (S7), Receive Transfer (S10), Count lines (S11) — blind | Selects the line, sets the unit from the Barcode, quantity **empty**, focus in the field | Type or step the count, tap **Save line** |
-  | Send Transfer (S10) | Adds or selects the Product line, unit from the Barcode, quantity empty | Type or step the count, tap **Save line** |
+  | Receive PO (S7), Receive Transfer (S10), Count lines (S11) — blind | Selects the line, sets the unit from the Barcode, quantity **empty**, focus in the field | Type or step the count, tap **Save line** (S7, S10: the line's stock moves now; S11: recorded only, applied at Close count, FR-36) |
+  | Send Transfer (S10) | Adds or selects the Product line, unit from the Barcode, quantity empty | Type or step the count, tap **Save line** (saved to the draft; stock moves only when **Send Transfer** is tapped, FR-26) |
   | **Flag damage mode** (after tapping Flag damage on S6 or S8) | **Saves** 1 of the scanned unit as damaged, Reason "damaged" | The scan itself |
   | Any Product field (S14, S24, search) | Fills the field | The form's own save |
 
@@ -397,7 +432,7 @@ From FR-33a and FR-37 (card buttons for Damage flag, Transfer shortage and Sync 
 - **Duplicate-safe:** every save button disables on tap until done; double taps never record twice (FR-14).
 - **Confirm vs undo policy (Decided):** v1 has no Undo. The PRD makes every Stock movement permanent (FR-11) and corrections go through Reject or a Reversal approved by a second person (FR-15) instead. "Change qty/reason" after a Damage flag is a linked correction, not an undo.
   - **No confirmation dialog** on routine floor actions (save a receive line, confirm a pick line, flag damage, save a count line, send/receive Transfer line) or on one-tap Issue decisions (FR-30) — a dialog would break the budget. The decision button's label states its effect ("Approve · write off 1 ctn").
-  - **Confirmation dialog** only for actions that close or remove something in one go: Mark delivery complete (S7), Finish receipt (S10), Confirm dispatch with lines short (S8), Close Stock count (S17), Cancel Dispatch order (S14), Close PO short (S15), Confirm Excel import (S26), Deactivate User / Warehouse, Archive Product, Regenerate recovery code. The dialog repeats the consequence in one sentence.
+  - **Confirmation dialog** only for actions that close or remove something in one go: Mark delivery complete (S7), Finish receipt (S10), Confirm dispatch with lines short (S8), Close Stock count (S17; it also warns when assigned counters still have lines not received, e.g. "2 lines from Karim not received yet"), Discard draft Transfer (S10, S16), Sign out with unsynced actions (S27), Cancel Dispatch order (S14), Close PO short (S15), Confirm Excel import (S26), Deactivate User / Warehouse, Archive Product, Regenerate recovery code. The dialog repeats the consequence in one sentence.
   - **Mistakes:** floor users tell a Supervisor; wrong Damage flags are fixed by "Change qty/reason" before a decision, or by Reject; Owner/Manager request a Reversal from movement history (S6).
 - **Keyboard:** numeric keypad for quantities; Enter saves on desktop forms; the Scan bar hides while the on-screen keyboard is open.
 - **Feedback on scan:** short vibration where the browser supports it (Decided), the overlay closes, the matched line is selected and keeps its current-line bar (not only a timed highlight), and the live region announces the match. [ASSUMPTION: no sound by default.]
@@ -412,7 +447,7 @@ This section covers behavior only. Visual contrast lives in `DESIGN.md` → Colo
 - **Language of parts:** the page has `lang="bn"` or `lang="en"` for the chosen language. Bilingual labels (Scan bar, floor primary buttons) mark each part with `<span lang="bn">` and `<span lang="en">` and get their accessible name from that visible text — **no `aria-label` on bilingual controls**; the visible text starts the accessible name. User-entered names are not marked. QA with TalkBack with and without the Google Bangla voice installed.
 - **Screen readers:** every control has a name in the current language. One polite live region (`role="status"`) and one assertive region exist from page load; their text is replaced, not re-created. Toasts, scan matches, online/offline changes and sync results go to the polite region; refusals to the assertive region, once per change.
 - **Forms and errors:** invalid quantity fields set `aria-invalid="true"` and `aria-describedby` to the Refusal message; disabled save buttons use `aria-disabled` with the reason in their description.
-- **Sign-in and recovery (S1, S2, S27):** paste and password managers are allowed on every field. Phone `autocomplete="tel"`, passwords `current-password` / `new-password`, recovery code `one-time-code`. Show-password toggle (48px). The recovery code is shown in groups and accepted case-insensitively with spaces and dashes ignored.
+- **Sign-in and recovery (S1, S2, S27):** paste and password managers are allowed on every field, except that on a device with Shared phone on, the S2 password field uses `autocomplete="off"` (State Patterns → Shared phone sign-in). Phone `autocomplete="tel"`, passwords otherwise `current-password` / `new-password`, recovery code `one-time-code`. Show-password toggle (48px). The recovery code is shown in groups and accepted case-insensitively with spaces and dashes ignored.
 - **Focus:** focus order follows visual order; `:focus-visible` ring only for keyboard focus. Sheets and dialogs trap focus and return it on close; Escape / Back closes them. The focused element is never hidden under the app bar, the fixed bottom zone or a toast (`scroll-padding` per DESIGN.md → Layout).
 - **Reflow and text size:** works at 320 CSS px wide and at 256 CSS px tall (400% zoom) with no loss of content or function, and at 200% text size; sizes are in rem. On short screens, landscape or large text, only the Scan bar stays fixed (DESIGN.md → Layout). Content survives WCAG 1.4.12 text-spacing overrides in both languages with no clipping or overlap (acceptance check). Labels wrap instead of truncating.
 - **Orientation:** never locked; floor screens work in landscape.
@@ -428,7 +463,7 @@ This section covers behavior only. Visual contrast lives in `DESIGN.md` → Colo
 - **Desktop (≥ 1024px):** side nav replaces the tab bar; Owner view, Issues, Stock counts, POs and Settings use list + detail layouts; the owner drill-down is a right-hand panel. No floor-only screens in desktop nav.
 - **PWA:** installable (FR-40); an "Install app" entry in Settings → Me and a one-time prompt after first sign-in. [ASSUMPTION: one-time prompt.] Offline recording needs one online sign-in per device (FR-41).
 - **Camera:** needs HTTPS and permission (addendum). Ask for camera permission the first time the Scan bar is tapped, not on load.
-- **Shared phones:** open question (PRD §9 Q2). Until answered, sign-out stays one tap away in More, and the signed-in User's name shows in the app bar on floor screens so a shared phone never records under the wrong person (Decided).
+- **Shared phones** (PRD §9 Q2, partly decided): sign-out stays one tap away in More, and the signed-in User's name shows in the app bar on floor screens so a shared phone never records under the wrong person (Decided). A device can be marked **Shared phone** so passwords are not saved (FR-2), and queued actions stay with their author after sign-out; another User sees only their count (FR-41; State Patterns). Still open: whether a quicker User switch is needed.
 - **Low-cost Android:** test on a low-end device in Chrome; Bangla rendering is checked there (addendum).
 
 ## Key Flows
@@ -495,13 +530,13 @@ Failure path — he types 40 for Narayanganj: the **Refusal message** reads "Onl
 
 A Gazipur Warehouse worker (sender) and a Narayanganj Warehouse worker (receiver). [ASSUMPTION: the PRD gives no persona names; the spine keeps them unnamed.]
 
-1. At Gazipur, the sender taps **Send Transfer** in the My tasks header (or More → Transfers), picks Narayanganj, scans each Product, enters 50 cartons counted out, saves the line and taps **Send Transfer**. The 50 move to In transit (FR-26).
-2. At Narayanganj, the receiver sees "Incoming Transfer" in My tasks and opens **Receive Transfer** — blind, no sent quantity shown (FR-27).
-3. The receiver scans, counts 40, saves the line, then taps **Finish receipt** and confirms.
-4. The 40 move to Available at Narayanganj; the receiver sees "Saved" and the next task.
+1. At Gazipur, the sender taps **Send Transfer** in the My tasks header (or More → Transfers), picks Narayanganj, scans each Product, enters 50 cartons counted out and saves the line. The saved line is a **draft**: the 50 stay Available at Gazipur (FR-26).
+2. The sender taps **Send Transfer**. Only now do the 50 move to In transit, one movement per line (FR-26).
+3. At Narayanganj, the receiver sees "Incoming Transfer" in My tasks and opens **Receive Transfer** — blind, no sent quantity shown (FR-27).
+4. The receiver scans, counts 40 and saves the line; the 40 move to Available at Narayanganj on that save (FR-27). The receiver then taps **Finish receipt** and confirms; this closes the receipt without posting the line again, and shows "Saved" and the next task.
 5. **Climax:** a Transfer-shortage Issue appears in the destination Supervisor's inbox showing both counts (50 / 40), both workers and both times; the missing 10 stay In transit, linked to the Transfer — nothing silently deleted (FR-28).
 
-Failure path — the sender tries to receive their own Transfer: refused with "You sent this Transfer, so someone else must receive it." (FR-5). Not received in 48 h → Transfer-overdue Issue (FR-28).
+Failure path — the sender tries to receive their own Transfer: refused with "You sent this Transfer, so someone else must receive it." (FR-5). Not received in 48 h after sending → Transfer-overdue Issue (FR-28). The sender saves lines but is called away before tapping Send: the draft stays as "Draft transfer · not sent" in their My tasks and in Transfers → Drafts; after 24 h a Draft-transfer-not-sent Issue goes to the Gazipur Supervisor [ASSUMPTION: 24 h]. Meanwhile a sale took stock: Send is refused for that line with "Only 18 ctn available. Max 18 ctn." and "Use max" (FR-26, FR-13).
 
 ### UJ-6. The owner follows an unexplained loss back to its source.
 
@@ -522,13 +557,13 @@ Failure path — no cases open: the Unexplained tile reads ৳0 and the drill-do
 The Manager (unnamed in the PRD), at a desk, and two Warehouse workers on the floor.
 
 1. The Manager opens **Stock counts** (S17), taps **Start count**, picks Narayanganj and a chosen list of 20 Products, assigns two workers (FR-34).
-2. The workers see "Count lines" in My tasks and open **Count lines** (S11): no system quantities shown (FR-35).
-3. Each worker scans a Product, enters the count, taps **Save line** — scan + count + tap, the blind-screen exception to the budget.
-4. The Manager watches progress in S17 and taps **Close count**, confirming once.
-5. Mojud compares each line with On hand; mismatches open Discrepancy cases and shortages move to Unexplained (FR-36).
+2. The workers see "Count lines" in My tasks and open **Count lines** (S11): no system quantities shown (FR-35). Until the count closes, the 20 Products at Narayanganj show "Hidden during count" to them everywhere else too — Product search, Product stock, Low stock and scan results (FR-35).
+3. Each worker scans a Product, enters the count, taps **Save line** — scan + count + tap, the blind-screen exception to the budget. The line is recorded (counter, quantity, time) but moves no stock.
+4. The Manager watches progress in S17 — lines counted, not quantities — and taps **Close count**. The one confirm dialog warns if a counter still has lines not received ("2 lines from Karim not received yet").
+5. At Close count, Mojud compares each line with On hand as of the moment it was counted; mismatches open Discrepancy cases and shortages move to Unexplained then (FR-36). The counters' hidden figures return.
 6. **Climax:** the Manager works through the cases from the Issues inbox via "Open to decide", resolving each as **Found** or **Confirmed loss** with a Reason (FR-37); matched lines show "verified" — today's date becomes their last verified date (FR-36).
 
-Failure path — the Manager tries to resolve a line they counted themselves: refused (FR-5). A count line recorded offline queues and syncs like any floor action (FR-41).
+Failure path — the Manager tries to resolve a line they counted themselves: refused (FR-5). A count line recorded offline queues and syncs like any floor action (FR-41). If it arrives after Close count, it never changes the closed count; it opens a **Late count line** Issue for the Manager, showing counted vs On hand and both times, with **Start recount** or **Dismiss** (FR-36, FR-33a) [ASSUMPTION: two decisions are enough].
 
 ### UJ-8. Mr. Haque sets up his business on Mojud.
 
@@ -561,3 +596,19 @@ Karim, Warehouse worker at Narayanganj (persona from UJ-2), on his phone, after 
 7. **Climax:** Karim is cleared by his own record — the evidence shows the gap happened after his handoff (in transit or at Gazipur's receipt), not at his step, and the case belongs to the Gazipur Supervisor (FR-28, FR-31). No one had to take his word for it.
 
 Failure path — if his own action is where the gap happened, the record shows it the same way, with the outcome and no blame words (Voice and Tone). Actions he recorded offline and not yet synced show "Not synced"; a refused one shows "Not applied – sent to supervisor" with its reason (FR-44). Offline, the record reads "as of HH:MM (offline)" (FR-42). [ASSUMPTION: My record shows queued actions with their chips before they sync.]
+
+## Change log
+
+**2026-10-24** — applied UX design decisions DD-1…DD-10 (`design-process/C-UX-Scenarios/00-design-decisions.md`).
+
+- **DD-1:** Line completion and the scan table say each saved line already moved its stock; finish buttons close the task and raise Issues only.
+- **DD-2:** Issue card shows taka only to Owner, Manager and Accountant; ranking unchanged.
+- **DD-3:** S19 Low stock = Promisable at or below threshold; out of stock = Promisable 0.
+- **DD-4:** fixed Scan bar on floor screens only; desk-role homes have none (Home and navigation, Scan bar).
+- **DD-5:** draft Transfers — Send Transfer (finish) pattern, Draft tag, Drafts segment in S16, Draft transfer / Send refused states, new Issue type row, UJ-5.
+- **DD-6:** count lines apply at Close count; Close count warns about lines not received; Late count line state and Issue type row; UJ-7.
+- **DD-7:** Hidden during count state; stock ladder and search notes; S17 shows progress only; UJ-7.
+- **DD-8:** Shared phone sign-in, sign-out with unsynced actions, another person's queued actions (State Patterns); Accessibility and Shared phones notes; S27.
+- **DD-9:** Owner phone tabs Overview · Issues · Stock · Orders · More; Orders is first in the Manager's More.
+- **DD-10:** Alternate names in search results and S24.
+- UI glossary: new strings for the above, each marked [BN: verify].

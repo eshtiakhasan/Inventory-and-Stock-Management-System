@@ -3,7 +3,7 @@ name: Mojud
 description: Stock-control PWA for Bangladeshi FMCG distributors. Calm, professional, high-contrast; Bangla or English per User; big and bold where the warehouse floor needs it.
 status: final
 created: 2026-10-22
-updated: 2026-10-23
+updated: 2026-10-24
 sources:
   - _bmad-output/planning-artifacts/prds/prd-E2E_IAM-2026-10-22/prd.md
   - _bmad-output/planning-artifacts/prds/prd-E2E_IAM-2026-10-22/addendum.md
@@ -290,6 +290,14 @@ components:
     min-height: 2rem
     not-synced: '{colors.warning} text, 2px dashed {colors.warning}, icon hourglass'
     done: '{colors.success} text, 2px solid {colors.success}, icon check'
+    draft: '{colors.text-muted} text, 2px dashed {colors.control-border}, icon pencil'
+  hidden-during-count:
+    background: '{colors.surface-alt}'
+    text: '{colors.text-muted}'
+    typography: '{typography.body-strong}'
+    icon: eye-off
+    radius: '{rounded.sm}'
+    min-height: 'same as the figure it replaces'
   issue-card:
     background: '{colors.surface}'
     border: '1px solid {colors.border}'
@@ -370,6 +378,8 @@ components:
     min-height: '{spacing.target-floor}'
     active: '{colors.primary} text + 3px top bar + filled icon'
     inactive: '{colors.text-muted}, outline icon'
+    max-tabs: 5
+    tab-min-width: 'equal share of width; at 320 CSS px with 5 tabs, labels wrap to two lines'
   side-nav:
     background: '{colors.surface-alt}'
     active: '{colors.primary} text, {colors.surface} fill, 4px left bar'
@@ -493,7 +503,8 @@ Scale: 0.25 / 0.5 / 0.75 / 1 / 1.5 / 2 rem (4 / 8 / 12 / 16 / 24 / 32 px; `{spac
 
 - **Phone (floor) screens:** single column, no sideways scrolling from 320 CSS px wide up (WCAG 1.4.10; PRD NFR-3 sets 360px as the design width). Content scrolls above a **fixed bottom zone**:
   - task and stock screens (S6–S11): optional Flag damage button (`{spacing.target-floor}`) + Scan bar (`{spacing.scan-bar-height}`);
-  - home screens: Scan bar + bottom tab bar (`{spacing.target-floor}`);
+  - floor-role home screens (My tasks, for Warehouse workers and Supervisors): Scan bar + bottom tab bar (`{spacing.target-floor}`);
+  - desk-role home screens (Issues inbox, including the Supervisor's; Owner view; Product search for the Sales rep): bottom tab bar only, no fixed Scan bar. Scanning goes through the Scan tab, or the search field's scan button where a Role has no Scan tab (EXPERIENCE.md → Home and navigation);
   - `{spacing.3}` padding between and around the rows; 1px `border` top edge.
 - **Short screens, landscape and zoom.** When the viewport is shorter than `{spacing.short-screen}` (30rem, about 480 CSS px), or the text size is 150% or more, only **one** row stays fixed: the Scan bar at `{spacing.scan-bar-height-compact}`. The tab bar and Flag damage button move to the end of the content. The app bar compacts to `{spacing.app-bar-height-compact}` (user name and online status only; the title scrolls with content). Below `{spacing.tiny-screen}` (20rem tall, e.g. 400% zoom in landscape) nothing is fixed; the Scan bar sits at the end of the content and the app bar scrolls.
 - **Focus never hidden.** Pages set `scroll-padding-top` to the sticky app bar height and `scroll-padding-bottom` to the fixed bottom zone height + `{spacing.2}`, and the focused field scrolls into view above the zone.
@@ -529,9 +540,9 @@ Mocks: [mockups/key-picking.html](mockups/key-picking.html) (App bar, Scan bar, 
 ### Frame and navigation
 
 - **App bar** — `surface`, 1px `border` bottom, min 56px. Left: screen title in `headline`. Right (floor screens), two lines if needed: the signed-in User's name in `body`, and the online status as icon + text — cloud-check + "Online" or cloud-off + "Offline" — never a colored dot alone. Desk screens add the Business name. Compact form on short screens: name + status only.
-- **Scan bar** — Sits at the bottom of every floor screen. Full width minus gutters, min 72px, `{colors.primary}` fill, scan icon, "স্ক্যান করুন" in `label-scan` then "Scan" in `label-scan-secondary`, both `on-primary`. One line when it fits, two lines otherwise. Compact form 56px.
+- **Scan bar** — Sits at the bottom of every floor screen (My tasks and the task screens); never on desk-role home screens. Full width minus gutters, min 72px, `{colors.primary}` fill, scan icon, "স্ক্যান করুন" in `label-scan` then "Scan" in `label-scan-secondary`, both `on-primary`. One line when it fits, two lines otherwise. Compact form 56px.
 - **Scan overlay** — Full screen over the current page. The camera feed fills the screen; a rounded viewfinder frame (3px `on-primary` corners) sits in the upper middle with a one-line hint above it in `label-button` on a `scrim-dark` strip ("Point at the barcode"). Bottom third: a `surface` action bar with two side-by-side 64px buttons — **Close** (secondary, icon cross) and **Type code** (secondary, icon keyboard), each at least 9rem wide; they stack at 320 CSS px or large text. In **Flag damage mode** the hint strip becomes a `danger` fill with `on-danger` text and the warning icon ("Flag damage — scan the damaged item"), so the mode is never mistaken for a normal scan. No torch control in v1.
-- **Bottom tab bar** — min 64px, three or four tabs, icon + one-word label in the chosen language (wraps to two lines rather than shrink), active tab in `primary` with a 3px top bar and a filled icon.
+- **Bottom tab bar** — min 64px, three to five tabs (five only for the Owner), each an equal share of the width, icon + one-word label. At 320 CSS px with five tabs, Bangla labels wrap to two lines and the bar grows taller. [ASSUMPTION: five tabs fit at 320 CSS px with Bangla labels; verify on a low-cost phone.] Label in the chosen language (wraps to two lines rather than shrink), active tab in `primary` with a 3px top bar and a filled icon.
 - **Side nav** — Desktop only, `surface-alt`, active item on `surface` with `primary` text and a 4px left bar.
 - **Count badge** — On the Issues tab and side-nav item only. `primary` fill, `on-primary` digits in `meta`, rounded-full, min 24px; "99+" cap; hidden at 0.
 - **Language switch** — Two-segment control "বাংলা | English", 48px, `control-border` outline; selected segment `primary` fill with `on-primary` text and a check icon. Each segment's text is marked with its own language.
@@ -555,11 +566,12 @@ Mocks: [mockups/key-picking.html](mockups/key-picking.html) (App bar, Scan bar, 
 
 - **Stock-state pill** — Rounded-full, icon + label (chosen language) + quantity, min 32px tall; patterns as in Colors → Stock states. It is not itself a tap target; when interactive it sits inside a 48px row.
 - **Stock ladder** — A card listing On hand, then "− Damaged", then "− Reserved", with a rule and the **Promisable** total in `qty-display`. Rows min 48px. Each minus row starts with its state icon. Under it, an optional one-line stacked bar (Damaged hatched, Reserved dotted, Available solid) with 2px `surface` gaps between segments and the state icon inside any segment at least 24px wide. The bar is **decorative** (`aria-hidden`); every value is in the rows above it, and the bar is never shown without them. In transit and Unexplained totals show as small pills. Footer line "as of 10:42" in `meta` / `meta-bn`.
+- **Hidden during count** — Replaces a stock figure, ladder, pill or low-stock tag for an assigned counter while a Blind count is open. `surface-alt` fill, `{rounded.sm}`, eye-off icon + "Hidden during count" in `body-strong` `text-muted` (7.5:1 / 8.3:1), same min-height as what it replaces. No digits, no bar, no state color, so nothing hints at the quantity. A ladder collapses to one such row.
 
 ### Tasks and sync
 
 - **Task card** — `surface` card, min 64px. Product or document name in `title`, quantity progress "12 / 20 ctn" in `body-strong` (picks only), **status tag** on the right. The current line gets a 5px `primary` left bar plus visually hidden text "Current" for screen readers.
-- **Task status tag** — `{rounded.sm}`, 2px `control-border`, `body-strong`, min 32px, icon + word: "New", "In progress", "Not synced" (dashed `warning` border and text, hourglass icon) or "Done" (solid `success` border and text, check icon). Display only.
+- **Task status tag** — `{rounded.sm}`, 2px `control-border`, `body-strong`, min 32px, icon + word: "New", "In progress", "Not synced" (dashed `warning` border and text, hourglass icon), "Done" (solid `success` border and text, check icon) or "Draft" (dashed `control-border`, `text-muted` text, pencil icon; used on "Draft transfer · not sent" cards, so a draft never looks like queued work). Display only.
 - **Offline banner** — Full-width strip under the app bar, min 48px, `warning` fill, `on-warning` text, cloud-off icon. Text in the chosen language with Western digits, e.g. "অফলাইন · 3টি কাজ অপেক্ষায়" or "Offline · 3 actions waiting".
 - **Sync-status chip** — On a queued line: hourglass + "Not synced" (dashed `warning` border) or alert icon + "Not applied – sent to supervisor" (solid `danger` border). `body-strong`; min 48px when tappable (the refused chip), otherwise the whole 64px line is the target.
 
@@ -601,3 +613,12 @@ Mocks: [mockups/key-picking.html](mockups/key-picking.html) (App bar, Scan bar, 
 | Test every screen in light and dark | Ship a screen checked in one mode only |
 | Use `danger` for damage, refusals and losses | Use red for the Scan bar or ordinary primary buttons |
 | Keep the floor screens big (72px Scan bar, 30px quantities) and the desk screens calm | Bring Big & Bold weight into the owner view |
+
+## Change log
+
+**2026-10-24** — applied UX design decisions DD-1…DD-10 (`design-process/C-UX-Scenarios/00-design-decisions.md`). Only DD-4, DD-5, DD-7 and DD-9 touch this spine:
+
+- **DD-4:** Layout & Spacing — the fixed bottom zone "Scan bar + bottom tab bar" applies to floor-role home screens (My tasks) only; desk-role homes have the tab bar only. Scan bar note updated to match.
+- **DD-5:** `task-status-tag` gains a **draft** variant (dashed `control-border`, `text-muted`, pencil icon) for "Draft transfer · not sent".
+- **DD-7:** new `hidden-during-count` placeholder (Stock display) for system quantities hidden from assigned counters during a Blind count.
+- **DD-9:** `bottom-tab-bar` supports up to 5 tabs; at 320 CSS px Bangla labels wrap to two lines. [ASSUMPTION: verify on a low-cost phone.]
