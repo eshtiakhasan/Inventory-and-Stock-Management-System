@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "types": ["vite/client", "node"],
+    "emitDeclarationOnly": true,
+    "outDir": "../../node_modules/.cache/tsc/web",
+    "tsBuildInfoFile": "../../node_modules/.cache/tsc/web/.tsbuildinfo"
+  },
+  "include": ["src", "src/**/*.json", "test"],
+  "references": [{ "path": "../../packages/contracts" }]
+}

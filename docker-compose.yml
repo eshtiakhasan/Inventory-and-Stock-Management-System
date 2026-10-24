@@ -1,0 +1,117 @@
+# Mojud local stack (infrastructure-specification.md). Needs Docker Compose v2.24+.
+# Start order: db (healthy) -> migrate (completed) -> api (healthy) -> web.
+name: mojud
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-api-build: &api-build
+  context: .
+  dockerfile: apps/api/Dockerfile
+
+services:
+  db:
+    image: postgres:16-alpine
+    env_file: .env
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # -h 127.0.0.1 forces a TCP check; $$ stops Compose from expanding the variables.
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+    stop_grace_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    logging: *default-logging
+    networks: [mojud]
+
+  migrate:
+    build: *api-build
+    image: mojud-api:local
+    command: ["node", "dist/migrate.js"]
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging: *default-logging
+    networks: [mojud]
+
+  api:
+    build: *api-build
+    image: mojud-api:local
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/v1/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+    restart: unless-stopped
+    stop_grace_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    logging: *default-logging
+    networks: [mojud]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: mojud-web:local
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+    restart: unless-stopped
+    stop_grace_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging: *default-logging
+    networks: [mojud]
+
+volumes:
+  pgdata:
+
+networks:
+  mojud:

@@ -1,0 +1,29 @@
+## Review
+
+**Verdict:** READY
+**Reviewer:** aidlc-architecture-reviewer-agent
+**Date:** 2026-10-24T15:15:58Z
+**Iteration:** 1
+
+### Findings
+
+| ID | Severity | Location | Finding | Required action | Status |
+|---|---|---|---|---|---|
+| R-01 | Major | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work.md > U2 Backend (Complexity XL, Responsibilities) | The person's "skeleton then layers" choice puts every remaining business module (7 components, including StockLedger concurrency, once-only action IDs, the shared transaction of ADR-003, and blind receiving) into one XL unit. U1's end-to-end check exercises only sign-up and sign-in, so the riskiest design points (transactional stock changes across Purchasing, Dispatch, Damage and Issues) are first proven only inside U2 through API tests, and no user can see any of that work until U3 is also finished. A wrong assumption in the stock or transaction design therefore shows up late and costs a large rework. | Accept the risk knowingly at the gate, or ask Delivery Planning to cut U2 into several Bolts in an order that proves the stock transaction path early (for example StockLedger plus opening stock first, with its must-test rules). Record in the artifact that U2 is expected to be split into Bolts. | New |
+| R-02 | Major | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work-story-map.md > Story Map rows US1.1 and US1.2 (completing unit U1) | U1 is stated to complete US1.1 and US1.2, but acceptance criteria in stories.md depend on work assigned to later units. AC1.2.1 (Sales rep, Warehouse worker, Supervisor, Accountant landings) and AC1.2.3 (deactivated user refused) need users of other roles, and users are only created in U2 (US1.3 user management). AC1.1.4 (a business cannot read another business's records by ID) has no records to test in U1 beyond Business and User, and AC1.2.6 (keyboard and contrast on any screen) covers screens that exist only in U3. The unit therefore cannot fully verify the stories it claims to complete. | Narrow the U1 claim in the story map to the ACs that U1 can verify alone (for example AC1.1.1 to AC1.1.3, AC1.1.5, AC1.2.2, AC1.2.4, AC1.2.5, the Owner landing), and list the remaining ACs (AC1.1.4, AC1.2.1 for other roles, AC1.2.3, AC1.2.6) against U2 or U3 so none is dropped. Update traceability.json to match. | New |
+| R-03 | Minor | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work.md > U1 Responsibilities (Business and User tables) versus U2 (warehouses) | U1 creates the User table with `assignedWarehouseIds` and builds a caller context containing warehouses (components.md, User entity), while the Warehouse table is built only in U2. The U1 schema would reference a table that does not exist yet. | State in U1 how assigned warehouses are handled before U2 (for example, the column or link table is added in U2's migration, and the U1 caller context returns an empty list), so Contract Design and the migrations are consistent. | New |
+| R-04 | Minor | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work.md > Units table (U1 Kind) and unit-of-work-dependency.md > yaml block (walking-skeleton) | U1's Kind is written as "(full design set)", which is not one of the allowed unit kinds, and the `walking-skeleton` entry in the yaml block has no `kind`, while the other two units have one. Later per-unit stages choose their design set from the kind. | Give U1 an explicit kind (or state in one line which design stages it runs) so the stage selection for U1 is unambiguous. | New |
+| R-05 | Minor | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work-dependency.md > Parallel Development Opportunities | The layered split makes U1, U2, U3 strictly sequential, even though Q4 allowed parallel work. U3 screens could start against agreed API contracts once Contract Design is done, but the artifact rules this out. This is a consequence of the person's choice rather than a defect. | Optionally note that U3 could start in parallel with the later part of U2 once Contract Design fixes the API, so the option stays visible at Delivery Planning. | New |
+| R-06 | Minor | aidlc/spaces/default/intents/261024-core-inventory-slice/inception/units-generation/unit-of-work.md > Implementation Notes | Every story after US1.2 is complete only when both U2 and U3 are done, so there is no intermediate point where a whole business flow (for example receiving a delivery) works for a user. Progress and failures are only visible at layer level, not story level. | Accept at the gate, or plan story-level demonstrations inside U3 as the layers land (for example verify US1.3 end to end as soon as its screen is built). | New |
+
+### Validation Tool Results
+
+| Tool | Result | Interpretation |
+|---|---|---|
+| Manual dependency check of the yaml block | PASS: U1 has none, U2 depends on U1, U3 depends on U1 and U2; no cycle | Graph is acyclic and matches the Edges table and the mermaid diagram |
+| Manual story coverage check against stories.md and traceability.json | PASS: all 12 stories (US1.1 to US5.3) are mapped to a unit | No orphan stories; see the Major finding on whether U1 can really complete US1.1 and US1.2 |
+| Manual component coverage check against components.md | PASS: all 9 components are placed (IdentityAccess split across U1 and U2) | No component is missing; the split of IdentityAccess is covered by the Minor finding on the Warehouse table |
+
+### Summary
+
+The unit graph is acyclic, every story and component is placed, and the walking skeleton matches the team practice. The main risks the person should weigh are the very large U2 unit that proves the stock transaction design late, and the over-stated claim that U1 completes US1.1 and US1.2.

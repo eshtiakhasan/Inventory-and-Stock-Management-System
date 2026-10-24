@@ -34,6 +34,15 @@ _wds-learn/
 # --- Personal / secret settings ---
 .env
 .env.*
+# The example file holds only local-only placeholders and is committed (NFR1.12).
+!.env.example
+
+# --- Build and test output ---
+dist/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
 
 # --- OS / editor junk ---
 .DS_Store

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"],
+    "emitDeclarationOnly": true,
+    "outDir": "./node_modules/.cache/tsc/tools",
+    "tsBuildInfoFile": "./node_modules/.cache/tsc/tools/.tsbuildinfo"
+  },
+  "include": ["vitest.config.ts"]
+}

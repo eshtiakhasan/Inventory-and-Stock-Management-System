@@ -1,0 +1,28 @@
+{
+  "stage": "infrastructure-design",
+  "unit": "walking-skeleton",
+  "upstream_ids": ["NFR1.12", "NFR1.14", "NFR1.15", "NFR1.19", "NFR5.1", "NFR5.2", "NFR5.3", "NFR5.4", "NFR6.2", "NFR7.1", "NFR7.2", "NFR8.1", "NFR8.2", "NFR8.4", "NFR8.5", "NFR8.6", "NFR8.7", "NFR8.8", "NFR8.13", "NFR8.14", "NFR9.1"],
+  "coverage": [
+    { "id": "NFR1.12", "status": "OK", "target": "infrastructure-specification Configuration and Secrets; env_file; cicd-pipeline stage 1 secret scan" },
+    { "id": "NFR1.14", "status": "OK", "target": "web service nginx security-headers.conf; smoke test checks headers" },
+    { "id": "NFR1.15", "status": "OK", "target": "web proxies /api/ to api:3000; api has no host port" },
+    { "id": "NFR1.19", "status": "OK", "target": "APP_ORIGIN allow-list (localhost and 127.0.0.1, ports 8080 and 5173), matched entry by entry" },
+    { "id": "NFR5.1", "status": "OK", "target": "cicd-pipeline stage 5 smoke timings" },
+    { "id": "NFR5.2", "status": "OK", "target": "cicd-pipeline stage 5 smoke timings" },
+    { "id": "NFR5.3", "status": "OK", "target": "monitoring-design request duration metric" },
+    { "id": "NFR5.4", "status": "OK", "target": "web service gzip and asset caching; smoke timing" },
+    { "id": "NFR6.2", "status": "OK", "target": "cicd-pipeline stage 5 keyboard path" },
+    { "id": "NFR7.1", "status": "OK", "target": "cicd-pipeline stage 3 coverage gate" },
+    { "id": "NFR7.2", "status": "OK", "target": "Vitest global setup creates and migrates mojud_test on any volume; TEST_DATABASE_URL; preflight" },
+    { "id": "NFR8.1", "status": "OK", "target": "api container holds no state; data only in db volume" },
+    { "id": "NFR8.2", "status": "OK", "target": "DB_POOL_MAX in .env" },
+    { "id": "NFR8.4", "status": "OK", "target": "docker-compose.yml with migrate one-off service; verify uses project mojud-verify with down -v for a clean start" },
+    { "id": "NFR8.5", "status": "OK", "target": "health checks with explicit timings on db, api and web; depends_on conditions; --wait-timeout 60" },
+    { "id": "NFR8.6", "status": "OK", "target": "api restart policy; db restart does not restart api" },
+    { "id": "NFR8.7", "status": "OK", "target": "api restart: unless-stopped" },
+    { "id": "NFR8.8", "status": "OK", "target": "api stop_grace_period 15s" },
+    { "id": "NFR8.13", "status": "OK", "target": "api Docker health check on /api/v1/health" },
+    { "id": "NFR8.14", "status": "OK", "target": "npm run logs:errors; json-file log rotation" },
+    { "id": "NFR9.1", "status": "OK", "target": "cicd-pipeline stage 1 static checks" }
+  ]
+}

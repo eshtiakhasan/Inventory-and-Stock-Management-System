@@ -56,13 +56,20 @@
 <!-- Format: NEVER [behavior] (affirmed [date]) -->
 <!-- Example: NEVER throw exceptions across service layer boundaries (affirmed 2026-05-17) -->
 
+- NEVER deploy the application to a cloud environment in this round. (Initial request; constraint register C-T2; scope document "Out of Scope"; interview Q6) (affirmed 2026-10-24)
+
 ## Mandated
 
 <!-- Populated by practices-discovery affirmation gate. -->
 <!-- Format: ALWAYS [behavior] (affirmed [date]) -->
 <!-- Example: ALWAYS use Result<T,E> for fallible operations in service layer (affirmed 2026-05-17) -->
 
+- ALWAYS build the application with TypeScript, using a React frontend, a Node backend and a PostgreSQL database. (Initial request; constraint register C-T1; interview Q6) (affirmed 2026-10-24)
+
+- ALWAYS run the application locally on the builder's machine, normally started with Docker Compose; if Docker cannot be made to work, running only the database in Docker or using a locally installed PostgreSQL is allowed. (Initial request; constraint register C-T2; intent statement S5; interview Q4 option B, Q6) (affirmed 2026-10-24)
+
 ## Corrections
 
 <!-- Project-specific corrections from human feedback. -->
 <!-- Format: NEVER/ALWAYS [behavior] (learned [date]) -->
+- ALWAYS mark an acceptance check as Deferred, with the unit that will prove it, when it needs users, records or screens that only a later unit builds; still build and unit-test its rule in the current unit. (learned 2026-10-24) <!-- cid:261024-core-inventory-slice:functional-design:ce7a89480c261c96cd00259d456a781fce2919439ee26f77c45b3876a748c596 -->

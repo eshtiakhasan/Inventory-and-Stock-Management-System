@@ -1,0 +1,21 @@
+# Generated output
+**/dist/
+**/coverage/
+playwright-report/
+test-results/
+node_modules/
+package-lock.json
+
+# Planning, design and AI tool folders (not application code)
+aidlc/
+_bmad/
+_bmad-output/
+_wds-learn/
+design-artifacts/
+design-process/
+docs/
+.claude/
+.agents/
+.gemini/
+idea.md
+.mcp.json

@@ -1,0 +1,370 @@
+{
+  "stage": "code-generation",
+  "unit": "walking-skeleton",
+  "version": 1,
+  "writes": [
+    {
+      "path": ".dockerignore"
+    },
+    {
+      "path": ".env.example"
+    },
+    {
+      "path": ".gitignore"
+    },
+    {
+      "path": ".prettierignore"
+    },
+    {
+      "path": ".prettierrc"
+    },
+    {
+      "path": "README.md"
+    },
+    {
+      "path": "apps/api/Dockerfile"
+    },
+    {
+      "path": "apps/api/migrations/0001_identity.sql"
+    },
+    {
+      "path": "apps/api/package.json"
+    },
+    {
+      "path": "apps/api/src/app.ts"
+    },
+    {
+      "path": "apps/api/src/migrate.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/index.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/cleanup.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/ids.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/password.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/repository.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/routes.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/service.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/tokens.ts"
+    },
+    {
+      "path": "apps/api/src/modules/identity/internal/types.ts"
+    },
+    {
+      "path": "apps/api/src/platform/config.ts"
+    },
+    {
+      "path": "apps/api/src/platform/db/db.ts"
+    },
+    {
+      "path": "apps/api/src/platform/db/migrations.ts"
+    },
+    {
+      "path": "apps/api/src/platform/db/sqlFileMigrationProvider.ts"
+    },
+    {
+      "path": "apps/api/src/platform/errors.ts"
+    },
+    {
+      "path": "apps/api/src/platform/health.ts"
+    },
+    {
+      "path": "apps/api/src/platform/http.ts"
+    },
+    {
+      "path": "apps/api/src/platform/log.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/authenticate.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/csrfCheck.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/errorHandler.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/extendSession.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/httpLogger.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/originCheck.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/requestId.ts"
+    },
+    {
+      "path": "apps/api/src/platform/middleware/responseTime.ts"
+    },
+    {
+      "path": "apps/api/src/platform/openapi.ts"
+    },
+    {
+      "path": "apps/api/src/platform/shutdown.ts"
+    },
+    {
+      "path": "apps/api/src/platform/validation.ts"
+    },
+    {
+      "path": "apps/api/src/server.ts"
+    },
+    {
+      "path": "apps/api/test/api/auth.test.ts"
+    },
+    {
+      "path": "apps/api/test/api/platform.test.ts"
+    },
+    {
+      "path": "apps/api/test/db/schema.test.ts"
+    },
+    {
+      "path": "apps/api/test/globalSetup.ts"
+    },
+    {
+      "path": "apps/api/test/helpers/app.ts"
+    },
+    {
+      "path": "apps/api/test/helpers/db.ts"
+    },
+    {
+      "path": "apps/api/test/helpers/factories.ts"
+    },
+    {
+      "path": "apps/api/test/helpers/twoBusinesses.ts"
+    },
+    {
+      "path": "apps/api/test/identity/cleanup.test.ts"
+    },
+    {
+      "path": "apps/api/test/identity/password.test.ts"
+    },
+    {
+      "path": "apps/api/test/identity/repository.test.ts"
+    },
+    {
+      "path": "apps/api/test/identity/service.test.ts"
+    },
+    {
+      "path": "apps/api/test/identity/tokens.test.ts"
+    },
+    {
+      "path": "apps/api/tsconfig.json"
+    },
+    {
+      "path": "apps/api/tsconfig.test.json"
+    },
+    {
+      "path": "apps/web/Dockerfile"
+    },
+    {
+      "path": "apps/web/e2e/smoke.spec.ts"
+    },
+    {
+      "path": "apps/web/index.html"
+    },
+    {
+      "path": "apps/web/nginx/default.conf"
+    },
+    {
+      "path": "apps/web/nginx/security-headers.conf"
+    },
+    {
+      "path": "apps/web/package.json"
+    },
+    {
+      "path": "apps/web/playwright.config.ts"
+    },
+    {
+      "path": "apps/web/public/theme-init.js"
+    },
+    {
+      "path": "apps/web/src/App.tsx"
+    },
+    {
+      "path": "apps/web/src/api/client.ts"
+    },
+    {
+      "path": "apps/web/src/components/AppBar.tsx"
+    },
+    {
+      "path": "apps/web/src/components/Buttons.tsx"
+    },
+    {
+      "path": "apps/web/src/components/FormErrorSummary.tsx"
+    },
+    {
+      "path": "apps/web/src/components/InputField.tsx"
+    },
+    {
+      "path": "apps/web/src/components/PasswordField.tsx"
+    },
+    {
+      "path": "apps/web/src/components/RefusalMessage.tsx"
+    },
+    {
+      "path": "apps/web/src/components/SideNav.tsx"
+    },
+    {
+      "path": "apps/web/src/components/SkipLink.tsx"
+    },
+    {
+      "path": "apps/web/src/components/ThemeSwitch.tsx"
+    },
+    {
+      "path": "apps/web/src/i18n/en.json"
+    },
+    {
+      "path": "apps/web/src/i18n/index.ts"
+    },
+    {
+      "path": "apps/web/src/layouts/Layouts.tsx"
+    },
+    {
+      "path": "apps/web/src/main.tsx"
+    },
+    {
+      "path": "apps/web/src/pages/Placeholders.tsx"
+    },
+    {
+      "path": "apps/web/src/pages/SignInPage.tsx"
+    },
+    {
+      "path": "apps/web/src/pages/SignUpPage.tsx"
+    },
+    {
+      "path": "apps/web/src/pages/usePageTitle.ts"
+    },
+    {
+      "path": "apps/web/src/session/SessionProvider.tsx"
+    },
+    {
+      "path": "apps/web/src/session/roles.ts"
+    },
+    {
+      "path": "apps/web/src/styles/base.css"
+    },
+    {
+      "path": "apps/web/src/styles/tokens.css"
+    },
+    {
+      "path": "apps/web/src/theme/theme.ts"
+    },
+    {
+      "path": "apps/web/test/SignInPage.test.tsx"
+    },
+    {
+      "path": "apps/web/test/SignUpPage.test.tsx"
+    },
+    {
+      "path": "apps/web/test/a11y.test.tsx"
+    },
+    {
+      "path": "apps/web/test/helpers.tsx"
+    },
+    {
+      "path": "apps/web/test/setup.ts"
+    },
+    {
+      "path": "apps/web/test/shell.test.tsx"
+    },
+    {
+      "path": "apps/web/test/theme.test.tsx"
+    },
+    {
+      "path": "apps/web/tsconfig.json"
+    },
+    {
+      "path": "apps/web/tsconfig.node.json"
+    },
+    {
+      "path": "apps/web/vite.config.ts"
+    },
+    {
+      "path": "docker-compose.yml"
+    },
+    {
+      "path": "eslint.config.js"
+    },
+    {
+      "path": "package-lock.json"
+    },
+    {
+      "path": "package.json"
+    },
+    {
+      "path": "packages/contracts/package.json"
+    },
+    {
+      "path": "packages/contracts/src/errors.ts"
+    },
+    {
+      "path": "packages/contracts/src/index.ts"
+    },
+    {
+      "path": "packages/contracts/src/phone.ts"
+    },
+    {
+      "path": "packages/contracts/src/roles.ts"
+    },
+    {
+      "path": "packages/contracts/src/schemas.ts"
+    },
+    {
+      "path": "packages/contracts/test/runner.test.ts"
+    },
+    {
+      "path": "packages/contracts/test/schemas.test.ts"
+    },
+    {
+      "path": "packages/contracts/tsconfig.json"
+    },
+    {
+      "path": "packages/contracts/tsconfig.test.json"
+    },
+    {
+      "path": "scripts/dev.mjs"
+    },
+    {
+      "path": "scripts/lib/npm.mjs"
+    },
+    {
+      "path": "scripts/logs-errors.mjs"
+    },
+    {
+      "path": "scripts/preflight.mjs"
+    },
+    {
+      "path": "scripts/secret-scan.mjs"
+    },
+    {
+      "path": "scripts/verify.mjs"
+    },
+    {
+      "path": "tsconfig.base.json"
+    },
+    {
+      "path": "tsconfig.json"
+    },
+    {
+      "path": "tsconfig.tools.json"
+    },
+    {
+      "path": "vitest.config.ts"
+    }
+  ]
+}

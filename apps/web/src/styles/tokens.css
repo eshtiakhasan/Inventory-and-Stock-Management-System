@@ -1,0 +1,127 @@
+/*
+ * Design tokens as CSS custom properties (design-system-mapping.md), copied
+ * from design-process/D-Design-System/design-tokens.md (DESIGN.md wins on any
+ * difference). Light values sit on :root. Dark values apply when the user chose
+ * Dark ([data-theme="dark"]) or, with "Device", when the OS prefers dark.
+ * The dark block is repeated on purpose: CSS cannot share it between a media
+ * query and an attribute selector.
+ */
+:root {
+  color-scheme: light;
+
+  /* Base colors */
+  --colors-primary: #0b5a54;
+  --colors-on-primary: #ffffff;
+  --colors-surface: #ffffff;
+  --colors-surface-alt: #edf4f2;
+  --colors-text: #0d1f1c;
+  --colors-text-muted: #3e524f;
+  --colors-border: #8faaa5;
+  --colors-control-border: #6b8580;
+
+  /* Semantic colors */
+  --colors-success: #1b6e31;
+  --colors-on-success: #ffffff;
+  --colors-warning: #8a4f00;
+  --colors-on-warning: #ffffff;
+  --colors-danger: #a8231b;
+  --colors-on-danger: #ffffff;
+  --colors-info: #1d5799;
+  --colors-on-info: #ffffff;
+
+  /* Disabled and overlay */
+  --colors-surface-disabled: #e4ebe9;
+  --colors-text-disabled: #4f625f;
+  --colors-scrim: #0d1f1c80;
+
+  /* Typography */
+  --typography-font-family:
+    system-ui, "Segoe UI", Roboto, "Noto Sans Bengali", "Nirmala UI", sans-serif;
+  --typography-headline-size: 1.25rem;
+  --typography-headline-weight: 700;
+  --typography-headline-line-height: 1.4;
+  --typography-title-size: 1.0625rem;
+  --typography-title-weight: 700;
+  --typography-body-size: 1rem;
+  --typography-body-weight: 400;
+  --typography-body-line-height: 1.5;
+  --typography-body-strong-weight: 600;
+  --typography-label-button-size: 1.125rem;
+  --typography-label-button-weight: 700;
+  --typography-label-button-line-height: 1.4;
+  --typography-meta-size: 0.875rem;
+  --typography-meta-weight: 500;
+  --typography-meta-line-height: 1.4;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.5rem;
+  --spacing-6: 2rem;
+  --spacing-gutter-phone: 1rem;
+  --spacing-gutter-desktop: 1.5rem;
+  --spacing-target-min: 3rem;
+  --spacing-button-desk: 3.5rem;
+  --spacing-app-bar-height: 3.5rem;
+
+  /* Radius */
+  --rounded-sm: 6px;
+  --rounded-md: 12px;
+  --rounded-lg: 16px;
+  --rounded-full: 9999px;
+
+  /* Layout sizes named in DESIGN.md prose */
+  --layout-side-nav-width: 13.75rem;
+  --layout-content-max: 75rem;
+  --layout-auth-card-width: 30rem;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --colors-primary: #63d5c6;
+  --colors-on-primary: #00211e;
+  --colors-surface: #0e1716;
+  --colors-surface-alt: #18241f;
+  --colors-text: #eaf4f1;
+  --colors-text-muted: #aabfba;
+  --colors-border: #3d524d;
+  --colors-control-border: #6b827c;
+  --colors-success: #74d68c;
+  --colors-on-success: #06210e;
+  --colors-warning: #f4b65c;
+  --colors-on-warning: #2b1d00;
+  --colors-danger: #ff8f85;
+  --colors-on-danger: #300704;
+  --colors-info: #8dbbf2;
+  --colors-on-info: #071a33;
+  --colors-surface-disabled: #1e2a27;
+  --colors-text-disabled: #a3b5b1;
+  --colors-scrim: #00000099;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --colors-primary: #63d5c6;
+    --colors-on-primary: #00211e;
+    --colors-surface: #0e1716;
+    --colors-surface-alt: #18241f;
+    --colors-text: #eaf4f1;
+    --colors-text-muted: #aabfba;
+    --colors-border: #3d524d;
+    --colors-control-border: #6b827c;
+    --colors-success: #74d68c;
+    --colors-on-success: #06210e;
+    --colors-warning: #f4b65c;
+    --colors-on-warning: #2b1d00;
+    --colors-danger: #ff8f85;
+    --colors-on-danger: #300704;
+    --colors-info: #8dbbf2;
+    --colors-on-info: #071a33;
+    --colors-surface-disabled: #1e2a27;
+    --colors-text-disabled: #a3b5b1;
+    --colors-scrim: #00000099;
+  }
+}

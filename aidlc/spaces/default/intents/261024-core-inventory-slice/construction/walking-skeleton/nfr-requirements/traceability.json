@@ -1,0 +1,16 @@
+{
+  "stage": "nfr-requirements",
+  "unit": "walking-skeleton",
+  "upstream_ids": ["NFR1", "NFR2", "NFR3", "NFR4", "NFR5", "NFR6", "NFR7", "NFR8", "NFR9"],
+  "coverage": [
+    { "id": "NFR1", "status": "OK", "target": "NFR1.1-NFR1.19 (security, plus NFR1.16-1.17 all-or-nothing sign-up and NFR1.18 log redaction)" },
+    { "id": "NFR2", "status": "OK", "target": "NFR2.1, NFR2.2 (foundation; the per-endpoint refusal test AC1.1.4 runs in the backend unit)" },
+    { "id": "NFR3", "status": "N/A", "target": "no stock or movements in this unit; stock correctness tests start in the backend unit" },
+    { "id": "NFR4", "status": "N/A", "target": "no stock movements or Issues in this unit; audit fields start in the backend unit" },
+    { "id": "NFR5", "status": "OK", "target": "NFR5.1-NFR5.5 for this unit's saves and page load; NFR5.6 product search is deferred to the backend unit, which carries it" },
+    { "id": "NFR6", "status": "OK", "target": "NFR6.1, NFR6.2 (skeleton screens; full pass in the frontend unit)" },
+    { "id": "NFR7", "status": "OK", "target": "NFR7.1, NFR7.2" },
+    { "id": "NFR8", "status": "OK", "target": "Local run: start and recovery NFR8.4-NFR8.8; running locally on one machine without in-memory state NFR8.1-NFR8.3 (scalability file); local diagnosis through logs and the health check NFR8.9-NFR8.14 (observability file)" },
+    { "id": "NFR9", "status": "OK", "target": "NFR9.1" }
+  ]
+}

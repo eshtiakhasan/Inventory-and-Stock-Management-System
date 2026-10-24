@@ -1,0 +1,93 @@
+{
+  "app": {
+    "name": "Mojud",
+    "skipLink": "Skip to content",
+    "loading": "Loading…",
+    "online": "Online",
+    "signOut": "Sign out",
+    "narrowNotice": "Mojud works best on a wider screen for now",
+    "pageTitle": "{{page}} · Mojud"
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "supervisor": "Supervisor",
+    "warehouse_worker": "Warehouse worker",
+    "sales_rep": "Sales rep",
+    "accountant": "Accountant"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "device": "Device"
+  },
+  "nav": {
+    "label": "Main",
+    "setup": "Setup home",
+    "dispatchOrders": "Dispatch orders",
+    "myTasks": "My tasks"
+  },
+  "password": {
+    "show": "Show",
+    "hide": "Hide",
+    "toggleLabel": "Show password"
+  },
+  "signup": {
+    "pageTitle": "Sign up",
+    "heading": "Create your business",
+    "businessName": "Business name",
+    "name": "Your name",
+    "phone": "Phone number",
+    "phoneHint": "You sign in with this number.",
+    "password": "Password",
+    "passwordHint": "At least 8 characters.",
+    "submit": "Create business",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "errors": {
+      "businessName": "Enter your business name.",
+      "name": "Enter your name.",
+      "phone": "Enter a phone number of 6 to 15 digits.",
+      "password": "At least 8 characters.",
+      "duplicatePhone": "This phone number is already registered"
+    }
+  },
+  "signin": {
+    "pageTitle": "Sign in",
+    "heading": "Sign in",
+    "phone": "Phone number",
+    "password": "Password",
+    "submit": "Sign in",
+    "newBusiness": "New business?",
+    "createLink": "Create one"
+  },
+  "errors": {
+    "summary": "{{count}} fields need fixing:",
+    "saveFailed": "Couldn't save. Try again.",
+    "invalidCredentials": "Sign-in details are not correct.",
+    "deactivated": "This account is deactivated.",
+    "sessionEnded": "Your session ended. Sign in again."
+  },
+  "pages": {
+    "setup": {
+      "title": "Setup home",
+      "body": "Setting up {{businessName}} starts here."
+    },
+    "dispatchOrders": {
+      "title": "Dispatch orders",
+      "body": "Dispatch orders will appear here."
+    },
+    "myTasks": {
+      "title": "My tasks",
+      "body": "Your tasks will appear here."
+    },
+    "later": {
+      "title": "Your screens are coming in a later round",
+      "body": "You can sign in, but there is nothing to do here yet."
+    }
+  },
+  "common": {
+    "saving": "Saving…"
+  }
+}

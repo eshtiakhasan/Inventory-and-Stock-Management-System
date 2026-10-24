@@ -1,0 +1,21 @@
+# Keep the build context small and free of secrets.
+**/node_modules
+**/dist
+**/coverage
+playwright-report
+test-results
+.git
+.env
+.env.*
+!.env.example
+aidlc
+_bmad
+_bmad-output
+_wds-learn
+design-artifacts
+design-process
+docs
+.claude
+.agents
+.gemini
+idea.md
